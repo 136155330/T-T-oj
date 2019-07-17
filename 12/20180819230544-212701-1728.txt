@@ -1,0 +1,33 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+int flag [105];
+///他是不是单个元素的值 0 - 100
+///标记元素出现的次数
+/// i 1 2 3 4 5 6 7 8 9 .......
+/// flag[i] 0 0 0 0 0 0 0 0 ...
+/// flag[i] 1 2 3 4 5 6 7 999 ....
+int main()
+{
+    int n;
+    while(cin >> n)
+    {
+        memset(flag, 0, sizeof(flag));
+        int maxs = -1;
+        for (int i = 0; i < n; i ++) {
+            int ans;
+            scanf("%d",&ans);
+            maxs = max(ans, maxs);
+            flag[ans] ++;
+        }
+        for (int i = maxs; i != -1; i --) {
+            while(flag[i])///flag[i] != 0
+            {
+                cout << i << " ";
+                flag[i] --;
+            }
+        }
+        cout << endl;
+    }
+    return 0;
+}

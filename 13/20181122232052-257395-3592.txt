@@ -1,0 +1,179 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int MAXN = 1e5 + 10;
+int arr[MAXN];
+int d[MAXN], ds[MAXN];
+int t, n, m;
+typedef struct SEGTREE
+{
+    int l, r;
+    int num;
+    int maxs;
+}segtree;
+segtree seg[MAXN * 4];
+void Init()
+{
+    memset(arr, 0, sizeof(arr));
+    memset(d, 0, sizeof(d));
+    memset(ds, 0, sizeof(ds));
+    memset(seg, 0, sizeof(seg));
+}
+void push_back(int rt)
+{
+    seg[rt].maxs = max(seg[rt * 2].maxs, seg[rt * 2 + 1].maxs);
+    if(seg[rt].maxs == seg[rt * 2].maxs)
+    {
+        seg[rt].num = seg[rt * 2].num;
+    }
+    else
+    {
+        seg[rt].num = seg[rt * 2 + 1].num;
+    }
+    return ;
+}
+void build(int rt, int l, int r)
+{
+    seg[rt].l = l;
+    seg[rt].r = r;
+    seg[rt].maxs = seg[rt].num = 0;
+    if(l == r)
+    {
+        seg[rt].l = l;
+        seg[rt].r = r;
+        seg[rt].maxs = arr[l];
+        seg[rt].num = l;
+        return;
+    }
+    int mid = (l + r) / 2;
+    build(rt * 2, l, mid);
+    build(rt * 2 + 1, mid + 1, r);
+    push_back(rt);
+}
+void query(int rt, int l, int r, int num, int &re)
+{
+    if(seg[rt].l == seg[rt].r)
+    {
+        if(seg[rt].maxs > num)
+        {
+            re = min(re, seg[rt].l);
+        }
+        return ;
+    }
+    int mid = (seg[rt].l + seg[rt].r) / 2;
+    if(seg[rt].l == l && seg[rt].r == r)
+    {
+        if(seg[rt * 2].maxs > num)
+        {
+            query(rt * 2, l, mid, num, re);
+        }
+        else if(seg[rt * 2 + 1].maxs > num)
+        {
+            query(rt * 2 + 1, mid + 1, r, num, re);
+        }
+        return ;
+    }
+    if(r <= mid)
+    {
+        query(rt * 2, l, r, num, re);
+    }
+    else if(l > mid)
+    {
+        query(rt * 2 + 1, l, r, num, re);
+    }
+    else
+    {
+        query(rt * 2, l, mid, num, re);
+        query(rt * 2 + 1, mid + 1, r, num, re);
+    }
+}
+void querys(int rt, int l, int r, int ans, int & re)
+{
+    if(l == seg[rt].l && r == seg[rt].r)
+    {
+        if(seg[rt].maxs > arr[re])
+        {
+            re = seg[rt].num;
+        }
+        return ;
+    }
+    int mid = (seg[rt].l + seg[rt].r) / 2;
+    if(r <= mid)
+    {
+        querys(rt * 2, l, r, ans, re);
+    }
+    else if(l > mid)
+    {
+        querys(rt * 2 + 1, l, r, ans, re);
+    }
+    else
+    {
+        querys(rt * 2, l, mid, ans, re);
+        querys(rt * 2 + 1, mid + 1, r, ans, re);
+    }
+}
+int main()
+{
+    scanf("%d", &t);
+    while(t --)
+    {
+        Init();
+        scanf("%d%d", &n, &m);
+        for(int i = 1; i <= n; i ++)
+        {
+            scanf("%d", &arr[i]);
+        }
+        d[1] = 1;
+        int temp = arr[1];
+        for(int i = 2; i <= n; i ++)
+        {
+            if(arr[i] > temp)
+            {
+                d[i] = d[i - 1] + 1;
+                temp = arr[i];
+            }
+            else
+            {
+                d[i] = d[i - 1];
+            }
+        }
+        build(1, 1, n);
+        ds[n] = 1;
+        for(int i = n - 1; i != 0; i --)
+        {
+            int re = n + 1;
+            query(1, i + 1, n, arr[i], re);
+            ds[i] = ds[re] + 1;
+        }
+        for(int i = 0; i < m; i ++)
+        {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            int re = 0;
+            int results = 0;
+            if(a != 1)
+            {
+                querys(1, 1, a - 1, b, re);
+            }
+            results += d[re];
+            if(b > arr[re])
+            {
+                results ++;
+            }
+            else
+            {
+                b = arr[re];
+            }
+            re = n + 1;
+            if(a != n)
+            {
+                query(1, a + 1, n, b, re);
+            }
+            results += ds[re];
+            printf("%d\n", results);
+        }
+    }
+    return 0;
+}

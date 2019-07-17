@@ -1,0 +1,13 @@
+#include<stdio.h>
+main()
+{
+    int i,n,j=0;
+    scanf("%d",&n);
+    while(n>1)
+    {
+        if(n%2)
+            j++;
+        n/=2;
+    }
+    printf("%d\n",++j);
+}

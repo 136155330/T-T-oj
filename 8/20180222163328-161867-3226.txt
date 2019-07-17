@@ -1,0 +1,71 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+typedef long long ll;
+int finddown(ll x[],ll math,int n)
+{
+    int left,right,mid;
+    left=-1;
+    right=n;
+    mid=(right+left)/2;
+    while(left+1<right)
+    {
+        if(x[mid]>math)
+        {
+            right=mid;
+            mid=(right+left)/2;
+        }
+        else if(x[mid]<=math)
+        {
+            left=mid;
+            mid=(right+left)/2;
+        }
+    }
+    return left;
+}
+ll gcd(ll a,ll b)
+{
+    if(a%b==0)
+        return b;
+    else
+        return gcd(b,a%b);
+}
+ll math[100005];
+int main()
+{
+    ll a,b,c;
+    while(~scanf("%I64d %I64d",&a,&b))
+    {
+        c=gcd(a,b);
+        int j=0;
+        for(ll i=1; i*i<=c; i++)
+        {
+            if(c%i==0&&i*i!=c)
+            {
+                math[j++]=i;
+                math[j++]=c/i;
+            }
+            else if(c%i==0&&i*i==c)
+                math[j++]=i;
+
+        }
+        sort(math,math+j);
+        int q;
+        scanf("%d",&q);
+        for(int i=0; i<q; i++)
+        {
+            ll l,r;
+            int answer;
+            scanf("%I64d %I64d",&l,&r);
+            answer=finddown(math,r,j);
+            if(math[answer]<l)
+                printf("-1\n");
+            else
+                printf("%I64d\n",math[answer]);
+
+        }
+    }
+    return 0;
+}

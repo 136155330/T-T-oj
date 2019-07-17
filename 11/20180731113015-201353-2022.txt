@@ -1,0 +1,86 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int MAXN = 50005;
+int n,k,d,x,y;
+int sum;///统计错误的出现
+typedef struct NODE
+{
+    int parents;
+    int relation;
+} node;
+node math[MAXN];
+int acfind(int x)///寻找父节点
+{
+    int temp;
+    if(math[x].parents==x)
+        return x;
+    /**
+    以下为压缩路径，首先我们可以证明得到
+    子节点到爷爷节点的关系，可以通过子节点到
+    父亲的关系，父亲节点到爷爷节点的关系得到
+    ，可得math[x].relation=(math[x].relation+math[temp].relation)%3
+    **/
+    temp=math[x].parents;
+    math[x].parents=acfind(temp);
+    math[x].relation=(math[x].relation+math[temp].relation)%3;
+    return math[x].parents;
+}
+void Init()
+{
+    sum=0;
+    for(int i=0; i<MAXN; i++)
+    {
+        math[i].parents=i;
+        math[i].relation=0;///0代表同类
+    }
+}
+void join(int a,int b)
+{
+    int rootx,rooty;
+    rootx=acfind(a);
+    rooty=acfind(b);
+    if(rootx!=rooty)///不在一个集合里，应该合并
+        ///应该求rooty->rootx
+    {
+        math[rooty].parents=rootx;///即将rooty连接到rootx
+        math[rooty].relation=(3+(d-1)+math[a].relation-math[b].relation)%3;
+        ///可以通过向量关系得到,math[rooty].relation
+    }
+    else///不在一个集合里
+    {
+        if(d==1&&math[a].relation!=math[b].relation)
+        {
+            sum++;
+            return ;
+        }
+        if(d==2&&((3-math[a].relation+math[b].relation)%3!=(d-1)))
+        {
+            sum++;
+            return ;
+        }
+    }
+}
+int main()
+{
+    scanf("%d%d",&n,&k);
+        Init();
+        for(int i=0; i<k; i++)
+        {
+            scanf("%d%d%d",&d,&x,&y);
+            if(x>n||y>n)
+            {
+                sum++;
+                continue;
+            }
+            if(d==2&&x==y)
+            {
+                sum++;
+                continue;
+            }
+            join(x,y);
+        }
+        printf("%d\n",sum);
+    return 0;
+}

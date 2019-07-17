@@ -1,0 +1,25 @@
+#include<stdio.h>
+int math[100005];
+int main()
+{
+    int n,i,flag,ans;
+    while(~scanf("%d",&n))
+    {
+        for(i=0;i<n;i++)
+        {
+            scanf("%d",&math[i]);
+        }
+        ans=math[0];
+        flag=1;
+        for(i=1;i<n;i++)
+        {
+            if(math[i]<ans)
+            {
+                ans=math[i];
+                flag++;
+            }
+        }
+        printf("%d\n",flag);
+    }
+    return 0;
+}

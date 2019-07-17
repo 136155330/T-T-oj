@@ -1,0 +1,75 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+typedef long long ll;
+ll x,y,l,r;
+ll INF = 2e18;
+vector<ll>vec;
+vector<ll>vecs;
+vector<ll>vecss;
+void Init()
+{
+    ll i,j,z,h;
+    for(i=1; 1; i*=x)
+    {
+        vec.push_back(i);
+        if(INF*1.0/i<x)
+            break;
+    }
+    for(j=1; 1; j*=y)
+    {
+        vecs.push_back(j);
+        if(INF*1.0/j<y)
+            break;
+    }
+    for(z=0; z<vec.size(); z++)
+    {
+        for(h=0; h<vecs.size(); h++)
+        {
+            ll sum=vec[z]+vecs[h];
+            if(sum>=l&&sum<=r)
+                vecss.push_back(sum);
+        }
+    }
+    sort(vecss.begin(),vecss.end());
+}
+int main()
+{
+    while(~scanf("%I64d%I64d%I64d%I64d",&x,&y,&l,&r))
+    {
+        ll begins;
+        ll ends;
+        vec.clear();
+        vecs.clear();
+        vecss.clear();
+        Init();
+        ll sum=-1;
+        if(vecss.size()==0)
+        {
+            sum=max(sum,r-l+1);
+        }
+        for(int i=0; i<vecss.size(); i++)
+        {
+            if(i==0)
+            {
+                if(vecss[i]>=l)
+                {
+                    sum=max(sum,vecss[i]-l);
+                }
+            }
+            if(i<vecss.size()-1)
+            {
+                sum=max(sum,vecss[i+1]-vecss[i]-1);
+            }
+            else if(i==vecss.size()-1)
+            {
+                sum=max(sum,r-vecss[i]);
+            }
+        }
+        printf("%I64d\n",sum);
+    }
+    return 0;
+}

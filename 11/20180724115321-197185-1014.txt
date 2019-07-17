@@ -1,0 +1,737 @@
+#include<cstdio>
+#include<cstring>
+#include<map>
+#include<set>
+#include<cstdlib>
+#include<ctime>
+#include<iostream>
+#include<queue>
+#include<vector>
+#define BLACKFLAG "●"
+#define WHITEFLAG "○"
+#define WIDE 15
+#define HIGH 15
+#define BLACKNUM 1
+#define WHITENUM 2
+#define DIR 224
+#define UP 72
+#define DOWN 80
+#define LEFT 75
+#define RIGHT 77
+#define SPACE 32
+#define ESC 27
+using namespace std;
+#define mem(x) memset(x,0,sizeof(x))
+const int MAXN = 35;
+int col,row,z;
+set<pair<int,int> > m;
+typedef struct NODE
+{
+    int x;
+    int y;
+    int value;
+    friend bool operator < (const NODE & a,const NODE &b)
+    {
+        return a.value < b.value;
+    }
+} node;
+priority_queue<node>que;
+int vids[MAXN][MAXN];
+int dfs_value=-1;
+vector<node>vec;
+void rev(char str[])
+{
+    int l=0,r=strlen(str)-1;
+    while(l<r)
+    {
+        swap(str[l++],str[r--]);
+    }
+}
+void Init()
+{
+    mem(vids);
+}
+int judge_re(int fn,int en,int fnf,int enf)
+{
+    if((fnf==0&&enf==0))
+    {
+        if(fn>=4||en>=4)
+            return 100000;///MAXN
+        if((fn>=3&&en>=1)||(fn>=1&&en>=3))
+            return 150000;
+        if(fn>=2&&en>=2)
+            return 150000;
+        if(fn>=3||en>=3)
+            return 10000;
+        if((fn>=2&&en>=1)||(fn>=1&&en>=2))
+            return 15000;
+        if(fn>=2||en>=2)
+            return 1000;
+        if(fn>=1&&en>=1)
+            return 1000;
+        if(fn>=1||en>=1)
+            return 100;
+        if((fn>=1&&en>=0)||(fn>=0&&en>=1))
+            return 10;
+        if(fn>=0&&en>=0)
+            return 1;
+    }
+    else if((fnf==1&&enf==0)||(fnf==0&&enf==1))
+    {
+        if(fn>=4||en>=4)
+            return 100000;///MAXN
+        if((fn>=3&&en>=1)||(fn>=1&&en>=3))
+            return 100000;
+        if(fn>=2&&en>=2)
+            return 100000;
+        if(fn>=3||en>=3)
+            return 1000;
+        if((fn>=2&&en>=1)||(fn>=1&&en>=2))
+            return 1000;
+        if(fn>=2||en>=2)
+            return 100;
+        if(fn>=1&&en>=1)
+            return 100;
+        if(fn>=1||en>=1)
+            return 10;
+        if((fn>=1&&en>=0)||(fn>=0&&en>=1))
+            return 1;
+        if(fn>=0&&en>=0)
+            return 0;
+    }
+    else if(fnf==1&&enf==1)
+    {
+        if(fn>=4||en>=4)
+            return 100000;
+        if((fn>=3&&en>=1)||(fn>=1&&en>=3))
+            return 100000;
+        if(fn>=2&&en>=2)
+            return 100000;
+        else
+            return 0;
+    }
+}
+int judge_math(int x,int y,int a,int b,int c)///a-1 b-2 c-0
+{
+    int i,j;
+    int result=-1;
+    int re;
+    ///列
+    int front_num,front_flag;
+    int ends_num,ends_flag;
+    front_flag=front_num=ends_num=ends_flag=0;
+    for(i=x+1; i<15; i++)
+    {
+        if(vids[i][y]==c)
+        {
+            break;
+        }
+        if(vids[i][y]==a)
+        {
+            ends_num++;
+        }
+        if(vids[i][y]==b)
+        {
+            ends_flag++;
+            break;
+        }
+    }
+    if(i==15)
+        ends_flag++;
+    for(i=x-1; i>=0; i--)
+    {
+        if(vids[i][y]==c)
+            break;
+        if(vids[i][y]==a)
+            front_num++;
+        if(vids[i][y]==b)
+        {
+            front_flag++;
+            break;
+        }
+    }
+    if(i==-1)
+        front_flag++;
+    re=judge_re(front_num,ends_num,front_flag,ends_flag);
+    result+=re;
+    ///行
+    front_flag=front_num=ends_num=ends_flag=0;
+    for(i=y+1; i<15; i++)
+    {
+        if(vids[x][i]==c)
+        {
+            break;
+        }
+        if(vids[x][i]==a)
+        {
+            ends_num++;
+        }
+        if(vids[x][i]==b)
+        {
+            ends_flag++;
+            break;
+        }
+    }
+    if(i==15)
+        ends_flag++;
+    for(i=y-1; i>=0; i--)
+    {
+        if(vids[x][i]==c)
+            break;
+        if(vids[x][i]==a)
+            front_num++;
+        if(vids[x][i]==b)
+        {
+            front_flag++;
+            break;
+        }
+    }
+    if(i==-1)
+        front_flag++;
+    re=judge_re(front_num,ends_num,front_flag,ends_flag);
+    result+=re;
+    front_flag=front_num=ends_num=ends_flag=0;
+    for(i=x-1,j=y+1; i>=0&&j<15; i--,j++)
+    {
+        if(vids[i][j]==c)
+            break;
+        if(vids[i][j]==a)
+            front_num++;
+        if(vids[i][j]==b)
+        {
+            front_flag++;
+            break;
+        }
+    }
+    if(i==-1||j>=15)
+        front_flag++;
+    for(i=x+1,j=y-1; i<15&&j>=0; i++,j--)
+    {
+        if(vids[i][j]==c)
+            break;
+        if(vids[i][j]==a)
+            ends_num++;
+        if(vids[i][j]==b)
+        {
+            ends_flag++;
+            break;
+        }
+    }
+    if(i>=15||j==-1)
+        ends_flag++;
+    re=judge_re(front_num,ends_num,front_flag,ends_flag);
+    result+=re;
+    front_flag=front_num=ends_num=ends_flag=0;
+    for(i=x-1,j=y-1; i>=0&&j>=0; i--,j--)
+    {
+        if(vids[i][j]==c)
+            break;
+        if(vids[i][j]==a)
+            front_num++;
+        if(vids[i][j]==b)
+        {
+            front_flag++;
+            break;
+        }
+    }
+    if(i==-1||j==-1)
+        front_flag++;
+    for(i=x+1,j=y+1; i<15&&j<15; i++,j++)
+    {
+        if(vids[i][j]==c)
+            break;
+        if(vids[i][j]==a)
+            ends_num++;
+        if(vids[i][j]==b)
+        {
+            ends_flag++;
+            break;
+        }
+    }
+    if(i>=15||j>=15)
+        ends_flag++;
+    re=judge_re(front_num,ends_num,front_flag,ends_flag);
+    result+=re;
+    return result;
+}
+#define OOOOO   1
+
+#define _OOOO_  2
+#define O_OOO_O 3
+
+#define OOO_O   4
+#define _OOOOH  5
+
+#define _OOO_   6
+#define _OO_O_  7
+#define _OOOH   8
+
+#define _O__O_  11
+#define _O_O_   10
+#define _OO_    9
+
+#define _O_OH   13
+#define _OOH    12
+
+#define _O_     14
+#define _OH     15
+
+///6 9 10 11
+
+int match(char s[])
+{
+
+    if(strstr(s,"OOOOO"))          return OOOOO;
+    if(strstr(s,"_OOOO_"))         return _OOOO_;
+    if(strstr(s,"O_OOO_O"))        return O_OOO_O;
+
+    if(strstr(s,"OOO_O"))          return OOO_O;
+    if(strstr(s,"_OOOOH"))         return _OOOOH;
+
+    if(strstr(s,"_OOO_"))          return _OOO_;
+
+    if(strstr(s,"_OO_O_"))         return _OO_O_;
+    if(strstr(s,"_OOOH"))          return _OOOH;
+
+    if(strstr(s,"_OO_"))           return _OO_;
+    if(strstr(s,"_O_O_"))          return _O_O_;
+    if(strstr(s,"_O__O_"))         return _O__O_;
+
+    if(strstr(s,"_O_OH"))          return _O_OH;
+    if(strstr(s,"_OOH"))           return _OOH;
+
+    if(strstr(s,"_O_"))            return _O_;
+    if(strstr(s,"_OH"))            return _OH;
+
+    return 0;
+}
+
+node getPosGoal(int mp[HIGH][WIDE],int x,int y,int kind,int flag)
+{
+    node tmp;
+    mp[x][y]=kind;
+    tmp.x=x,tmp.y=y;
+    char str[105],ttr[105];
+    int mov[4][2]= {-1,0,0,-1,-1,-1,1,-1};
+    int lGoal[50]= {0};
+    int Size=0,len=0;
+    for(int dir=0; dir<4; dir++)
+    {
+        int x1=x,y1=y,len1=0;
+        int x2=x,y2=y,len2=0;
+        while(len1<6)
+        {
+            if(x1>=0&&y1>=0&&x1<HIGH&&y1<WIDE)
+            {
+                if(mp[x1][y1]==kind)
+                {
+                    str[len1++]='O';
+                }
+                else if(mp[x1][y1]==0)
+                {
+                    str[len1++]='_';
+                }
+                else
+                {
+                    str[len1++]='H';
+                    break;
+                }
+            }
+            else
+            {
+                str[len1++]='H';
+                break;
+            }
+            x1+=mov[dir][0];
+            y1+=mov[dir][1];
+        }
+        str[len1]=0;
+        while(len2<6)
+        {
+            if(x2>=0&&y2>=0&&x2<HIGH&&y2<WIDE)
+            {
+                if(mp[x2][y2]==kind)
+                {
+                    ttr[len2++]='O';
+                }
+                else if(mp[x2][y2]==0)
+                {
+                    ttr[len2++]='_';
+                }
+                else
+                {
+                    ttr[len2++]='H';
+                    break;
+                }
+            }
+            else
+            {
+                ttr[len2++]='H';
+                break;
+            }
+            x2-=mov[dir][0];
+            y2-=mov[dir][1];
+        }
+        ttr[len2]=0;
+        rev(str);
+        strcat(str,ttr+1);
+        lGoal[match(str)]++;
+        rev(str);
+        lGoal[match(str)]++;
+    }
+    mp[x][y]=0;
+
+    if(lGoal[1])
+    {
+        tmp.value=1e8;
+    }
+    else if(lGoal[2]||lGoal[3])
+    {
+        tmp.value=1e8-100;
+    }
+    else if((lGoal[4]+lGoal[5]+lGoal[6]/2+lGoal[7])/2||lGoal[6]/4)
+    {
+        tmp.value=5e7;
+    }
+    else if((lGoal[6]/2+lGoal[7]+lGoal[8])/2)
+    {
+        tmp.value=3e7;
+    }
+    else if(lGoal[4]/2||lGoal[6]/2)
+    {
+        tmp.value=1e7;
+    }
+    else if((lGoal[9]+lGoal[10]+lGoal[11])/4)
+    {
+        tmp.value=5e6;
+    }
+    else if(lGoal[6])
+    {
+        tmp.value=3e6;
+    }
+    else if(lGoal[5])
+    {
+        tmp.value=1e6;
+    }
+    else if(lGoal[7])
+    {
+        tmp.value=5e5;
+    }
+    else if(lGoal[8])
+    {
+        tmp.value=3e5;
+    }
+    else if((lGoal[12]+lGoal[13])/2)
+    {
+        tmp.value=1e5;
+    }
+    else if(lGoal[9])
+    {
+        tmp.value=5e4;
+    }
+    else if(lGoal[10])
+    {
+        tmp.value=3e4;
+    }
+    else if(lGoal[11])
+    {
+        tmp.value=1e4;
+    }
+    else if(lGoal[12]||lGoal[13])
+    {
+        tmp.value=5e3;
+    }
+    else if(lGoal[14])
+    {
+        tmp.value=3e3;
+    }
+    else if(lGoal[15])
+    {
+        tmp.value=1e3;
+    }
+    else
+    {
+        tmp.value=0;
+    }
+    if(flag)
+    {
+        tmp.value++;
+    }
+    return tmp;
+}
+
+void superAI(pair<int,int >&pos,int mp[HIGH][WIDE],int kind)
+{
+    priority_queue<node>q;
+    node tmp;
+    for(int i=0; i<HIGH; i++)
+    {
+        for(int j=0; j<WIDE; j++)
+        {
+            if(mp[i][j])
+            {
+                continue;
+            }
+            else
+            {
+                //getPosGoal(mp,i,j,kind);
+                //getPosGoal(mp,i,j,kind^3);
+                q.push(max(getPosGoal(mp,i,j,kind^3,1),getPosGoal(mp,i,j,kind,0)));
+            }
+        }
+    }
+    tmp=q.top();
+    q.pop();
+    pos.first=tmp.x;
+    pos.second=tmp.y;
+    return ;
+    while(tmp.value==q.top().value)
+    {
+        if(rand()%2)
+        {
+            break;
+        }
+        if(tmp.value==q.top().value)
+        {
+            tmp=q.top();
+            q.pop();
+        }
+
+    }
+    pos.first=tmp.x;
+    pos.second=tmp.y;
+}
+void dfs(vector<node>a,int step)
+{
+    for(int i=0; i<a.size(); i++)
+    {
+        if(step%2==0)
+            vids[a[i].x][a[i].y]=1;
+        else
+            vids[a[i].x][a[i].y]=2;
+        priority_queue<node>ques;
+        while(!ques.empty())
+            ques.pop();
+        for(int j=0; j<15; j++)
+        {
+            for(int z=0; z<15; z++)
+            {
+                if(vids[j][z]==0)
+                {
+                    int re3,re4;
+                    re3=judge_math(j,z,1,2,0);
+                    re4=judge_math(j,z,2,1,0);
+                    node h;
+                    //re2*=2;
+                    h.value=re3+re4;
+                    h.x=j;
+                    h.y=z;
+                    ques.push(h);
+                }
+            }
+        }
+        vector<node>vecs;
+        vecs.clear();
+        while(!ques.empty())
+        {
+            if(vecs.size()==0)
+                vecs.push_back(ques.top()),ques.pop();
+            else
+            {
+                if(vecs[0].value==ques.top().value)
+                {
+                    vecs.push_back(ques.top()),ques.pop();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        if(vecs.size()==1)
+        {
+            dfs_value=vecs[i].value;
+            return ;
+        }
+        if(step!=4)
+        {
+            dfs(vecs,step+1);
+            vids[a[i].x][a[i].y]=0;
+            if(step==0)
+            {
+                vec[i].value+=dfs_value;
+                dfs_value=-1;
+            }
+        }
+        else if(step%2==1)
+        {
+            if(vecs[0].value==100000)
+            {
+                dfs_value=-100000;
+                return ;
+            }
+        }
+        else if(step==4)
+        {
+            vids[a[i].x][a[i].y]=0;
+            dfs_value=max(vecs[0].value,dfs_value);
+            //return dfs_value;
+            return ;
+        }
+        //return ;
+    }
+}
+node rgzz()
+{
+    while(!que.empty())
+        que.pop();
+    for(int i=0; i<15; i++)
+    {
+        for(int j=0; j<15; j++)
+        {
+            if(vids[i][j]==0)
+            {
+                int re1,re2;
+                re1=judge_math(i,j,1,2,0);
+                re2=judge_math(i,j,2,1,0);
+                node hzb;
+                //re2*=2;
+                hzb.value=re1+re2;
+                hzb.x=i;
+                hzb.y=j;
+                que.push(hzb);
+            }
+        }
+    }
+    if(z==2)
+        return que.top();
+    vec.clear();
+    while(!que.empty())
+    {
+        if(vec.size()==0)
+            vec.push_back(que.top()),que.pop();
+        else
+        {
+            if(vec[0].value==que.top().value)
+            {
+                vec.push_back(que.top()),que.pop();
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    dfs(vec,0);
+    for(int i=0; i<vec.size(); i++)
+    {
+        que.push(vec[i]);
+    }
+    return que.top();
+}
+//    int ans=rand()%vec.size();
+//    return vec[ans];
+//    return  que.top();
+pair<int,int> getSt()
+{
+    int k;
+    pair<int,int> p;
+    do
+    {
+
+        node anss=rgzz();
+        p = pair<int,int>(anss.x,anss.y);
+        k = m.count(p);
+    }
+    while(k >= 1);
+    return p;
+}
+/**
+100000
+10000
+1000
+100
+10
+1
+**/
+
+int main()
+{
+    int seed;
+     int arr[15][15]={0};
+    scanf("%d",&seed);
+    srand(seed);
+    scanf("%d%d",&col,&row);
+    scanf("%d",&z);
+    Init();
+    if(z==1)
+    {
+        if(z == 1)
+        {
+            printf("7\n");
+            printf("7\n");
+            vids[7][7]=1;
+            fflush(stdout);
+        }
+        while(1)
+        {
+            int x,y;
+            scanf("%d%d",&x,&y);
+            vids[x][y]=2;
+            m.insert(pair<int,int>(x,y));
+            pair<int,int> p = getSt();
+            m.insert(p);
+            printf("%d\n",p.first);
+            printf("%d\n",p.second);
+            vids[p.first][p.second]=1;
+            fflush(stdout);
+        }
+    }
+    else
+    {
+        if(z==1)///黑子先手 1表示黑 2白
+        {
+            arr[7][7]=BLACKNUM;
+            printf("%d\n%d\n",7,7);
+            fflush(stdout);
+        }
+        while(1)
+        {
+            int x,y;
+            scanf("%d%d",&x,&y);
+
+
+            if(z==1)///黑先手,那么这里下白子，否则黑子
+            {
+                arr[x][y]=WHITENUM;
+            }
+            else
+            {
+                arr[x][y]=BLACKNUM;
+            }
+            ///输出落子位置；
+            pair<int,int>qq;
+            if(z==1)
+            {
+                superAI(qq,arr,WHITENUM);
+            }
+            else
+            {
+                superAI(qq,arr,BLACKNUM);
+            }
+            int xx=qq.first;
+            int yy=qq.second;
+            if(z==1)
+            {
+                arr[xx][yy]=BLACKNUM;
+            }
+            else
+            {
+                arr[xx][yy]=WHITENUM;
+            }
+            printf("%d\n%d\n",xx,yy);
+            fflush(stdout);
+        }
+    }
+    return 0;
+}

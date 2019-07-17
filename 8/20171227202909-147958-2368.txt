@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<string.h>
+int x[1000005];
+int sum[1000005];
+int main()
+{
+    int t,n,m,s,w,i,l,r,k,j;
+    long long ans,ans2;
+    scanf("%d",&t);
+    for(j=0; j<t; j++)
+    {
+        scanf("%d%d%d%d",&n,&m,&s,&w);
+        memset(x,0,sizeof(x));
+        for(i=0; i<m; i++)
+        {
+            scanf("%d%d",&l,&r);
+            x[l]++;
+            x[r+1]--;
+        }
+        for(i=1; i<=n; i++)
+        {
+            x[i]=x[i]+x[i-1];
+            sum[i]=sum[i-1]+x[i];
+        }
+        ans=0;
+        ans2=sum[1];
+        r=1;
+        k=1;
+        for(l=1; l<=n&&l<=r; l++)
+        {
+            while(ans2<s&&r<n)
+            {
+                r++;
+                ans2+=x[r];
+            }
+            while(ans2>=s&&r<=n)
+            {
+                while(sum[k]-sum[l-1]<w&&k<n)k++;
+                if(sum[r]-sum[k]>=w&&l!=r)
+                {
+                    ans+=n-r+1;
+                    break;
+                }
+                else if(r==n)break;
+                else if(r<n)
+                {
+                    r++;
+                    ans2+=x[r];
+                }
+            }
+            ans2-=x[l];
+        }
+        printf("%lld\n",ans);
+    }
+
+    return 0;
+}

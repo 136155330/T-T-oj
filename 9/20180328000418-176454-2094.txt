@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<iostream>
+using namespace std;
+typedef struct MYINT
+{
+    int x;
+    int y;
+    int step;
+} myint;
+int maps[10][10];
+int x1,y1;
+int moves[8][2]={{1,-2},{2,-1},{2,1},{1,2},{-1,2},{-2,1},{-2,-1},{-1,-2}};
+char s1[10];
+char s2[10];
+int bfs()
+{
+    memset(maps,0,sizeof(maps));
+    myint begins,ends;
+    begins.x=s1[0]-'a';
+    begins.y=s1[1]-'1';
+    x1=s2[0]-'a' ;
+    y1=s2[1]-'1';
+    begins.step=0;
+    queue<myint>q;
+    maps[begins.x][begins.y]=1;
+    q.push(begins);
+    while(!q.empty())
+    {
+        begins=q.front();
+        q.pop();
+        if(begins.x==x1&&begins.y==y1)
+        {
+            return begins.step;
+        }
+        for(int i=0; i<8; i++)
+        {
+            ends.x=begins.x+moves[i][0];
+            ends.y=begins.y+moves[i][1];
+            if(ends.x>=0&&ends.x<8&&ends.y>=0&&ends.y<8&&maps[ends.x][ends.y]==0)
+            {
+                ends.step=begins.step+1;
+                maps[ends.x][ends.y]=1;
+                q.push(ends);
+            }
+        }
+    }
+    return 0;
+}
+int main()
+{
+    while(~scanf("%s%s",s1,s2))
+    {
+        printf("To get from %s to %s takes %d knight moves.\n",s1,s2,bfs());
+    }
+    return 0;
+}

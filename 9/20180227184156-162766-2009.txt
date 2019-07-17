@@ -1,0 +1,63 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<cstring>
+#include<queue>
+using namespace std;
+priority_queue<int>q;
+char str[105];
+int flag[505];
+int main()
+{
+    int cases,m,i,j;
+    while(~scanf("%d",&cases))
+    {
+        for(i=0; i<cases; i++)
+        {
+            scanf("%d",&m);
+            memset(flag,0,sizeof(flag));
+            scanf("%s",&str);
+            int l=strlen(str);
+            for(j=0; j<l; j++)
+            {
+                flag[str[j]]++;
+            }
+            for(j=0; j<505; j++)
+            {
+                if(flag[j]!=0)
+                {
+                    flag[j]=-flag[j];
+                    q.push(flag[j]);
+                }
+            }
+            int sum=0;
+            if(q.size()==1)
+            {
+                sum = -q.top();
+            }
+            else
+            {
+                while(!q.empty())
+                {
+                    int a;
+                    int b;
+                    a=q.top();
+                    q.pop();
+                    if(q.empty())
+                    {
+                        break;
+                    }
+                    b=q.top();
+                    q.pop();
+                    int c=a+b;
+                    q.push(c);
+                    c=-c;
+                    sum+=c;
+                }
+            }
+            if(sum<=m)printf("yes\n");
+            else
+                printf("no\n");
+        }
+    }
+}

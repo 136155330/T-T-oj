@@ -1,0 +1,11 @@
+#include<stdio.h>
+int main()
+{
+    int s,a1,t;
+    while(~scanf("%d%d%d",&s,&a1,&t))
+    {
+        double a2=(2*s-(t*t*a1))/double(t*t*1.0);
+        printf("%.6lf\n",a2);
+    }
+    return 0;
+}

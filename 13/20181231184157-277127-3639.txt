@@ -1,0 +1,13 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+int main()
+{
+    int a, b;
+    while(cin >> a >> b)
+    {
+        double sum = (a * a + b * b - ((a * a * 1.0) / 2.0 + ((a + b) * b * 1.0) / 2.0)) + ((b * (a - b)) / 2.0);
+        printf("%.2lf\n", sum);
+    }
+    return 0;
+}

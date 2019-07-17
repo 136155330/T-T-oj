@@ -1,0 +1,18 @@
+#include<stdio.h>
+int main()
+{
+    int n,i,a,b,sum=0;
+    while(scanf("%d",&n)!= EOF)
+    {
+        if(n==0)      //一个瓶子不能换
+        {
+            break;
+        }
+        else      //两个以上可以换
+        {
+            sum = n/2;    //直接除以2，因为int类型所以多一个瓶子也不影响
+        }
+        printf("%d\n",sum);    //这是答案
+    }
+    return 0;
+}

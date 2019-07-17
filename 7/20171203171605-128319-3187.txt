@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<string.h>
+char x[100];
+int main()
+{
+    int i;
+    int a;
+    int j;
+    int c;
+    i=0;
+    while(gets(x)!=NULL)
+    {
+        c=0;
+        a=strlen(x);
+        if(a==4&&x[0]=='S'&&x[1]=='T'&&x[2]=='O'&&x[3]=='P')break;
+        for(j=0; j<a; j++)
+        {
+            if(x[j]!=x[a-1-j])
+                c=1;
+        }
+        if(c==1)printf("#%d: NO\n",i+1);
+        else
+            printf("#%d: YES\n",i+1);
+        i++;
+    }
+    return 0;
+}

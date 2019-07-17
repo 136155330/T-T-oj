@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<string.h>
+char a[205],b[205];
+char x[27]={'V','W','X','Y','Z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'};
+int main()
+{int y;int i;
+    while(gets(a)!=NULL)
+    {
+        if(strcmp(a,"ENDOFINPUT")==0)
+        {
+            break;
+        }
+        if(strcmp(a,"START")==0)
+        {
+           gets(b);
+          y=strlen(b);
+            for(i=0;i<y;i++)
+            {
+                if(b[i]>='A'&&b[i]<='Z')
+                b[i]=x[b[i]-'A'];
+            }
+
+        for(i=0;i<y;i++)
+            {
+                printf("%c",b[i]);
+                if(i==y-1)printf("\n");
+            }
+        }
+    }
+    return 0;
+}

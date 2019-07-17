@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+#define pi acos(-1)
+int main()
+{
+    int n,k,ans;
+    while(~scanf("%d%d",&n,&k))
+    {
+        if((n*n)%2==1)
+        {ans=(n*n)/2+1;}
+        else
+            ans=(n*n)/2;
+            if(k>ans)
+                printf("NO\n");
+            else
+                {printf("YES\n");
+                for(int i=0;i<n;i++)
+                {
+                    for(int j=0;j<n;j++)
+                    {
+                        if(i%2==0)
+                        {
+                            if(j%2==0&&k!=0)
+                                printf("L"),k--;
+                                else
+                                    printf("S");
+                        }
+                        else
+                        {
+                            if(j%2!=0&&k!=0)
+                                printf("L"),k--;
+                            else
+                                printf("S");
+                        }
+                    }
+        printf("\n");
+                }
+                }
+        }
+return 0;
+    }
+

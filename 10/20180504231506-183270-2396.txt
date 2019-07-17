@@ -1,0 +1,45 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+typedef long long ll;
+using namespace std;
+const int maxs=2000005;
+int math[maxs+5];
+ll dp[maxs+5];
+ll num[maxs+5];
+void nextInt(int &x)  //读取一个整型
+{
+
+    char c;
+    do c=getchar();
+    while (c<'0'||c>'9');
+    x=c-'0';
+    while ('0'<=(c=getchar())&&c<='9') x=x*10+c-'0';
+}
+int main()
+{
+
+    int n,m;
+    while(~scanf("%d%d",&n,&m))
+    {
+        for(int i=1; i<=n; i++)
+            nextInt(math[i]);
+        num[1]=math[1];
+        for(int i=2; i<=n; i++)
+        {
+            num[i]=math[i]+num[i-1];
+        }
+        memset(dp,-1,sizeof(dp));
+        dp[0]=m;
+        int j=0;
+        for(int i=1; i<=n; i++)
+        {
+            while(dp[j]<i*100)
+                j++;
+            dp[i]=max(dp[i],dp[j]+num[i]-num[j]-i*100);
+        }
+        printf("%lld\n",dp[n]);
+    }
+    return 0;
+}

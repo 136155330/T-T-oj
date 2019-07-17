@@ -1,0 +1,16 @@
+#include<stdio.h>
+int main()
+{
+    long long a,b,flag;
+    while(~scanf("%lld%lld",&a,&b))
+    {flag=0;
+        while(a&&b&&(a%2==b%2))
+        {
+            a=a/2;
+            b=b/2;
+            flag++;
+        }
+        printf("%lld\n",flag);
+    }
+    return 0;
+}

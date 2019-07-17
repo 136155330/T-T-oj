@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+char s1[100005];
+char s2[100005];
+char s3[100005];
+int main()
+{
+    while(scanf("%s%s",s1,s2) != EOF)
+    {
+        ///printf("%s %s\n", s1, s2);
+        strcpy(s3, s1);///把s1的内容复制到s3
+        ///printf("%s\n",s3);
+        strcat(s1, s3);///把s3的内容连接到s1上
+        ///printf("%s\n", s1);
+        if(strstr(s1, s2) != NULL)///strstr没找到返回的是NULL
+        {
+            printf("yes\n");
+        }
+        else
+            printf("no\n");
+    }
+    return 0;
+}

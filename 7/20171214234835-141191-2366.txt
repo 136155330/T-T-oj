@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<string.h>
+#include<iostream>
+using namespace std;
+int x[100005];
+int findup(int x[],int math,int n)
+{
+    int left,right,mid;
+    left=-1;
+    right=n;
+    mid=(right+left)/2;
+    while(left+1<right)
+    {
+        if(x[mid]>math)
+        {
+            right=mid;
+            mid=(right+left)/2;
+        }
+        if(x[mid]<=math)
+        {
+            left=mid;
+            mid=(right+left)/2;
+        }
+    }
+    return right;///返回的是比它大的值的下标
+}
+int finddown(int x[],int math,int n)
+{
+    int left,right,mid;
+    left=-1;
+    right=n;
+    mid=(right+left)/2;
+    while(left+1<right)
+    {
+        if(x[mid]>=math)
+        {
+            right=mid;
+            mid=(right+left)/2;
+        }
+        if(x[mid]<math)
+        {
+            left=mid;
+            mid=(right+left)/2;
+        }
+    }
+    ///返回的是比他小的值的下标
+    return left;
+}
+int main()
+{
+    int n;
+    int i;
+    int m;
+    int j,a;
+    int math1,math2;
+    int c;
+    while(~scanf("%d",&n))
+    {
+        for(i=0; i<n; i++)
+            scanf("%d",&x[i]);
+        scanf("%d",&m);
+        for(j=0;j<m;j++)
+            {scanf("%d",&a);
+            if(a==0)
+            {
+                scanf("%d",&math1);
+                c=findup(x,math1,n)-1;
+                if(x[c]==math1)
+                printf("%d\n",c);
+                else
+                    printf("-1\n");
+            }
+            if(a==1)
+            {
+                scanf("%d",&math1);
+                c=finddown(x,math1,n)+1;
+                if(x[c]==math1)
+                    printf("%d\n",c);
+                else
+                    printf("-1\n");
+            }
+            if(a==2)
+            {
+                scanf("%d %d",&math1,&math2);
+                printf("%d\n",findup(x,math2,n)-(findup(x,math1-1,n)));
+            }
+            if(a==3)
+            {
+                scanf("%d",&math1);
+                if(math1>=x[n-1])printf("-1\n");
+                else
+                    printf("%d\n",x[findup(x,math1,n)]);
+            }
+            if(a==4)
+            {
+                scanf("%d",&math2);
+                if(math2<=x[0])printf("-1\n");
+                else
+                    printf("%d\n",x[finddown(x,math2,n)]);
+            }
+                }
+    }
+    return 0;
+}

@@ -1,0 +1,131 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+using namespace std;
+/**
+ 根据我的想法，就是搞两颗字典树
+ 一颗前缀树，一颗后缀树
+ 然后跑前缀树，得到一个数量
+ 跑后缀树，也可以得到一个数量
+ 两者相加，大于等于字符的长度
+ 即yes
+ 否则
+ no
+ 先考虑指针版的实现
+ 
+ **/
+typedef struct Trie
+{
+    struct Trie *next[35];
+}trie;
+trie *creattrie()
+{
+    trie *p;
+    p = new trie;
+    for(int i = 0; i < 35; i ++)
+    {
+        p->next[i] = NULL;
+    }
+    return p;
+}
+void addtrie(char word[], trie * p)
+{
+    int len = strlen(word);
+    for(int i = 0; i < len; i ++)
+    {
+        int num = word[i] - 'a';
+        if(p -> next[num] != NULL)
+        {
+            p = p -> next[num];
+        }
+        else
+        {
+            trie * q = creattrie();
+            p -> next[num] = q;
+            p = p -> next[num];
+        }
+    }
+}
+void delete_trie(trie * p)
+{
+    if(p == NULL)
+    {
+        return ;
+    }
+    else
+    {
+        for(int i = 0; i < 35; i ++)
+        {
+            delete_trie(p -> next[i]);
+        }
+    }
+    free(p);
+}
+int dfs(char word[], trie * p)
+{
+    int re = 0;
+    int len = strlen(word);
+    for(int i = 0; i < len; i ++)
+    {
+        int num = word[i] - 'a';
+        if(p -> next[num] != NULL)
+        {
+            p = p -> next[num];
+            re ++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return re;
+}
+int n;
+trie * root1;//前缀树
+trie * root2;//后缀树
+char str[105];
+char strs[105];
+int main()
+{
+    while(~scanf("%d", &n))
+    {
+        root1 = creattrie();
+        root2 = creattrie();
+        for(int i = 0; i < n; i ++)
+        {
+            int flag;
+            scanf("%d%s", &flag, str);
+            int len = strlen(str);
+            memset(strs, 0, sizeof(strs));
+            for(int i = 0; i < len; i ++)
+            {
+                strs[i] = str[len - 1 - i];
+            }
+            strs[len] = '\0';
+            if(flag == 1)
+            {
+                addtrie(str, root1);
+                addtrie(strs, root2);
+            }
+            if(flag == 2)
+            {
+                int num1, num2;
+                num1 = dfs(str, root1);
+                num2 = dfs(strs, root2);
+                if(num1 + num2 >= strlen(str))
+                {
+                    printf("YES\n");
+                }
+                else
+                {
+                    printf("NO\n");
+                }
+            }
+        }
+        delete_trie(root1);
+        delete_trie(root2);
+    }
+    return 0;
+}

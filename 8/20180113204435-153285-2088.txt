@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include<string.h>
+int flag;
+int math[25];
+int ans[25];
+int n,k;
+int cnt;
+void dfs(int i,int sum)
+{if(flag==1)return ;
+if(i>n)return;
+if(sum==k)
+    {
+        flag=1;
+        return ;
+}
+if(sum>k)return ;
+ans[cnt++]=math[i];
+dfs(i+1,sum+math[i]);
+if(flag==1)return ;
+cnt--;
+dfs(i+1,sum);
+}
+int main()
+{int i;
+    while(~scanf("%d%d",&n,&k))
+    {
+        memset(ans,0,sizeof(ans));
+        memset(math,0,sizeof(math));
+        for(i=0;i<n;i++)
+    scanf("%d",&math[i]);
+    flag=0;
+    cnt=0;
+    dfs(0,0);
+    if(flag==1)
+    {printf("YES\n");
+        for(i=0;i<cnt;i++)
+        {
+            printf("%d ",ans[i]);
+        }
+        printf("\n");
+    }
+    else
+        printf("NO\n");
+    }
+    return 0;
+}

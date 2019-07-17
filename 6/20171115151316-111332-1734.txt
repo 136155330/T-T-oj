@@ -1,0 +1,45 @@
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+    int n;
+    double a;
+    double s0;
+    double v0;
+    double t0;
+    double s1;
+    double s2;
+    double t1;
+    s0=4.30;
+    v0=0.10;
+    while(~scanf("%d",&n))
+    {
+        while(n--)
+        {
+            scanf("%lf",&a);
+            t0=v0/a;
+            t0=2.0*t0;
+            s1=(v0/2.0)*t0;
+            if(s1==s0)
+            {
+                printf("%.6lf\n",t0);
+                continue;
+            }
+            if(s1<s0)
+            {
+                s2=s0-s1;
+                t1=s2/v0;
+                t0=t0+t1;
+                printf("%.6lf\n",t0);
+                continue;
+            }
+            if(s1>s0)
+            {
+                t0=sqrt((4.0*s0)/a);
+                printf("%.6lf\n",t0);
+                continue;
+            }
+        }
+    }
+    return 0;
+}

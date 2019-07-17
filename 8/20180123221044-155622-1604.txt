@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+struct node
+{
+    int x;
+    int y;
+}a[200005];
+int math[200005];
+int cmp(const node &a,const node &b)
+{
+    if(a.x==b.x)return a.y<b.y;
+    return a.x<b.x;
+}
+int findll(int l,int r,int x)
+{
+    int left=l,right=r;
+    while(left+1<right)
+    {
+        int mid=(left+right)/2;
+        if(a[mid].x<x)
+            left=mid;
+        else right=mid;
+    }
+    return left;
+}
+int main()
+{
+    int n,q,i,x;
+    int ans;
+    int e;
+    while(scanf("%d",&n)!=EOF)
+    {
+        for(i=0;i<n;i++) scanf("%d%d",&a[i].x,&a[i].y);
+        sort(a,a+n,cmp);
+        math[0]=a[0].y;
+        for(i=1;i<n;i++)
+            math[i]=max(math[i-1],a[i].y);
+        scanf("%d",&q);
+        while(q--)
+        {
+            scanf("%d",&x);
+            ans=-1;
+            e=findll(-1,n,x);
+            if(e>=0)
+                ans=math[e];
+            printf("%d\n",ans);
+        }
+    }
+    return 0;
+}

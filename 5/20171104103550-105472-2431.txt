@@ -1,0 +1,31 @@
+#include<stdio.h>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+int main()
+{
+    int n;
+    int i;
+    int maxl;
+    while(~scanf("%d",&n))
+    {
+        if(n==1)
+        {
+            printf("0\n");
+            continue;
+        }
+        maxl=1;
+        int t=n;
+        for(i=2; i*i<=t; i++)
+        {
+            while(t%i==0)
+            {
+                t=t/i;
+                maxl=i;
+            }
+        }
+        maxl=max(maxl,t);
+        printf("%d\n",n/maxl);
+    }
+    return 0;
+}

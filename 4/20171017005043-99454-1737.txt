@@ -1,0 +1,20 @@
+#include<stdio.h>
+long long x[65];
+int main()
+{
+    int n,i,j;
+    for(j=1; j<=20; j++)
+    {
+         x[j]=1;
+    }
+    for(i=21; i<=60; i++)
+    {
+         x[i]=x[i-1]+x[i-20];
+    }
+    while(scanf("%d",&n)!=EOF)
+    {
+        if(n<=20) printf("1\n");
+        else printf("%ld\n",x[n]);
+    }
+    return 0;
+}

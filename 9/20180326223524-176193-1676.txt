@@ -1,0 +1,95 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+using namespace std;
+int t,h,w,d;
+struct node
+{
+    int x;
+    int y;
+    int time;
+    friend bool operator<(node a,node b)//time小的优先级高
+    {
+        return a.time>b.time;
+    }
+};
+priority_queue<node>q;
+int moves[4][2]= {-1,0,1,0,0,-1,0,1}; ///上下左右 -1,0 1,0 0,-1, 0,1
+char maps[505][505];
+int vids[505][505];
+int bfs(int i,int j)
+{
+    node head;
+    head.x=i;
+    head.y=j;
+    head.time=0;
+    vids[head.x][head.y]=1;
+    q.push(head);
+    node begins;
+    node ends;
+    while(!q.empty())
+    {
+        head=q.top();
+        q.pop();
+        for(int i=0; i<4; i++)
+        {
+            ends.x=head.x+moves[i][0];
+            ends.y=head.y+moves[i][1];
+            ends.time=head.time;
+            if(ends.x<0||ends.x>=h||ends.y<0||ends.y>=w)
+            {
+                //printf("head=%d\n",ends.time);
+                return ends.time+1;
+            }
+            if(maps[ends.x][ends.y]=='.'&&vids[ends.x][ends.y]==0)
+            {
+                ends.time=head.time+1;
+                //printf("%d\n",ends.time);
+                vids[ends.x][ends.y]=1;
+                q.push(ends);
+            }
+            else if(maps[ends.x][ends.y]=='@'&&vids[ends.x][ends.y]==0)
+            {
+                ends.time=head.time+d+1;
+                //printf("%d\n",ends.time);
+                vids[ends.x][ends.y]=1;
+                q.push(ends);
+            }
+        }
+    }
+}
+void clears()
+{
+    while(!q.empty())
+    {
+        q.pop();
+    }
+}
+int main()
+{
+    scanf("%d",&t);
+    while(t--)
+    {
+        int begins,ends;
+        memset(maps,0,sizeof(maps));
+        memset(vids,0,sizeof(vids));
+        clears();
+        scanf("%d%d%d",&h,&w,&d);
+        for(int i=0; i<h; i++)
+        {
+            scanf("%s",&maps[i]);
+            for(int j=0; j<w; j++)
+            {
+                if(maps[i][j]=='S')
+                {
+                    begins=i;
+                    ends=j;
+                }
+            }
+        }
+        int ans=bfs(begins,ends);
+        printf("%d\n",ans);
+    }
+    return 0;
+}

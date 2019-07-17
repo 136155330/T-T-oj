@@ -1,0 +1,80 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int MAXN = 100000 + 5;
+int arr[MAXN];
+typedef long long ll;
+typedef struct SEGTREE
+{
+    int l, r;
+    ll sum, dat, lmax, rmax;
+}segtree;
+segtree seg[MAXN << 2];
+inline void push_up(int rt)
+{
+    seg[rt].sum = seg[rt << 1].sum + seg[rt << 1 | 1].sum;
+    seg[rt].lmax = min(seg[rt << 1].lmax, seg[rt << 1].sum + seg[rt << 1 | 1].lmax);
+    seg[rt].rmax = min(seg[rt << 1 | 1].rmax, seg[rt << 1 | 1].sum + seg[rt << 1].rmax);
+    seg[rt].dat = min( min(seg[rt << 1].dat, seg[rt << 1 | 1].dat) , seg[rt << 1].rmax + seg[rt << 1 | 1].lmax);
+}
+void build(int rt, int l, int r)
+{
+    seg[rt].l = l;
+    seg[rt].r = r;
+    seg[rt].sum = 0;
+    seg[rt].lmax = 0;
+    seg[rt].rmax = 0;
+    if(l == r)
+    {
+        seg[rt].sum = seg[rt].dat = seg[rt].lmax = seg[rt].rmax = arr[l];
+        //printf("%d %d?\n", seg[rt].sum, arr[l]);
+        return ;
+    }
+    int mid = (l + r) >> 1;
+    build(rt << 1, l, mid);
+    build(rt << 1 | 1, mid + 1, r);
+    push_up(rt);
+}
+void update(int rt, int l, int r, int value)
+{
+    if(seg[rt].l == seg[rt].r)
+    {
+        seg[rt].sum = seg[rt].lmax = seg[rt].rmax = seg[rt].dat = value;
+        return ;
+    }
+    int mid = (seg[rt].l + seg[rt].r) >> 1;
+    if(l <= mid)
+    {
+        update(rt << 1, l, r, value);
+    }
+    else
+    {
+        update(rt << 1 | 1, l, r, value);
+    }
+    push_up(rt);
+}
+int n;
+int main()
+{
+    while(~scanf("%d", &n))
+    {
+        memset(arr, 0, sizeof(arr));
+        for(int i = 1; i <= n; i ++)
+        {
+            scanf("%d", &arr[i]);
+        }
+        build(1, 1, n);
+        int m;
+        scanf("%d", &m);
+        for(int i = 0; i < m; i ++)
+        {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            update(1, a, a, b);
+            printf("%lld\n", seg[1].sum - seg[1].dat);
+        }
+    }
+    return 0;
+}

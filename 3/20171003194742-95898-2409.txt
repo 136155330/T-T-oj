@@ -1,0 +1,24 @@
+#include<stdio.h>
+int power(long long a,long long b,long long c)
+{
+    long g;
+    g=1;
+    a=a%c;
+    while(b>0)
+    {
+        if(b%2==1)g=(g*a)%c;
+        b=b/2;
+        a=(a*a)%c;
+    }
+    return g;
+}
+int main()
+{
+    long long a;long long b;long long c;long long x;
+    while(scanf("%lld%lld%lld",&a,&b,&c)!=EOF)
+    {
+        x=power(a,b,c);
+        printf("%lld\n",x);
+    }
+    return 0;
+}

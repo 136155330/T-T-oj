@@ -1,0 +1,61 @@
+#include<stdio.h>
+#include<string.h>
+#define MAXN 1000005;
+int hash[1000010];
+int main()
+{
+    int t;
+    while(~scanf("%d",&t))
+    {
+        while(t--)
+        {
+            memset(hash,0,sizeof(hash));
+            int n,q;
+            scanf("%d %d",&n,&q);
+            for(int i=0; i<n; i++)
+            {
+                int num;
+                scanf("%d",&num);
+                int key;
+                key=num%MAXN;
+                if(hash[key]==0)
+                    hash[key]=num;
+                else
+                {
+                    while(hash[key])
+                    {
+                        key++;
+                        key=key%MAXN;
+                        if(hash[key]==0)
+                        {
+                            hash[key]=num;
+                            break;
+                        }
+                    }
+                }
+            }
+            long long sum=0;
+            for(int i=0; i<q; i++)
+            {
+                int ans;
+                scanf("%d",&ans);
+                int key=ans%MAXN;
+                while(hash[key])
+                {
+                    if(hash[key]==ans)
+                        {sum+=ans;
+                        break;
+                        }
+                    else
+                    {
+                        key++;
+                        key=key%MAXN;
+                    }
+                    //printf("..\n");
+                }
+            }
+            printf("%lld\n",sum);
+        }
+    }
+    return 0;
+}

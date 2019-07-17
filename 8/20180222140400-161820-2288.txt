@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<iostream>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+int findup(int person[],int n,int flag)
+{
+    int left;
+    int right;
+    int mid;
+    left=-1;
+    right=n;
+    while(left+1<right)
+    {mid=(left+right)/2;
+        if(person[mid]>flag)
+            right=mid;
+        else
+            left=mid;
+    }
+    return left;
+}
+int person[2005];
+int main()
+{
+    int n,k,i,flag,c;
+    while(~scanf("%d%d",&n,&k))
+    {
+        for(i=0;i<n;i++)
+        {
+            scanf("%d",&person[i]);
+        }
+        sort(person,person+n);
+        //printf("..\n");
+        flag=5-k;
+        c=findup(person,n,flag);
+        c++;
+        printf("%d\n",c/3);
+    }
+    return 0;
+}

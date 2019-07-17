@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<math.h>
+main()
+{
+    int t,i,a,b,c,sum,j;
+    while(~scanf("%d",&t))
+    {sum=0;
+        for(i=0;i<t;i++)
+        {
+            scanf("%d(%d)",&a,&b);
+            {j=0;
+                while(a)
+            {c=a%10;
+            sum+=c*pow(b,j++);
+              a=a/10;
+            }
+            }
+        }
+        printf("%d\n",sum);
+    }
+}

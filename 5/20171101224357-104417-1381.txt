@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+int n;
+int dps[100005][15];
+int x[100005][15];
+/*我的思路是建一个数组，用行数标记时间，用行中的数代表掉落位置，然后初始化数组，然后再输入，输入的对应位置++,然后写一个递归
+ a=dp(i+1,j);
+        b=dp(i+1,j+1);
+        c=dp(i+1,j-1);然后进行比较，然后找最大，如果说他到最后一层，即n，就递归返回。。。。。但是wa了
+        这个dp凉了！！！
+        */
+int dp(int i,int j)
+{
+    int a;
+    int b;
+    int c;
+    if(dps[i][j]!=-1)return dps[i][j];
+      if(i==n)
+        return x[i][j];
+        if(j==0)
+        {
+            a=dp(i+1,j);
+            b=dp(i+1,j+1);
+            dps[i][j]=max(a,b)+x[i][j];
+            return dps[i][j];
+        }
+        if(j==10)
+        {
+            a=dp(i+1,j);
+            b=dp(i+1,j-1);
+            dps[i][j]=max(a,b)+x[i][j];
+            return dps[i][j];
+        }
+       if(j!=0&&j!=10)
+    {
+        a=dp(i+1,j);
+        b=dp(i+1,j+1);
+        c=dp(i+1,j-1);
+        dps[i][j]=max(a,max(b,c))+x[i][j];
+        return dps[i][j];
+    }
+}
+int main()
+{
+    int t;
+    while(~scanf("%d",&t))
+    {
+        if(t==0)break;
+        memset(x,0,sizeof(x));
+        memset(dps,-1,sizeof(dps));
+        n=0;
+        while(t--)
+        {
+            int time1;
+            int there2;
+            scanf("%d",&there2);
+            scanf("%d",&time1);
+            if(time1>=n)n=time1;
+            x[time1][there2]++;
+        }
+        printf("%d\n",dp(0,5));
+    }
+    return 0;
+}

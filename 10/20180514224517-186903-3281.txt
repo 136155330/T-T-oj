@@ -1,0 +1,36 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+typedef long long ll;
+const int MAXN = 100005;
+int n,q;
+int math[MAXN];
+ll sum[MAXN];
+ll sum2[MAXN];
+int main()
+{
+    while(~scanf("%d%d",&n,&q))
+    {memset(math,0,sizeof(math));
+    memset(sum,0,sizeof(sum));
+    memset(sum2,0,sizeof(sum2));
+    sum[0]=0;
+    sum2[0]=0;
+        for(int i=1; i<=n; i++)
+        {
+            scanf("%d",&math[i]);
+            sum[i]=sum[i-1]+math[i];
+            sum2[i]=sum2[i-1]+(math[i]*math[i]);
+
+        }
+        for(int i=1;i<=q;i++)
+        {
+            int l,r;
+            scanf("%d%d",&l,&r);
+            int num=(r-l+1);
+            ll ans=num*(sum2[r]-sum2[l-1])-(sum[r]-sum[l-1])*(sum[r]-sum[l-1]);
+            printf("%lld\n",ans);
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,142 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+using namespace std;
+typedef long long ll;
+priority_queue<ll, vector<ll>, greater<ll> > ques;  // 小顶堆
+priority_queue<ll, vector<ll>, less<ll> > que;     // 大顶堆
+///大堆 小堆
+/**
+50
+1 1
+1 2
+1 3
+1 0
+1 0
+2
+50
+1 1
+1 1
+1 2
+1 3
+1 4
+2
+**/
+int main()
+{
+    int n;
+    //freopen("C:\\Users\\user\\Downloads\\sample.in","r",stdin);
+    //freopen("C:\\Users\\user\\Desktop\\out.txt","w",stdout);
+    while(~scanf("%d",&n))
+    {
+    while(!que.empty())
+        que.pop();
+    while(!ques.empty())
+        ques.pop();
+    ll a,b;
+    ll sum=0;
+    for(int i=0; i<n; i++)
+    {
+        scanf("%lld",&a);
+        if(a==1)
+        {//printf("...\n");
+            scanf("%lld",&b);
+            que.push(b);
+            if(ques.size()!=0)
+            {
+            if(que.top()>ques.top())
+            {
+                ll anss=que.top();
+                que.pop();
+                ques.push(anss);
+            }
+            }
+            sum++;
+            if(sum%2==0)
+            {
+                if(que.size()!=ques.size())
+                {
+                    if(ques.size()>que.size())
+                    {
+                        while(ques.size()>que.size())
+                        {
+                            ll ans;
+                            ans=ques.top();
+                            ques.pop();
+                            que.push(ans);
+                        }
+                    }
+                    else
+                    {
+                        while(ques.size()<que.size())
+                        {
+                            ll ans;
+                            ans=que.top();
+                            que.pop();
+                            ques.push(ans);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ///3 4
+                if(que.size()>ques.size()+1)
+                {
+                    while(que.size()>ques.size()+1)
+                    {
+                        ll ans=que.top();
+                        que.pop();
+                        ques.push(ans);
+                    }
+                }
+                else if(ques.size()>ques.size()+1)
+                {
+                    while(ques.size()>ques.size()+1)
+                    {
+                        ll ans=ques.top();
+                        ques.pop();
+                        que.push(ans);
+                    }
+                }
+            }
+        }
+        else if(a==2)
+        {
+            if(sum%2==0)
+            {
+                if((que.top()+ques.top())%2==0)
+                    printf("%lld\n",(que.top()+ques.top())/2);
+                else
+                {
+                    double re=(que.top()+ques.top())/2.0;
+                    printf("%.1f\n",re);
+                }
+            }
+            else
+            {
+                int ress=(sum+1)/2;
+                if(que.size()==ress)
+                    printf("%lld\n",que.top());
+                else
+                    printf("%lld\n",ques.top());
+            }
+//            while(!que.empty())
+//            {
+//                printf("%lld ",que.top());
+//                que.pop();
+//            }
+//            puts("");
+//            while(!ques.empty())
+//            {
+//                printf("%lld ",ques.top());
+//                ques.pop();
+//            }
+//            puts("");
+        }
+    }
+    }
+    return 0;
+}
+

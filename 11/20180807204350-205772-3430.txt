@@ -1,0 +1,34 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int MAXN = 1e5+5;
+char re[MAXN];
+char res[10][10]= {{"110"},{"50"},{"80"},{"170"},{"20"},{"200"}};
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        if(n<=2)
+        {
+            printf("-1\n");
+        }
+        else if(n==3)
+        {
+            printf("210\n");
+            continue;
+        }
+        else
+        {
+            int nn=n-3;
+            printf("1");
+                for(int i=0; i<n-strlen(res[nn%6])-1; i++)
+                {
+                    printf("0");
+                }
+                printf("%s\n",res[nn%6]);
+        }
+    }
+    return 0;
+}

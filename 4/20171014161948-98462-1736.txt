@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<string.h>
+int x[5][10];
+int xxx(int n)
+{
+    if(n<=4){n=n+2;
+    return n;}
+     if(n>4&&n<=7){n=n-5;
+     return n;}
+     if(n>7){n=n-1;
+     return n;}
+}
+int main()
+{
+    int n;int a;int b;int i;int j;int m;
+    scanf("%d",&m);
+    while(m--)
+    {
+    while(scanf("%d",&n)!=EOF)
+    {memset(x,0,sizeof(x));
+     a=n/9;
+     b=n%9;
+     if(n==9||n==18||n==27||n==36)a=a-1;
+     if(n==9||n==18||n==27||n==36){
+        if(n>=9)b=9-1;
+     }
+     else b=xxx(b);
+     printf("    XXXX\n");
+     for(i=0;i<4;i++)
+     {
+         for(j=0;j<9;j++)
+         {
+             if(j==3||j==7)printf("|");
+
+             if(i==a&&j==b)printf("#");else
+                printf("%d",x[i][j]);
+             if(j==8)printf("\n");
+         }
+     }
+
+    }}
+return 0;
+}

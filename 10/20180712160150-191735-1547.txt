@@ -1,0 +1,186 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int MAXN =105;
+const int INF = 0x3f3f3f3f;
+int t,n,m;
+int k,x1,y1,x2,y2;
+bool result=false;///标记走不到
+char maps[MAXN][MAXN];
+int vids[MAXN][MAXN];///减枝数组
+int moves[4][2]= {{-1,0},{1,0},{0,-1},{0,1}}; ///上，下，左，右
+///flag 代表 -1 代表初始第一下 0 1 2 3代表四个方向
+bool PD(int x,int y,int flag)
+{
+    if(flag==-1)
+        return false;
+    if(flag==0)
+    {
+        for(int i=x; i!=0; i--)
+        {
+            if(y!=y2)
+                return false;
+            if(maps[i][y]=='*')
+            {
+                return false;
+            }
+            if(i==x2&&y==y2)
+            {
+                //printf("...\n");
+                return true;
+            }
+        }
+    }
+    if(flag==1)
+    {
+        for(int i=x; i<=n; i++)
+        {
+            if(y!=y2)
+                return false;
+            if(maps[i][y]=='*')
+            {
+                return false;
+            }
+            if(i==x2&&y==y2)
+            {
+                //printf("?\n");
+                return true;
+            }
+
+        }
+    }
+    if(flag==2)
+    {
+        for(int j=y; j!=0; j--)
+        {
+            if(x!=x2)
+                return false;
+            if(maps[x][j]=='*')
+            {
+                return false;
+            }
+            if(j==y2&&x==x2)
+            {
+                return true;
+            }
+
+        }
+    }
+    if(flag==3)
+    {
+        for(int j=y; j<=m; j++)
+        {
+            if(x!=x2)
+                return false;
+            if(maps[x][j]=='*')
+            {
+                return false;
+            }
+            if(j==y2&&x==x2)
+            {
+                return true;
+            }
+
+        }
+    }
+    return false;
+}
+void dfs(int i,int j,int flag,int cnt,int ans)
+///i j 代表位置，flag代表上一个的方向,cnt代表层数,ans代表转了几次弯
+{
+    //printf("i=%d j=%d flag=%d cnt=%d ans=%d\n",i,j,flag,cnt,ans);
+    if(maps[i][j]=='*')
+        return ;
+    if(i<=0||j<=0)
+        return;
+    if(i>n||j>m)
+        return ;
+    if(ans>k)
+    {
+        return;
+    }
+    if(PD(i,j,flag)==true)
+    {
+        result=true;
+        return ;
+    }
+    for(int z=0; z<4; z++)
+    {
+        int a,b;
+        a=i;
+        b=j;
+        a=i+moves[z][0];
+        b=j+moves[z][1];
+        if(vids[a][b]<vids[i][j]&&z==flag)
+        {
+            continue;
+        }
+        if(z!=flag&&vids[i][j]+1>vids[a][b])
+        {
+            continue;
+        }
+        if(vids[a][b]>vids[i][j]&&flag==z)
+        {
+            vids[a][b]=vids[i][j];
+        }
+        if(vids[a][b]>vids[i][j]&&flag!=z)
+        {
+            vids[a][b]=vids[i][j]+1;
+        }
+        if(maps[a][b]=='.')
+        {
+            if(cnt==0)
+            {
+
+                dfs(a,b,z,++cnt,ans);
+                cnt--;
+            }
+            else if(cnt!=0)
+            {
+                if(flag!=z)
+                {
+                    dfs(a,b,z,++cnt,++ans);
+                    cnt--;
+                    ans--;
+                }
+                else if(flag==z)
+                {
+                    dfs(a,b,z,++cnt,ans);
+                    cnt--;
+                }
+            }
+        }
+        else if(maps[a][b]=='*')
+            continue;
+    }
+}
+int main()
+{
+    int t;
+    while(~scanf("%d",&t))
+    {
+        while(t--)
+        {
+            memset(maps,0,sizeof(maps));
+            for(int i=0; i<MAXN; i++)
+                for(int j=0; j<MAXN; j++)
+                    vids[i][j]=INF;
+            result=false;
+            scanf("%d%d",&n,&m);
+            for(int i=1; i<=n; i++)
+            {
+                scanf("%s",&maps[i][1]);
+            }
+            scanf("%d%d%d%d%d",&k,&y1,&x1,&y2,&x2);
+            //printf("%d %d %d %d %d\n",k,y1,y2,x1,x2);
+            vids[x1][y1]=0;
+            dfs(x1,y1,0,0,0);
+            if(result==true)
+                printf("yes\n");
+            else
+                printf("no\n");
+        }
+    }
+    return 0;
+}

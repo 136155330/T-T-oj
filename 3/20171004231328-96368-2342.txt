@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<string.h>
+char x[5005];
+int main()
+{
+    int t;int y;int i;int a,b,c,d;int h;int g;int x1;int y1;int z;
+        while(gets(x)!=NULL)
+    {a=0;b=0;c=0;d=0;x1=0;y1=0;
+        scanf("%d",&t);
+        getchar();
+        y=strlen(x);
+        for(i=0;i<y;i++)
+        {
+          if(x[i]=='E')a++;
+          if(x[i]=='S')b++;
+          if(x[i]=='W')c++;
+          if(x[i]=='N')d++;
+        }
+        h=t/y;g=t%y;
+        x1=x1+a*h;
+        y1=y1-b*h;
+        x1=x1-c*h;
+        y1=y1+d*h;
+     for(i=0;i<g;i++)
+     {
+         if(x[i]=='E')x1=x1+1;
+          if(x[i]=='S')y1=y1-1;
+          if(x[i]=='W')x1=x1-1;
+          if(x[i]=='N')y1=y1+1;
+
+     }
+     printf("%d %d\n",x1,y1);
+    }
+    return 0;
+}

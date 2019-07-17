@@ -1,0 +1,81 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<queue>
+#include<vector>
+#define MAXN 10005
+using namespace std;
+typedef struct Edge
+{
+    int next;
+    int to;
+    int w;
+} edge;
+edge maps[10000005];
+int degree[MAXN];
+int head[MAXN];
+int cnt;
+void creat ()
+{
+    for(int i=0; i<MAXN; i++)
+        head[i]=-1;
+    cnt=0;
+}
+void add(int u,int v,int w)
+{
+    maps[cnt].to=v;
+    maps[cnt].w=w;
+    maps[cnt].next=head[u];///一开始放置为-1，-1的条件就可以跳出
+    ///下一步接着储存,head[u]的值,就是前面的位置
+    head[u]=cnt++;///head[u]会得到这条线的值
+}
+int temp[MAXN];
+int topusort(int n)///链式前向星的tuposort()
+{
+    int jz=888;
+    int sum=0;
+    int tol;
+    for(int i=0; i<n; i+=tol)
+    {
+        tol=0;
+        int j;
+        for(j=1; j<=n; j++)
+        {
+            if(degree[j]==0)
+            {
+                temp[tol++]=j;
+                degree[j]--;
+            }
+        }
+        if(tol==0)return -1;
+        sum+=jz*tol;
+        jz++;
+        for(j=0; j<tol; j++)
+        {
+            for(int k=head[temp[j]]; k!=-1; k=maps[k].next)
+            {
+                degree[maps[k].to]--;
+            }
+        }
+    }
+    return sum;
+}
+int main()
+{
+    int n,m;
+    while(~scanf("%d%d",&n,&m))
+    {
+        memset(degree,0,sizeof(degree));
+        creat();
+        for(int i=0; i<m; i++)
+        {
+            int a,b;
+            scanf("%d%d",&a,&b);
+            add(b,a,i);
+            degree[a]++;
+        }
+        printf("%d\n",topusort(n));
+    }
+    return 0;
+}

@@ -1,0 +1,115 @@
+#include<iostream>
+#include<cstdio>
+#include<ctime>
+#include<cstring>
+#include<cstdlib>
+#pragma GCC optimize(3)
+
+const int BUF_SIZE = 65536;
+struct Scanner {
+    char _buf[BUF_SIZE];
+    char* curPos;
+    Scanner():curPos(_buf) {
+        fread(_buf, 1, sizeof(_buf), stdin);
+    }
+
+    void ensureCapacity() {
+        int size = _buf + BUF_SIZE - curPos;
+        if (size < 100) {
+            memcpy(_buf, curPos, size);
+            fread(_buf + size, 1, BUF_SIZE - size, stdin);
+            curPos = _buf;
+        }
+    }
+
+    int nextInt() {
+        ensureCapacity();
+        while (*curPos <= ' ')
+            ++curPos;
+        bool sign = false;
+        if (*curPos == '-') {
+            sign = true;
+            ++curPos;
+        }
+        int res = 0;
+        while (*curPos > ' ')
+            res = res * 10 + (*(curPos++) & 15);
+        return sign ? -res : res;
+    }
+
+    char nextChar() {
+        ensureCapacity();
+        while (*curPos <= ' ')
+            ++curPos;
+        return *(curPos++);
+    }
+};
+
+
+
+
+char _obuf[1 << 16];
+int _opos = 0;
+char tmp;
+
+template <typename T>
+inline void putInt(T x)
+{
+	if (x < 0)
+	{
+		_obuf[_opos++] = '-';
+		x = -x;
+	}
+	int cur = _opos;
+	while (x >= 10)
+	{
+		_obuf[_opos++] = (char)(x % 10 + '0');
+		x /= 10;
+	}
+	_obuf[_opos++] = (char)(x + '0');
+	for (int i = cur, j = _opos - 1; i < j; ++i, --j)
+	{
+	    tmp=_obuf[i];
+	    _obuf[i]=_obuf[j];
+	    _obuf[j]=tmp;
+	}
+	if (_opos > 64000)
+	{
+		fwrite(_obuf, 1, _opos, stdout);
+		_opos = 0;
+	}
+}
+
+inline void putChar(char x)
+{
+	_obuf[_opos++] = x;
+	if (_opos > 64000)
+	{
+		fwrite(_obuf, 1, _opos, stdout);
+		_opos = 0;
+	}
+}
+
+inline void flushInt()
+{
+	if (_opos)  fwrite(_obuf, 1, _opos, stdout);
+	fflush(stdout);
+}
+
+
+int main()
+{
+    Scanner sc;
+    int T,a,b;
+    T=sc.nextInt();
+
+    while (T--)
+    {
+        a=sc.nextInt();
+        b=sc.nextInt();
+        putInt(a+b);
+        putChar('\n');
+    }
+    flushInt();
+    return 0;
+}

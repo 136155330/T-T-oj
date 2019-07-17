@@ -1,0 +1,60 @@
+/**
+ 假设dp[n]为数值大小为n的最多数量
+ dp[n] = max(dp[n - a], dp[n - b], dp[n - c])
+ **/
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int MAXN = 4005;
+int dp[MAXN];
+int n, a, b, c;
+void dps()
+{
+    for(int i = 0; i <= n; i ++)
+    {
+        if(i - a == 0)
+        {
+            dp[i] = max(dp[i], dp[i - a] + 1);
+        }
+        if(i - b == 0)
+        {
+            dp[i] = max(dp[i], dp[i - b] + 1);
+        }
+        if(i - c == 0)
+        {
+            dp[i] = max(dp[i], dp[i - c] + 1);
+        }
+        if(i - a > 0)
+        {
+            if(dp[i - a])
+            {
+                dp[i] = max(dp[i], dp[i - a] + 1);
+            }
+        }
+        if(i - b > 0)
+        {
+            if(dp[i - b])
+            {
+                dp[i] = max(dp[i], dp[i - b] + 1);
+            }
+        }
+        if(i - c > 0)
+        {
+            if(dp[i - c])
+            {
+                dp[i] = max(dp[i], dp[i - c] + 1);
+            }
+        }
+    }
+}
+int main()
+{
+    while(~scanf("%d%d%d%d", &n, &a, &b, &c))
+    {
+        memset(dp, 0, sizeof(dp));
+        dps();
+        printf("%d\n", dp[n]);
+    }
+}

@@ -1,0 +1,50 @@
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+using namespace std;
+const int maxn = 1000000+7;
+
+int pre[maxn],n,m;
+
+void init()
+{
+    for(int i = 1; i <= n+1; i++) {
+        pre[i] = i;
+    }
+}
+
+int findx(int root)
+{
+     int son,tmp;
+    son=root;
+    while(root!=pre[root])
+    {
+     root=pre[root];
+    }
+    while(root!=son)
+    {tmp=pre[son];
+    pre[son]=root;
+    son=tmp;
+    }
+    return root;
+}
+int main()
+{
+    int l,r,root;
+    while(~scanf("%d%d",&n,&m))
+    {
+        init();
+        for( int i = 1; i <= m; i++) {
+            scanf("%d%d",&l,&r);
+            root = findx(l);
+            if(root > r) {
+                puts("-1");
+            }
+            else {
+                printf("%d\n",root);
+                pre[root] = root + 1;
+            }
+        }
+    }
+    return 0;
+}

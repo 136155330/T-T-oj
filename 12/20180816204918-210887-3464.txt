@@ -1,0 +1,35 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+using namespace std;
+typedef long long ll;
+ll sums(ll ans)
+{
+    ll sum = 0;
+    while(ans)
+    {
+        ll b = ans % 10;
+        sum += b;
+        ans /= 10;
+    }
+    return sum;
+}
+int main()
+{
+    ll n;
+    while(~scanf("%I64d",&n))
+    {
+        ll re = -1;
+        for (int i = 1; i <= 81; i ++) {
+            ll anss = sqrt((i * i) / 4 + n) - i / 2;
+            ll x = sums(anss);
+            if(anss * anss + x * anss - n == 0)
+            {
+                re = anss;
+                break;
+            }
+        } printf("%I64d\n",re);
+    }
+    return 0;
+}

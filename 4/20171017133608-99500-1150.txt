@@ -1,0 +1,28 @@
+#include<math.h>
+#include<string.h>
+#include<stdio.h>
+int find(int x,int y)
+{  int z,x1,y1;
+   x1= x; y1 = y;
+   if(x < y){int t = x; x = y; y=t;}
+   z = y;
+   while(z){
+      z = x % y;
+      x = y;
+      y = z;
+   }
+   return x1*(y1/x);
+}
+int main()
+{
+     int n,t,m;
+     while(scanf("%d",&n)!=EOF){
+          scanf("%d",&t);
+          for(int i=1; i < n; i++){
+               scanf("%d",&m);
+               t = find(t,m);
+          }
+          printf("%d\n",t);
+     }
+     return 0;
+}

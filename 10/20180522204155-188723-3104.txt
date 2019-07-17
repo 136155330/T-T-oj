@@ -1,0 +1,48 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int MAXN = 205;
+int maps[MAXN][MAXN];
+int n;
+void floyd()
+{
+    for(int k=1; k<=n; k++)
+    {
+        for(int i=1; i<=n; i++)
+        {
+            for(int j=1; j<=n; j++)
+            {
+                maps[i][j]=max(min(maps[i][k],maps[k][j]),maps[i][j]);
+            }
+        }
+    }
+}
+int main()
+{
+    int m,q;
+    while(~scanf("%d%d%d",&n,&m,&q))
+    {
+        memset(maps,-1,sizeof(maps));
+        for(int i=0; i<m; i++)
+        {
+            int u,v,w;
+            scanf("%d%d%d",&u,&v,&w);
+            maps[u][v]=max(maps[u][v],w);
+            maps[v][u]=max(maps[v][u],w);
+        }
+        floyd();
+        for(int i=0;i<q;i++)
+        {
+            int a,b,h;
+            scanf("%d%d%d",&a,&b,&h);
+            //printf("%d\n",maps[a][b]);
+            if(maps[a][b]>h)
+                printf("G0\n");
+            else
+                printf("PlTY\n");
+        }
+    }
+    return 0;
+}

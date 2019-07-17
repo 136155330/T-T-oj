@@ -1,0 +1,28 @@
+#include <stdio.h>
+int main()
+{
+    long long i,a,r,b;
+    while(scanf("%lld%lld",&a,&b)!=EOF)
+    {
+        if(a==0||b==0)
+        {
+            a=0;
+        }
+        else
+        {
+            long long m, n;
+             m=a;
+            n=b;
+           long long temp=m%n;
+            while(temp!=0)
+            {
+                m=n;
+                n=temp;
+                temp=m%n;
+            }
+            a = n;
+        }
+        printf("%lld\n",a);
+    }
+    return 0;
+}

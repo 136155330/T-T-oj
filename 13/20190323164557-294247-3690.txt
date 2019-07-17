@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+int arr[1000000 + 5];
+int vids[2000 + 5];
+void Init()
+{
+    memset(arr, 0, sizeof(arr));
+    memset(vids, 0, sizeof(vids));
+}
+int n, m;
+int main()
+{
+    while(~scanf("%d%d", &n, &m))
+    {
+        int cnt = 0;
+        for(int i = 1; i <= n; i ++)
+        {
+            scanf("%d", &arr[i]);
+        }
+        int l, r;
+        l = r = 1;
+        int re = 0x7fffffff;
+        while(1)
+        {
+            if(cnt < m)
+            {
+                if(r == n + 1)
+                    break;
+                if(vids[arr[r]] == 0 && arr[r] != 0)
+                {
+                    cnt ++;
+                }
+                if(arr[r] != 0)
+                    vids[arr[r]] ++;
+                r ++;
+            }
+            else if(cnt == m)
+            {
+                re = min(re, r - l);
+                if(vids[arr[l]] - 1 == 0 && arr[l] != 0)
+                {
+                    cnt --;
+                }
+                if(arr[l] != 0)
+                    vids[arr[l]] --;
+                l ++;
+            }
+        }
+        if(re != 0x7fffffff)
+        printf("%d\n", re);
+        else
+            printf("-1\n");
+    }
+}
