@@ -1,0 +1,47 @@
+#include<cstdio>
+#include<cstring>
+int math[100005];
+int flag[15];
+long long maths[15];
+const long long maxn=1000000007;
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        memset(flag,0,sizeof(flag));
+        for(int i=0; i<n; i++)
+        {
+            //int a;
+            scanf("%d",&math[i]);
+            flag[math[i]]++;
+        }
+        for(int i=0; i<=10; i++)
+        {
+            flag[i]--;
+            long long sum=1;
+            for(int j=0; j<=10; j++)
+            {
+                int b;
+                b=flag[j];
+                while(b>0)
+                {
+                    //printf("...\n");
+                    sum=sum*(j);
+                    sum=sum%maxn;
+                    //printf("%d\n",sum);
+                    b--;
+                }
+                //printf("%d\n",sum);
+
+            }
+            maths[i]=sum;
+            flag[i]++;
+        }
+        for(int i=0; i<n; i++)
+            {if(i!=n-1)printf("%lld ",maths[math[i]]);
+            else
+                printf("%lld\n",maths[math[i]]);
+            }
+    }
+    return 0;}

@@ -1,0 +1,28 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<map>
+using namespace std;
+typedef long long ll ;
+const int MAXN = 1e6+5;
+char words[MAXN];
+map<int,int>M;
+int main()
+{
+    int k;
+    while(~scanf("%d%s",&k,&words))
+    {
+        int len=strlen(words);
+        ll ans=0;
+        ll num=0;
+        M[0]=1;
+        for(int i=0;i<len;i++)
+        {
+            num+=(words[i]-'0');
+            ans+=M[num-k];
+            M[num]++;
+        }
+        printf("%I64d\n",ans);
+    }
+    return 0;
+}

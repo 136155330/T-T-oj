@@ -1,0 +1,90 @@
+#include<stdio.h>
+#include<string.h>
+char smap[5][15][15];///z y x
+int xmove[5]= {0,0,-1,1}; ///…œœ¬◊Û”“
+int ymove[5]= {-1,1,0,0};
+int flag[5][15][15];
+int win;
+int n,m,t,TL;
+void dfs(int z,int y,int x)
+{
+    int i,mx,my;
+    if(smap[z][y][x]=='P'&&TL<=t)
+    {
+        win++;
+        return ;
+    }
+    if(TL>t)return ;
+    for(i=0; i<4; i++)
+    {
+        mx=x+xmove[i];
+        my=y+ymove[i];
+        if(flag[z][my][mx]==1||smap[z][my][mx]=='*'||mx<0||my<0||mx>=m||my>=n)continue;
+        if(smap[z][my][mx]=='#')
+        {
+            if(z==0)
+            {
+                if(smap[z+1][my][mx]=='#'||smap[z+1][my][mx]=='*')continue;
+                else if(flag[z+1][my][mx]==0)
+                {
+                    TL++;
+                    flag[z+1][my][mx]++;
+                    dfs(z+1,my,mx);
+                    TL--;
+                    flag[z+1][my][mx]--;
+                }
+
+            }
+            if(z==1)
+            {
+                if(smap[z-1][my][mx]=='#'||smap[z-1][my][mx]=='*')continue;
+                else if(flag[z-1][my][mx]==0)
+                {
+                    TL++;
+                    flag[z-1][my][mx]++;
+                    dfs(z-1,my,mx);
+                    TL--;
+                    flag[z-1][my][mx]--;
+                }
+
+            }
+        }
+        else if(flag[z][my][mx]==0)
+        {
+            TL++;
+            flag[z][my][mx]++;
+            dfs(z,my,mx);
+            TL--;
+            flag[z][my][mx]--;
+        }
+    }
+}
+int main()
+{
+    int C,i,j;
+    while(~scanf("%d",&C))
+    {
+        while(C--)
+        {
+            scanf("%d%d%d",&n,&m,&t);///
+            win=0;
+            TL=0;
+            memset(flag,0,sizeof(flag));
+            for(i=0; i<2; i++)
+            {
+                for(j=0; j<n; j++)
+                {
+                    scanf("%s",&smap[i][j]);
+                }
+                getchar();
+            }
+            flag[0][0][0]=1;
+            dfs(0,0,0);
+            //printf("%d\n",TL);
+            if(win!=0)printf("YES\n");
+            else
+                printf("NO\n");
+        }
+    }
+    return 0;
+}

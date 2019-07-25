@@ -1,0 +1,118 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <stack>
+#include <vector>
+using namespace std;
+typedef long long ll;
+namespace fastIO//输入外挂
+{
+#define BUF_SIZE 100000
+    //fread -> read
+    bool IOerror = 0;
+    inline char nc() {
+        static char buf[BUF_SIZE], *p1 = buf + BUF_SIZE, *pend = buf + BUF_SIZE;
+        if(p1 == pend) {
+            p1 = buf;
+            pend = buf + fread(buf, 1, BUF_SIZE, stdin);
+            if(pend == p1) {
+                IOerror = 1;
+                return -1;
+            }
+        }
+        return *p1++;
+    }
+    inline bool blank(char ch) {
+        return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
+    }
+    inline bool read(int &x) {
+        char ch;
+        while(blank(ch = nc()));
+        if(IOerror)
+            return false;
+        for(x = ch - '0'; (ch = nc()) >= '0' && ch <= '9'; x = x * 10 + ch - '0');
+        return true;
+    }
+#undef BUF_SIZE
+};
+using namespace fastIO;
+
+void Out(ll a)//输出外挂
+{
+    if(a>9)
+        Out(a/10);
+    putchar(a%10+'0');
+}
+const int MAXN = 1000000 + 5;
+int arr[MAXN];
+int n;
+/**
+ 1000000
+ 我觉得要做的事情是一个数要找到最远比他大的数
+ 但是我觉得有问题
+ 比如 10 9 8 7 6 5 4 3 2 1
+ 那我们是不是可以考虑往两边查找
+ 主要是查询问题的话，如何优化复杂度啊
+ 如果我保存每个数出现的 begin end 位置
+ 如果begin == end 那么就是只有一个数
+ 枚举每个数，
+ 如果排序就是nlogn爆炸复杂度
+ 我数组标记
+ 那我从后往前找 O(n) vids标记重复出现
+ 单调维护最大值
+ arr[i] > arr[i - 1]
+ pop arr[i - 1]
+ 我怀疑这样不行，嘤嘤嘤
+ 好吧，果然是不行，嘤嘤嘤
+ 我考虑从两边往中间双指针
+ **/
+int main()
+{
+    while(read(n) != false)
+    {
+        memset(arr, 0, sizeof(arr));
+        for(int i = 0; i < n; i ++)
+        {
+            read(arr[i]);
+            //scanf("%d", &arr[i]);
+            //printf("..\n");
+        }
+        ll l, r;
+        l = 0; r = n - 1;
+        /**
+         arr[l] < arr[r]
+         arr[l] * (r - l + 1)
+         l ++;
+         arr[l] == arr[r]
+         arr[l] * (r - l + 1)
+         l ++; r --;
+         arr[l] > arr[r]
+         arr[l] * (r - l + 1)
+         r --;
+         **/
+        ll result = -1;
+        while(l < r)
+        {
+            //printf("...\n");
+            if(arr[l] < arr[r])
+            {
+                result = max(result, (r - l) * arr[l]);
+                l ++;
+            }
+            else if(arr[l] == arr[r])
+            {
+                result = max(result, (r - l) * arr[l]);
+                l ++;
+                r --;
+            }
+            else if(arr[l] > arr[r])
+            {
+                result = max(result, (r - l) * arr[r]);
+                r --;
+            }
+        }
+        Out(result);
+    }
+    return 0;
+}

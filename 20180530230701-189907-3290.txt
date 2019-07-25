@@ -1,0 +1,53 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+using namespace std;
+const int MAXN = 1005;
+vector<int>maps[MAXN];
+int line[MAXN];
+int person[MAXN];
+int n,k;
+bool found(int x)
+{
+    for(int i=0; i<maps[x].size(); i++)
+    {
+        //printf("....\n");
+        int to=maps[x][i];
+        //printf("%d\n",to);
+        if(line[to]==0)
+        {
+            line[to]=1;
+            if(person[to]==0||found(person[to]))
+            {
+                person[to]=x;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+int main()
+{
+    while(~scanf("%d%d",&n,&k))
+    {memset(person,0,sizeof(person));
+        for(int i=0; i<MAXN; i++)
+            maps[i].clear();
+        for(int i=0; i<k; i++)
+        {
+            int a,b;
+            scanf("%d%d",&a,&b);
+            maps[a].push_back(b);
+            //maps[b].push_back(a);
+        }
+        int sum=0;
+        for(int i=1; i<=n; i++)
+        {
+            memset(line,0,sizeof(line));
+            if(found(i))
+                sum++;
+        }
+        printf("%d\n",sum);
+    }
+    return 0;
+}

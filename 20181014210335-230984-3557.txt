@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long LL;
+const int MAXN = 1e6 + 10;
+
+LL n, a[MAXN];
+
+int my_nth_element(int l, int r, int k) {
+    int p = rand() % (r - l + 1) + l;
+    int x = a[p];
+    {int t = a[p]; a[p] = a[r]; a[r] = t;}
+    int i = l, j = r;
+    while(i < j) {
+        while(i < j && a[i] < x) i++;
+        if(i < j) {
+            a[j] = a[i];
+            j--;
+        }
+        while(i < j && a[j] > x) j--;
+        if(i < j) {
+            a[i] = a[j];
+            i++;
+        }
+    }
+    a[i] = x;
+    p = i;
+    if(i - l + 1 == k) return a[i];
+    if(i - l + 1 < k) return my_nth_element(i+1, r, k-(i-l+1));
+    else return my_nth_element(l, i - 1, k);
+}
+
+int main()
+{
+    scanf("%lld", &n);
+    for(int i = 0; i < n; i++ ) {
+        scanf("%lld", a + i);
+    }
+    if(n == 1) {
+        printf("%d\n", a[0]);
+        return 0;
+    }
+    if(n & 1) {
+        my_nth_element(0, n - 1, n / 2);
+        printf("%lld\n", a[n / 2]);
+    } else {
+        LL ans = 0;
+
+        ans += my_nth_element(0, n - 1, n / 2);
+        ans += my_nth_element(0, n - 1, n / 2 + 1);
+
+        if(ans < 0) {
+            ans = -ans;
+            ans = -ceil(ans / 2.0);
+            printf("%lld\n", ans);
+        } else {
+            printf("%lld\n", ans / 2);
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,20 @@
+#include<stdio.h>
+void dfs(int a,int b)
+{
+    if(a==b){printf("do %d\n",a);
+     return ;}
+     printf("ready %d %d\n",a,b);
+     dfs(a,(a+b)/2);
+     dfs((a+b)/2+1,b);
+     printf("done %d %d\n",a,b);
+}
+int main()
+{
+   int n;
+    while(~scanf("%d",&n))
+    {
+        dfs(1,n);
+        printf("\n");
+    }
+    return 0;
+}

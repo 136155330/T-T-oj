@@ -1,0 +1,53 @@
+#include <cstdio>
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+int maps[25][25];
+int pri[25];
+int vis[25];
+int n,k,tk,a,b,c,maxx;
+void dfs(int x,int time,int sum)
+{
+	if(time>tk)
+	{
+		maxx=max(maxx,sum);
+		return;
+	}
+	sum+=pri[x];
+	for(int i=1;i<=n;i++)
+	{
+	  if(vis[i]==0&&maps[x][i]>0)
+	  {
+	  	vis[i]=1;
+	  	dfs(i,time+maps[x][i],sum);
+	  	vis[i]=0;
+	  }	
+	
+	}
+	maxx=max(maxx,sum);
+	return;
+}
+int main()
+{
+	while(~scanf("%d%d%d",&n,&k,&tk))
+	{
+		maxx=0;
+		if(n==0)break;
+		memset(maps,0,sizeof(maps));
+        memset(pri,0,sizeof(pri));
+        memset(vis,0,sizeof(vis));
+		  for(int i=1;i<=k;i++)
+		  {
+		  	scanf("%d%d%d",&a,&b,&c);
+		    maps[a][b]=c;
+		  	maps[b][a]=c;
+		  }
+		for(int i=1;i<=n;i++)
+		scanf("%d",&pri[i]);
+		vis[1]=1;
+		dfs(1,0,0);
+		printf("%d\n",maxx);
+	}
+	return 0;
+}

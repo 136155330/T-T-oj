@@ -1,0 +1,74 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+const int MAXN = 1000 + 5;
+int fa[MAXN];///指向该元素的父亲
+void Init()
+{
+    for(int i = 0; i < MAXN; i ++)
+        fa[i] = i;///父亲是自己
+}
+int Get(int x)
+{
+    return fa[x] == x ? x : fa[x] = Get(fa[x]);
+    /**
+    if(fa[x] == x)
+        return x;
+    else
+        return Get(fa[x]);
+    这样查询是不会改变树的结构
+    **/
+}
+int acfinds(int x)
+{
+    int temp, son;
+    son = x;
+    while(x != fa[x])
+    {
+        x = fa[x];
+    }///找到根节点
+    while(x != son)
+    {
+        temp = fa[son];///这个是没压缩路径保存的父节点
+        fa[son] = x;
+        son = temp;///找到了没压缩路径的上一个节点
+    }
+    return fa[x];
+}
+void Merge(int x, int y)
+{
+    int a = acfinds(x);
+    int b = acfinds(y);
+    if(a == b)
+        return ;
+    else{
+        fa[a] = b;
+    }
+}
+int t, n, m;
+int main()
+{
+    scanf("%d", &t);
+    while(t --)
+    {
+        Init();///把自己变成自己的父亲
+        scanf("%d%d", &n, &m);
+        for(int i = 0; i < m; i ++)
+        {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            Merge(a, b);///合并下a跟b
+        }
+        int result = 0;
+        for(int i = 1; i <= n; i ++)
+        {
+            if(fa[i] == i)
+            {
+                result ++;
+            }
+        }
+        printf("%d\n", result);
+    }
+    return 0;
+}

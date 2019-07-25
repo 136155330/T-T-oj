@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<string.h>
+int n,m;
+int flag;
+typedef struct ZB
+{
+    int x;
+    int y;
+} zb;
+char maps[25][25];
+int vids[25][25];
+zb finds(int n,int m)
+{
+    zb xx;
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<m; j++)
+        {
+            if(maps[i][j]=='@')
+            {
+                xx.x=i;
+                xx.y=j;
+            }
+        }
+    }
+    return xx;
+}
+void dfs(int x,int y)///m-y,n-x shuru is y x
+{
+    if(x<0)return;
+    if(y<0)return;
+    if(x>=m)return;
+    if(y>=n)return;
+    if(maps[x][y]=='#')
+    {
+        //printf("%d %d.\n",x,y);
+        return ;
+    }
+    if(maps[x][y]=='.'||maps[x][y]=='@')
+    {
+        if(vids[x][y]==1)
+        {
+            flag++;
+            //printf("%d\n",flag);
+            vids[x][y]=0;
+        dfs(x+1,y);
+        dfs(x-1,y);
+        dfs(x,y+1);
+        dfs(x,y-1);
+        }
+    }
+}
+int main()
+{
+    zb hzb;
+    while(~scanf("%d%d",&n,&m))
+    {if(n==0&&m==0)break;
+        getchar();
+        memset(vids,0,sizeof(vids));
+        flag=0;
+        for(int i=0; i<m; i++) ///m-y n-x
+        {
+            gets(maps[i]);
+        }
+        for(int i=0; i<m; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(maps[i][j]=='.'||maps[i][j]=='@')
+                    vids[i][j]=1;
+                //printf("%c",maps[i][j]);
+            }
+            //printf("\n");
+        }
+        hzb=finds(m,n);
+        //printf("%d %d\n",hzb.x,hzb.y);///7 1 y x
+        dfs(hzb.x,hzb.y);
+        printf("%d\n",flag);
+    }
+    return 0;
+}

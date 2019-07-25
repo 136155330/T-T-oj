@@ -1,0 +1,180 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<queue>
+#include<cmath>
+using namespace std;
+int n,a,b,c1,c2,m,sign;
+const int MAXN = 1005;
+const int MAXM = MAXN*(MAXN+1)/2;
+const double inf = 1e7;
+typedef struct EDGE
+{
+    int next,to;
+    double w;
+}ed;
+int first[MAXN];
+ed edge[MAXM];
+void init()
+{
+    memset(first,-1,sizeof(first));
+    sign = 0;
+}
+void add_edge(int u, int v, double w)
+{
+    edge[sign].to = v;
+    edge[sign].w = w;
+    edge[sign].next = first[u];
+    first[u] = sign ++;
+}
+double dist[MAXN];
+int vids[MAXN];
+typedef struct NODE
+{
+    int to;
+    double cost;
+    friend bool operator < (const NODE &a, const NODE &b) {
+        return a.cost > b.cost;
+}
+}node;
+double dijkstra(int s,int t)
+{
+    for(int i=0; i<MAXN; i++)
+    {
+        vids[i]=0;
+        dist[i]=inf;
+    }
+    priority_queue<node>que;
+    node begins;
+    begins.to=s;
+    begins.cost=0;
+    que.push(begins);
+    while(!que.empty())
+    {
+        node ends=que.top();
+        que.pop();
+        if(!vids[ends.to])
+        {
+            vids[ends.to]=1;
+            dist[ends.to]=ends.cost;
+            //printf("to=%d dist=%lf\n",ends.to,dist[ends.to]);
+            for(int i = first[ends.to]; ~i; i = edge[i].next)
+            {
+                int to = edge[i].to;double w = edge[i].w;
+                if(!vids[to])
+                {
+                    node ans;
+                    ans.to=to;
+                    ans.cost=ends.cost+w;
+                    //printf("to=%d cost=%lf\n",ans.to,ans.cost);
+                    que.push(ans);
+                }
+            }
+        }
+    }
+        if(dist[t] == inf)
+        {
+            return -1;
+        }
+        else
+        {
+            return dist[t];
+        }
+}
+double two_d_d(int x1,int y1,int x2,int y2)///两点间距离公式
+{
+    double d=sqrt((y2-y1)*(y2-y1)+(x2-x1)*(x2-x1));
+    return d;
+}
+double x_d_d(int xx,int yy,int aa,int bb,int cc)///线与点的距离公式
+{
+    double d=fabs((aa*xx+bb*yy+cc)/(sqrt(aa*aa*1.0+bb*bb*1.0)));
+    return d;
+}
+double x_x_d(int aa,int bb,int cc1,int cc2)///线线距离
+{
+    double d=(abs(cc1-cc2)*1.0)/(sqrt(aa*aa*1.0+bb*bb*1.0));
+    return d;
+}
+double two_y_d(int x1,int y1,int r1,int x2,int y2,int r2)///圆圆距离
+{
+    double d1=two_d_d(x1,y1,x2,y2);
+    double d2=r1+r2;
+    if(d1<=d2)
+    {
+        double re=0.00;
+        return re;
+    }
+    else
+    {
+        double res=d1-d2;
+        return res;
+    }
+}
+double y_x_d(int aa,int bb,int cc,int xx,int yy,int r)
+{
+    //printf("aa=%d bb=%d cc=%d xx=%d yy=%d rr=%d\n",aa,bb,cc,xx,yy,r);
+    double d1=x_d_d(xx,yy,aa,bb,cc);
+   // printf("d1=%lf\n",d1);
+    if(d1<=r)
+    {
+        double re=0.00;
+        return re;
+
+    }
+    else
+    {
+        d1=d1-r;
+        return d1;
+    }
+}
+typedef struct MYc
+{
+   int num;
+   int x;
+   int y;
+   int r;
+}my;
+my co[MAXN];
+int main()
+{
+    while(~scanf("%d%d%d%d%d",&n,&a,&b,&c1,&c2))
+    {
+        init();
+        //printf("%d\n",a);
+        memset(co,0,sizeof(co));
+        double ww=x_x_d(a,b,c1,c2);
+        //printf("1.ww=%f\n",ww);
+        add_edge(0,n+1,ww);
+        for(int i=1;i<=n;i++)
+        {
+            scanf("%d%d%d",&co[i].x,&co[i].y,&co[i].r);
+            co[i].num=i;
+        }
+        for(int i=1;i<=n;i++)
+        {
+            //printf("a=%d\n",a);
+            ww=y_x_d(a,b,c1,co[i].x,co[i].y,co[i].r);
+            //printf("2.w=%lf\n",ww);
+            add_edge(0,co[i].num,ww);
+        }
+        for(int i=1;i<=n;i++)
+        {
+            ww=y_x_d(a,b,c2,co[i].x,co[i].y,co[i].r);
+            //printf("3.w=%lf\n",ww);
+            add_edge(co[i].num,n+1,ww);
+        }
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=i+1;j<=n;j++)
+            {
+                ww=two_y_d(co[i].x,co[i].y,co[i].r,co[j].x,co[j].y,co[j].r);
+               // printf("4.ww=%lf\n",ww);
+                add_edge(co[i].num,co[j].num,ww);
+            }
+        }
+        double results=dijkstra(0,n+1);
+        printf("%lf\n",results);
+    }
+    return 0;
+}

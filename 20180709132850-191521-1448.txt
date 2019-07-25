@@ -1,0 +1,114 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+using namespace std;
+const int maxm = 3005;
+const int inf = 0x3f3f3f3f;
+int n,m,first[maxm],sign;
+int k;
+struct Edge
+{
+    int to, w, next;
+} edge[maxm * maxm/2];
+
+void init()
+{
+    memset(first,-1,sizeof(first));
+    sign = 0;
+}
+
+void add_edge(int u, int v, int w)
+{
+    edge[sign].to = v;
+    edge[sign].w = w;
+    edge[sign].next = first[u];
+    first[u] = sign ++;
+}
+int dist[maxm],inq[maxm];
+int math[maxm];
+bool SPFA()
+{
+    int s = 1;
+    for(int i=0; i<maxm; i++)
+    {
+        dist[i]=inf;
+        inq[i]=0;
+    }
+    queue<int>que;
+    que.push(s);
+    inq[s]=1;
+    dist[s]=0;
+    math[s]=1;
+    while(!que.empty())
+    {
+        int now=que.front();
+        que.pop();
+        inq[now]=0;
+        for(int i=first[now]; ~i; i=edge[i].next)
+        {
+            int to=edge[i].to;
+            int w=edge[i].w;
+            if(dist[to]>dist[now]+w)
+            {
+                dist[to]=dist[now]+w;
+                if(!inq[to])
+                {
+                    inq[to]=1;
+                    que.push(to);
+                    math[to]++;
+                    if(math[to]>n)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+int main()
+{
+    int t;
+    int w;
+    while(~scanf("%d",&t))
+    {
+        while(t--)
+        {
+            init();
+            memset(math,0,sizeof(math));
+            memset(edge,0,sizeof(edge));
+            scanf("%d%d%d",&n,&m,&k);
+            for(int i=1; i<=m+k; i++)
+            {
+                int u,v,w;
+                scanf("%d%d%d",&u,&v,&w);
+                if(i>m)
+                {
+                    w=-w;
+                    add_edge(u,v,w);
+                }
+                if(i<=m)
+                {
+                    add_edge(v,u,w);
+                    add_edge(u,v,w);
+                }
+            }
+//            bool flags=false;
+//            for(int i=1; i<=n; i++)
+//            {
+//                if(SPFA(i)==true)
+//                {
+//                    flags=true;
+//                    break;
+//                }
+//                //printf("???\n");
+//            }
+            if(SPFA())printf("YES\n");
+            else
+                printf("NO\n");
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+const int inf=1e9+7;
+int dp[41111];///dp[i]   最长上升子序列长度为i的时候   最小的尾数
+int a[41111];
+///dp[pos]<=a[i]长度为pos的时候，最后一个数是<=a[i]
+///dp[pos+1]=min(dp[pos+1],a[i])
+///dp[i]=MAX(dp[j]+1)   j<i   a[j]<a[i];
+///O(n^2)->O(n*log(n))
+int efind(int s,int t,int x){
+    int l=s-1,r=t+1;
+    while(l+1<r){
+        int mid=(l+r)/2;
+        if(dp[mid]<=x)
+            l=mid;
+        else r=mid;
+    }
+    return l;
+}///找出第一个小于等于x的位置
+int main(){
+    int t;
+    scanf("%d",&t);
+    while(t--){
+        int n;
+        scanf("%d",&n);
+        for(int i=1;i<=n;i++)
+            scanf("%d",a+i);
+        dp[1]=a[1];
+        int top=1;
+        for(int i=2;i<=n;i++){
+            int pos=efind(1,top,a[i]);
+            if(pos==top){
+                top++;
+                dp[top]=a[i];
+            }else{
+                dp[pos+1]=min(dp[pos+1],a[i]);
+            }
+        }
+        printf("%d\n",top);
+    }
+    return 0;
+}

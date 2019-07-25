@@ -1,0 +1,38 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+int t;
+double x, y, n;
+const double INF = 100000000007.0;
+double dfs(double x, double y, double step)
+{
+    if(step == 1)
+    {
+        return max(x, y) / min(x, y);
+    }
+    double xx = x / step;
+    double yy = y / step;
+    double re = INF;
+    double re1, re2;
+    re1 = re2 = 0.0;
+    for(double i = 1.0; i < step; i = i + 1.0)
+    {
+        re1 = max(dfs(xx * i, y, i), dfs(x - xx * i, y, step - i));
+        re2 = max(dfs(x, yy * i, i), dfs(x, y - yy * i, step - i));
+        double temp = min(re1, re2);
+        re = min(re, temp);
+    }
+    return re;
+}
+int main()
+{
+    scanf("%d", &t);
+    while(t --)
+    {
+        scanf("%lf%lf%lf", &x, &y, &n);
+        printf("%.9lf\n", dfs(x, y, n));
+    }
+    return 0;
+}

@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cstdio>
+#include <queue>
+using namespace std;
+int n;
+queue<int>que;
+/**
+ 可以维护一个先进先出的队列结构
+ que.push()
+ 往队列中加入一个元素
+ que.empty() 判断队列是否为空
+ 如果为空就返回1 else 返回0
+ que.pop() 弹出队列头元素
+ 如果队列里面没有元素的话，你去使用pop或者front
+ que.front()返回队列头的元素，但是并不弹出
+**/
+char str[5];
+int main()
+{
+    while(~scanf("%d", &n))
+    {
+        while(!que.empty())
+        {
+            que.pop();///弹出队列头元素
+        }
+    for(int i = 0; i < n; i ++)
+    {
+        scanf("%s", &str);
+        if(str[1] == 'u')
+        {
+            int x;
+            scanf("%d", &x);
+            que.push(x);///向stl封装好的队列里放入一个元素
+        }
+        else
+        {
+            if(que.empty())
+                printf("Empty\n");
+            else
+            {
+                int re = que.front();
+                que.pop();
+                printf("%d\n", re);
+            }
+        }
+    }
+    }
+    return 0;
+}

@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<string.h>
+///卧槽，前面想了一种直接做的方法，结果好像凉了，
+///突然发现有时候直接暴力会美滋滋！
+int main(){
+    int t,d,b,i,j,a[1000];
+    char x[1000];
+    scanf("%d",&t);
+    while(t--){
+        scanf("%d%s",&d,x);
+        b=strlen(x);
+        for(i=0;i<b;i++){
+            a[i]=(i+1)*d;
+            for(j=0;j<a[i];j++){
+                if(x[i]=='a'){
+                    x[i]='z';
+                }
+                else{
+                    x[i]--;
+                }
+            }
+        }
+        printf("%s\n",x);
+    }
+    return 0;
+}

@@ -1,0 +1,29 @@
+#include<stdio.h>
+int main ()
+{
+    long long i , j ;
+    long long a , b ;
+    long long x , y ;
+    long long tem;
+    while(scanf("%lld%lld",&a,&b)!=EOF)
+    { if(b<a)
+        {
+            tem=b;
+            b=a;
+            a=tem;
+        }
+
+        x=0;
+        y=0;
+        j=b;
+        for(i=a;i<=j;i++)
+        {
+            if(i%2==0)
+                x=x+i*i;
+            if(i%2==1)
+                y=y+i*i*i;
+        }
+        printf("%lld %lld\n",x,y);
+    }
+    return 0 ;
+}

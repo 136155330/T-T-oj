@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<string.h>
+int x[105];
+int main()
+{
+    int n;int i;int a;int j;
+    while(~scanf("%d",&n))///scanf("%d",&n)!=EOF
+    {memset(x,0,sizeof(x));
+        for(i=0;i<n;i++)
+        {
+            scanf("%d",&a);
+            x[a]++;
+        }
+        for(i=100;i!=-1;i--)
+        {
+            if(x[i]!=0)
+            {
+                for(j=0;j<x[i];j++)
+                {
+                    printf("%d ",i);
+                }
+            }
+        }
+        printf("\n");
+    }
+    return 0;
+}

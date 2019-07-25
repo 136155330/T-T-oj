@@ -1,0 +1,42 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+using namespace std;
+const int MAXN = 1e6+5;
+long long enl[MAXN];
+/**
+1.求多少个x小于n且GCD(x,n)=1 数    ans=  phi(n)
+2.求多少个x小于n,GCD(x,n)=m    m是n因子
+=> 求多少个x小于n,GCD(x/m,n/m)=1    m是n因子   ans=  phi(n/m)
+3.求多少个分数p/q  满足   gcd(p,q)=1，且 q<=n，p<=q
+思路：枚举q  ,算有多少个p满足 gcd(p,q)=1 .
+**/
+void Init(){
+     enl[1]=1;
+     for(int i=2;i<MAXN;i++)
+       enl[i]=i;
+     for(int i=2;i<MAXN;i++)
+        if(enl[i]==i)
+           for(int j=i;j<MAXN;j+=i)
+              enl[j]=enl[j]/i*(i-1);//先进行除法是为了防止中间数据的溢出
+}
+long long sum[MAXN];
+void INITS()
+{
+    enl[1]=0;
+    for(int i=2;i<MAXN;i++)
+    {
+        enl[i]=enl[i-1]+enl[i];
+    }
+}
+int main()
+{
+    Init();
+    INITS();
+    int n;
+    while(~scanf("%d",&n)&&n)
+    {
+        printf("%lld\n",enl[n]);
+    }
+    return 0;
+}

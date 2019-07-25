@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+typedef long long ll;
+#define inf 0x7fffffff;
+const int MAXN = 1000005;
+ll math[MAXN];
+ll sum[MAXN];
+ll dp[MAXN];
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t --)
+    {
+        memset(math, 0, sizeof(math));
+        memset(sum, 0, sizeof(sum));
+        memset(dp, 0, sizeof(dp));
+        int n,m;
+        scanf("%d%d",&n,&m);
+        for (int i = 1; i <= n; i ++)
+        {
+            scanf("%I64d",&math[i]);
+            sum[i] = sum[i - 1] + math[i];
+        }
+        dp[m - 1] = sum[m - 1];
+        ll result = - inf;
+        for (int i = m; i <= n; i ++) {
+            dp[i] = max(dp[i - 1] + math[i], sum[i] - sum[i - m]);
+                result = max(dp[i], result);
+        }
+        printf("%I64d\n",result);
+    }
+    return 0;
+}

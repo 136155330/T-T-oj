@@ -1,0 +1,82 @@
+#include <iostream>
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+using namespace std;
+const int MAXN = 1e5 + 5;
+vector<int>vec[MAXN];
+int vids[MAXN];
+void Init()
+{
+    for(int i = 0; i < MAXN; i ++)
+        vec[i].clear();
+        memset(vids, 0, sizeof(vids));
+}
+bool cmp(const int &a, const int &b)
+{
+    return a < b;
+}
+int sum(int num)
+{
+    int re = 0;
+    for(int i = 0; i < vec[num].size(); i ++)
+    {
+        if(!vids[vec[num][i]])
+            re ++;
+    }
+    return re;
+}
+void dfs(int begin)
+{
+    vids[begin] = 1;
+    printf("%d",begin);
+    sort(vec[begin].begin(),vec[begin].end(),cmp);
+    if(sum(begin) == 0)
+        return ;
+    else
+    {
+        bool flag = false;
+        if(sum(begin))
+        {
+            printf("(");
+            flag = true;
+        }
+        if(sum(begin) == 1)
+        {
+            printf("#,");
+            flag = false;
+        }
+        for(int i = 0; i < vec[begin].size(); i ++)
+        {
+            if(!vids[vec[begin][i]])
+            {
+            dfs(vec[begin][i]);
+            if(flag)
+            {
+                printf(",");
+                flag = false;
+            }
+            }
+        }
+        printf(")");
+    }
+}
+int main()
+{
+    int n;
+    while(~scanf("%d", &n))
+    {
+        Init();
+        for(int i = 0; i < n - 1; i ++)
+        {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            vec[a].push_back(b);
+            vec[b].push_back(a);
+        }
+        dfs(1);
+        printf("\n");
+    }
+    return 0;
+}

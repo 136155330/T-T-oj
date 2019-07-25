@@ -1,0 +1,38 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+using namespace std;
+const int MAXN = 1005;
+typedef long long ll;
+ll math[MAXN][MAXN];
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        ll x,y;
+        memset(math,0,sizeof(math));
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                scanf("%lld",&math[i][j]);
+                if(math[i][j]==-1)
+                {
+                x=i;
+                y=j;
+                }
+            }
+        }
+        ll sum;
+        ll a,b,c;
+        //printf("%lld %lld\n",x,y);
+        a=math[(x+1)%n][(y+1)%n];
+        b=math[x][(y+1)%n];
+        c=math[(x+1)%n][y];
+        //printf("%lld %lld %lld\n",a,b,c);
+        sum=c-(a-b);
+        printf("%lld\n",sum);
+    }
+    return 0;
+}

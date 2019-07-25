@@ -1,0 +1,40 @@
+#include<stdio.h>
+int judge(int y)
+{
+    if((y%400==0)||(y%4==0&&y%100!=0))
+        return 1;
+    else
+        return 0;
+}
+int main()
+{
+    int y,sum,flag,year;
+    while(~scanf("%d",&y))
+    {flag=judge(y);
+    year=y;
+    sum=0;
+        while(1)
+        {
+          if(judge(++year))sum+=366;
+          else
+                sum+=365;
+          if(sum%7==0&&flag==1)
+          {
+              if(judge(year)==1)
+                {printf("%d\n",year);
+                break;
+                }
+          }
+          else if(sum%7==0&&flag==0)
+          {
+              if(judge(year)==0)
+              {
+                  printf("%d\n",year);
+                  break;
+              }
+          }
+
+        }
+    }
+    return 0;
+}

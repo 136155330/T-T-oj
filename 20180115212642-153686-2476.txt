@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<string.h>
+typedef struct WORD
+{
+    char word;
+    int math;
+} mychar;
+typedef struct moves
+{
+    int xmove;
+    int ymove;
+} mymove;
+mymove mv[8]= {{-2,-1},{-2,1},{-1,-2},{-1,2},{1,-2},{1,2},{2,-1},{2,1}};
+int p,q;
+int flag;
+int vids[35][35];
+mychar hzb[35];
+void dfs(int x,int y,int step)
+{
+    int i;
+    if(x>=q||y>=p||x<0||y<0)return ;
+    if(vids[x][y]==1)return ;
+    if(flag==1)return ;
+    hzb[step].word='A'+x;
+    hzb[step].math=y+1;
+    if(step==p*q-1)
+    {
+        flag=1;
+        return ;
+    }
+    else
+    {
+        for(i=0; i<8; i++)
+        {
+            vids[x][y]=1;
+            dfs(x+mv[i].xmove,y+mv[i].ymove,step+1);
+            vids[x][y]=0;
+        }
+    }
+}
+int main()
+{
+    int t;
+    int i;
+    while(~scanf("%d",&t))
+    {
+        for(i=0; i<t; i++)
+        {
+            scanf("%d%d",&p,&q);
+            flag=0;
+            memset(vids,0,sizeof(vids));
+            dfs(0,0,0);
+            printf("Scenario #%d:\n",i+1);
+            if(flag==1)
+            {
+            for(int j=0; j<p*q; j++)
+            {
+                printf("%c%d",hzb[j].word,hzb[j].math);
+            }
+            printf("\n\n");
+            }
+            else
+                if(flag==0)
+                printf("impossible\n\n");
+        }
+    }
+}

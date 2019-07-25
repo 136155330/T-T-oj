@@ -1,0 +1,64 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<queue>
+#include<algorithm>
+using namespace std;
+int math[1005];
+priority_queue<int >que;
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        int maxn=0;
+        while(!que.empty())
+            que.pop();
+        memset(math,0,sizeof(math));
+        for(int i=0; i<n; i++)
+        {
+            int a;
+            scanf("%d",&a);
+            math[a]++;
+            maxn=max(math[a],maxn);
+        }
+        for(int i=0; i<1005; i++)
+        {
+            if(math[i]==maxn)
+                que.push(-i);
+        }
+        if(que.size()>3)
+        {
+            printf("Multimodal\n");
+        }
+        if(que.size()==3)
+        {
+            printf("Trimodal ");
+            while(que.size()!=1)
+            {
+                printf("%d ",-que.top());
+                que.pop();
+            }
+            printf("%d %d\n",-que.top(),maxn);
+            que.pop();
+        }
+        else if(que.size()==2)
+        {
+            printf("Bimodal ");
+            while(que.size()!=1)
+            {
+                printf("%d ",-que.top());
+                que.pop();
+            }
+            printf("%d %d\n",-que.top(),maxn);
+            que.pop();
+        }
+        else if(que.size()==1)
+        {
+            printf("Unimodal ");
+            printf("%d %d\n",-que.top(),maxn);
+            que.pop();
+        }
+    }
+    return 0;
+}

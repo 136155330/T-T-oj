@@ -1,0 +1,86 @@
+#include<queue>
+#include<cstring>
+#include<iostream>
+#include<cstdio>
+using namespace std;
+const int maxn = 50005;
+const int INF = 0x3f3f3f3f;
+int n, m, w, k, head[maxn], dis[maxn], cnt[maxn];
+bool book[maxn];
+ 
+struct node
+{
+    int v, w, next;
+}edge[maxn];
+ 
+void addEdge(int u, int v, int w)
+{
+    edge[k].v = v;
+    edge[k].w = w;
+    edge[k].next = head[u];
+    head[u] = k;
+    k++;
+}
+ 
+bool spfa(int u)
+{
+    memset(book, 0, sizeof(book));
+    memset(cnt, 0, sizeof(cnt));
+    for(int i = 1; i <= n; i++) dis[i] = INF;
+    dis[u] = 0;
+    cnt[u]++;
+    queue<int> q;
+    q.push(u);
+    while(!q.empty())
+    {
+        u = q.front(); q.pop();
+        book[u] = 0;
+        for(int i = head[u]; i != -1; i = edge[i].next)
+        {
+            int v = edge[i].v, w = edge[i].w;
+            if(dis[u]+w < dis[v])
+            {
+                dis[v] = dis[u]+w;
+                if(!book[v])
+                {
+                    book[v] = 1;
+                    q.push(v);
+                    cnt[v]++;
+                    if(cnt[v] >= n) return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+ 
+int main(void)
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        memset(head, -1, sizeof(head));
+        k = 0;
+        scanf("%d%d%d", &n, &m, &w);
+        for(int i = 1; i <= m+w; i++)
+        {
+            int u, v, w;
+            scanf("%d%d%d", &u, &v, &w);
+            if(i > m) w = -w;
+            addEdge(u, v, w);
+            if(i <= m) addEdge(v, u, w);
+        }
+        bool flag = 0;
+        for(int i = 1; i <= n; i++)
+        {
+            if(spfa(i))
+            {
+                flag = 1;
+                break;
+            }
+        }
+        puts(flag ? "YES" : "NO");
+    }
+    return 0;
+}

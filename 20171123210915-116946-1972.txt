@@ -1,0 +1,10 @@
+#include<stdio.h>
+char x[10000];
+int main()
+{
+    while(gets(x)!=NULL)
+    {
+        printf("25\n");
+    }
+    return 0;
+}

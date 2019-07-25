@@ -1,0 +1,11 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    long long a;
+    while(cin >> a)
+    {
+        cout << 143 * a * a << endl;
+    }
+    return 0;
+}

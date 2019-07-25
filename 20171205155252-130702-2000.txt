@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+} Node;
+Node *creat()
+{
+    Node *s;
+    s=(Node*)malloc(sizeof(Node));
+    s->next=NULL;
+    return s;
+}
+void del(Node *p,int x)
+{
+    Node *q;
+    q=p->next;
+    while(q)
+    {
+        if(q->data%x==0)
+        {
+            p->next=q->next;
+            free(q);
+            q=p->next;
+        }
+        else
+        {
+            p=p->next;
+            q=q->next;
+        }
+    }
+}
+void dis(Node *p)
+{
+    p=p->next;
+    while(p)
+    {
+        printf("%d\n",p->data);
+        p=p->next;
+
+    }
+}
+int main()
+{
+    Node *head;
+    Node *p;
+    int a;
+    head=creat();
+    p=creat();
+    p=head;
+    while(1)
+    {
+        Node *s;
+        s=creat();
+        scanf("%d",&a);
+        s->data=a;
+        p->next=s;
+        p=p->next;
+        if(a==-1)break;
+    }
+    del(head,2);
+    dis(head);
+    return 0;
+}

@@ -1,0 +1,25 @@
+#include<stdio.h>
+#include<string.h>
+char word[10005];
+char words[10005];
+int main()
+{int flags;
+    while(gets(word)!=NULL)
+    {flags=0;
+        gets(words);
+        int m=strlen(word);
+        for(int i=0;i<m;i++)
+        {
+            if(word[i]!=words[m-1-i])
+            {
+                flags=1;
+                break;
+            }
+        }
+        if(flags==0)
+            printf("YES\n");
+        else
+            printf("NO\n");
+    }
+    return 0;
+}

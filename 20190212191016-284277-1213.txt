@@ -1,0 +1,102 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+const int MAXN = 100000 + 5;
+int pre[MAXN];
+int du[MAXN];
+bool vids[MAXN];
+vector<int>v;
+void Init()
+{
+    v.clear();
+    for(int i = 0; i < MAXN; i ++)
+        pre[i] = i;
+    memset(du, 0, sizeof(du));
+    memset(vids, 0, sizeof(vids));
+}
+int acfind(int x)
+{
+    return pre[x]==x?x:pre[x]=acfind(pre[x]);
+}
+bool same(int a, int b)
+{
+    int x = acfind(a);
+    int y = acfind(b);
+    if(x == y)
+        return true;
+    return false;
+}
+void add(int a, int b)
+{
+    if(!same(a, b))
+    {
+        int xx = acfind(a);
+        int yy = acfind(b);
+        pre[xx] = yy;
+    }
+}
+bool tupusort()
+{
+    int num = 0;
+    int temp = 0;
+    for(int i = 0; i < v.size(); i ++)
+    {
+        if(i == 0)
+        {
+            temp = acfind(v[i]);
+        }
+        else
+        {
+            if(acfind(v[i]) != temp)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+int main()
+{
+    int x, y;
+    bool flag = false;
+    Init();
+    while(1)
+    {
+        scanf("%d%d", &x, &y);
+        if(x == 0 && y == 0)
+        {
+            bool re = tupusort();
+            if(re && flag == false)
+                printf("Yes\n");
+            else
+                printf("No\n");
+            Init();
+            flag = false;
+            continue;
+        }
+        if(x == -1 && y == -1)
+            break;
+        if(flag == true)
+            continue;
+        if(same(x, y))
+        {
+            flag = true;
+        }
+        add(x, y);
+        if(!vids[x])
+        {
+            v.push_back(x);
+            vids[x] = 1;
+        }
+        if(!vids[y])
+        {
+            v.push_back(y);
+            vids[y] = 1;
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,42 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<queue>
+using namespace std;
+typedef long long ll;
+priority_queue<ll, vector<ll>, greater<ll> >q_min;  // Ð¡¶¥¶Ñ
+priority_queue<ll, vector<ll>, less<ll> >q_max;     // ´ó¶¥¶Ñ
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        while(!q_min.empty())
+            q_min.pop();
+        for(int i=0; i<n; i++)
+        {
+            ll ans;
+            scanf("%lld",&ans);
+            q_min.push(ans);
+        }
+        if(n==1)
+            printf("%lld\n",q_min.top());
+        else
+        {
+            ll sum=0;
+            while(!q_min.empty())
+            {
+                ll a=q_min.top();
+                q_min.pop();
+                if(q_min.empty())
+                    break;
+                ll b=q_min.top();
+                q_min.pop();
+                sum+=(a+b);
+                q_min.push(a+b);
+            }
+            printf("%lld\n",sum);
+        }
+    }
+    return 0;
+}

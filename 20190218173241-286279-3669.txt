@@ -1,0 +1,88 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+#include <stack>
+using namespace std;
+typedef struct MYNODE
+{
+    double l1, l2;
+    double sum;
+}mynode;
+bool cmp(const mynode & a, const mynode & b)
+{
+    if(a.l1 == b.l1)
+        return a.l2 < b.l2;
+    return a.l1 < b.l1;
+}
+vector<mynode>vec;
+int n;
+double w,l;
+int main()
+{
+    while(~scanf("%d %lf %lf", &n, &l, &w))
+    {
+        vec.clear();
+        for(int i = 0; i < n; i ++)
+        {
+            double p, r;
+            scanf("%lf %lf", &p, &r);
+            double ls,lss;
+            if(4.0 * r * r < (w * w))
+                continue;
+            ls = p - sqrt(r * r - (w * w * 0.5 * 0.5));
+            lss = p + sqrt(r * r - (w * w * 0.5 * 0.5));
+            if(ls < 0.00)
+                ls = 0.00;
+            if(lss > l)
+                lss = l;
+            mynode temp;
+            temp.l1 = ls;
+            temp.l2 = lss;
+            temp.sum = temp.l2 - temp.l1;
+            if(temp.sum == 0)
+                continue;
+            vec.push_back(temp);
+        }
+        sort(vec.begin(), vec.end(), cmp);
+        //for(int i = 0; i < vec.size(); i ++)
+         //   printf("%d %lf %lf\n",i, vec[i].l1, vec[i].l2);
+        //printf("\n");
+        int j = 0;
+        double ll = 0.00;
+        int len = 0;
+        while(j != vec.size())
+        {
+            //printf("%d\n", j);
+            //printf("1,%d %lf %lf %lf\n", j, vec[j].l1, vec[j].l2, ll);
+            int flag = false;
+            double rr = ll;
+            while(vec[j].l1 <= ll && j < vec.size())
+            {
+                rr = max(rr, vec[j].l2);
+                j ++;
+                flag = true;
+            }
+            if(j == 0)
+                break;
+            if(flag)
+                j = j - 1;
+            if(flag)
+            {
+                ll = rr;
+                //printf("%lf\n",ll);
+            }
+            len ++;
+            if(ll >= l)
+                break;
+            j ++;
+        }
+        if(ll < l)
+            printf("-1\n");
+        else
+            printf("%d\n", len);
+    }
+    return 0;
+}

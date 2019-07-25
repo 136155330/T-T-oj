@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<string.h>
+char x[200000];
+int main()
+{
+    int y;int t;int i;int j;
+    while(scanf("%d",&t)!=EOF)
+    {getchar();
+    for(j=0;j<t;j++)
+    {
+    memset(x,0,sizeof(x));
+    gets(x);
+     y=strlen(x);
+     for(i=0;i<y;i++)
+     {if(i==0)printf("%c",x[i]-'a'+'A');
+         if(x[i]==' ')printf("%c",x[i+1]-'a'+'A');
+     }
+     printf("\n");
+    }}
+    return 0;
+}

@@ -1,0 +1,155 @@
+#include<cstdio>
+#include<cstring>
+#include<queue>
+#include<algorithm>
+#include<cmath>
+#include<map>
+#include<string>
+#include<iostream>
+#define inf 0x3ffffffff
+using namespace std;
+typedef long long ll;
+const ll maxn=860;
+ll first[maxn],sign;
+ll a[maxn],dis[maxn],vis[maxn];
+struct node
+{
+    ll to,w,next;
+}edge[maxn*maxn];
+void creat()
+{
+    for(ll i=0;i<maxn;i++)
+        first[i]=0;
+    sign=1;
+}
+void add_edge(ll u,ll v,ll w)
+{
+    edge[sign].to=v;
+    edge[sign].w=w;
+    edge[sign].next=first[u];
+    first[u]=sign++;
+}
+ll Prim(ll num,ll n)
+{
+    ll nn=n-1,sum=0;
+    for(ll i=0;i<=n+5;i++)
+    {
+        dis[i]=inf;
+        vis[i]=0;
+    }
+    ll p=0;
+    dis[0]=0;
+    while(nn--)
+    {
+        vis[p]=1;
+        for(ll i=first[p];i;i=edge[i].next)
+        {
+            ll to=edge[i].to;
+            if(to==num)continue;
+            if(!vis[to]&&dis[to]>edge[i].w)
+            {
+                dis[to]=edge[i].w;
+            }
+        }
+        ll mincost=inf;
+        for(ll i=1; i<=n; i++)
+        {
+            if(!vis[i]&&dis[i]<mincost)
+            {
+                p=i;
+                mincost=dis[i];
+            }
+        }
+        sum+=mincost;
+    }
+    return sum;
+}
+/*
+long long Prim(ll s,ll n)
+{
+    priority_queue<pair<long long,ll> >q;
+    ll i;
+    for(i=1; i<=n; i++)
+    {
+        vis[i]=0;
+        dis[i]=inf;
+    }
+    dis[s]=a[s];
+    q.push(make_pair(-dis[s],s));
+    ll sum=0,tmp=0;
+    while(!q.empty())
+    {
+        ll now=q.top().second;
+        q.pop();
+        if(!vis[now])
+        {
+            tmp++;
+
+            sum+=min(dis[now],a[now]);
+            dis[now]=min(dis[now],a[now]);
+            vis[now]=1;
+            if(tmp==n-1)return sum;
+            for(i=first[now]; i; i=edge[i].next)
+            {
+                if(dis[edge[i].to]>edge[i].w)
+                {
+                    dis[edge[i].to]=edge[i].w;
+                    q.push(make_pair(-dis[edge[i].to],edge[i].to));
+                }
+            }
+        }
+
+    }
+    if(tmp<=n-2)return -1;
+    return sum;
+}
+*/
+
+int main()
+{
+    ll n,m;
+    ll ss=0;
+    scanf("%lld",&n);
+    {
+        creat();
+        memset(a,0,sizeof(a));
+        memset(dis,0,sizeof(dis));
+        memset(vis,0,sizeof(vis));
+        ll u,v,w;
+        for(ll i=1;i<=n;i++)
+        {
+            scanf("%lld",&a[i]);
+            add_edge(0,i,a[i]);
+            ss+=a[i];
+        }
+        scanf("%lld",&m);
+        for(ll i=0;i<m;i++)
+        {
+            scanf("%lld %lld %lld",&u,&v,&w);
+            add_edge(u,v,w);
+            add_edge(v,u,w);
+        }
+        ll ans=inf;
+        for(ll i=1;i<=n;i++)
+        {
+            ll tmp=Prim(i,n);;
+            if(tmp==-1)continue;
+            ans=min(ans,tmp);
+        }
+        if(ans==inf)
+        {
+            sort(a+1,a+n+1);
+            ans=ss-a[n];
+        }
+        printf("%lld\n",ans);
+    }
+    return 0;
+}
+/*
+4
+60 60 60 100
+3
+3 4 50
+2 3 100
+1 2 100
+*/

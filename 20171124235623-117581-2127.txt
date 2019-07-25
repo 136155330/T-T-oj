@@ -1,0 +1,46 @@
+#include<iostream>
+#include<stack>
+#include<stdio.h>
+using namespace std;
+int main() {
+    stack<int> a;
+    stack<int> b;
+    int n;
+    int x,y;
+    int z;
+    int i;
+    while(~scanf("%d",&n)) {
+        z=0;
+        i=0;
+        for(i=0; i<n; i++) {
+            cin>> x;
+            if(x==1) {
+                cin>>y;
+                a.push(y);
+                if(b.empty() || y > b.top()) {
+                    b.push(y);
+                }
+            }
+            if(x==2) {
+                if(a.top() == b.top()) {
+                    b.pop();
+                }
+                a.pop();
+
+            }
+            if(x==3) {
+                if(!b.empty())
+                    printf("%d\n",b.top());
+                else
+                    printf("-1\n");
+            }
+        }
+        while(!a.empty()) {
+            a.pop();
+        }
+        while(!b.empty()) {
+            b.pop();
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<iostream>
+#include<stack>
+using namespace std;
+int judge(string a,string b)
+{
+    int flag=0;
+    if(a.length()>b.length())
+        return 0;
+    for(int i=0; i<a.length(); i++)
+    {
+        if(a[i]!=b[i])
+            flag=1;
+    }
+    if(flag==1)
+        return 0;
+    else
+        return 1;
+}
+int main()
+{
+    string a;
+    stack<string>q;
+    int n;
+    int r=0;
+    while(~scanf("%d",&n))
+    {
+        r=0;
+        for(int i=0; i<n; i++)
+        {
+            cin>>a;
+            if(q.empty())
+            {
+                q.push(a);
+            }
+            else
+            {
+                if(judge(q.top(),a))
+                    q.push(a);
+                else
+                {
+                    if(q.size()>r)
+                        r=q.size();
+                    while(!judge(q.top(),a))
+                        {
+                            q.pop();
+                        }
+                        q.push(a);
+                }
+            }
+        }
+        if(q.size()>r)
+        {
+            r=q.size();
+        }
+        printf("%d\n",r);
+    }
+    return 0;
+}

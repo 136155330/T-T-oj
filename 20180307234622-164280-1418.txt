@@ -1,0 +1,37 @@
+#include <stdio.h>
+int main ()
+{
+    int T,n;
+    int sum;
+    scanf("%d",&T);
+    while (T--)
+    {
+        scanf("%d",&n);
+        sum=n;
+        int i,a[10000];
+        int k=0;
+        i=0;
+        int j;
+        while(n!=0)
+        {
+            int ans=n%10;
+            a[i++]=ans;
+            //printf("%d\n",a[i-1]);
+            n/=10;
+        }
+        int z,x;
+        z=0;
+        x=0;
+        for (j=0;j<i;j++)
+        {
+            z+=a[j];
+            x+=(a[j]*a[j]);
+        }
+        //printf("n=%d z=%d x=%d\n",n,z,x);
+        if (sum%8==0||z%8==0||x%8==0)
+        printf("Lucky number!\n");
+        else
+            printf("What a pity!\n");
+    }
+    return 0;
+}

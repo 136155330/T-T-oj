@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<string.h>
+int a[105];
+long long gcd(long long a,long long b)
+{
+    if(a%b==0)
+        return b;
+     else
+        return gcd(b,a%b);
+}
+int main()
+{
+    int t;
+    int sum1;
+    int i;
+    int b;
+    int tem;
+    int j;
+    while(~scanf("%d",&t))
+    {sum1=0;
+    memset(a,0,sizeof(a));
+        for(i=0; i<t; i++)
+        {
+            scanf("%d",&a[i]);
+        }
+     for(j=t-1;j!=0;j--)
+       {for(i=0;i<j;i++)
+      {if(a[i]>a[i+1])
+      {tem=a[i+1];
+      a[i+1]=a[i];
+      a[i]=tem;
+}
+}
+}
+for(i=1;i<t-1;i++)
+{
+    sum1+=a[i];
+}
+b=gcd(sum1,t-2);
+printf("%d/%d\n",sum1/b,(t-2)/b);
+    }
+return 0;
+}

@@ -1,0 +1,90 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+#include<map>
+#include<algorithm>
+using namespace std;
+const int MAXN = 100005;
+template <typename T>
+inline int read(T &x) {
+    char c = getchar(); bool f;
+    if(c == EOF) return 0;
+    while(c != '-' && (c < '0' || c > '9')) c = getchar();
+    if(c == '-') f = true, x = 0;
+    else f = false, x = c - '0';
+    while((c = getchar()) >= '0' && c <= '9') x = x * 10 + c - '0';
+    if(f) x = -x;
+    return 1;
+}
+
+template <typename T>
+inline void out(T x) {
+    static char ans[20];
+    int t = 0;
+    if(x < 0) putchar('-'), x = -x;
+    while(x) ans[++t] = x % 10 + '0', x /= 10;
+    while(t) putchar(ans[t--]);
+}
+
+vector<int>vec[MAXN];
+map<int,int>M;
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        for(int i=0;i<MAXN;i++)
+            vec[i].clear();
+        M.clear();
+        int maxs=-1;
+        for(int i=0; i<n; i++)
+        {
+            int ans;
+            //scanf("%d",&ans);
+            read(ans);
+            if(ans==1)
+            {
+                //printf("...\n");
+                int a;
+                //scanf("%d",&a);
+                read(a);
+                if(M.count(a))
+                {
+                    M[a]++;
+                    maxs=max(M[a],maxs);
+                    vec[M[a]].push_back(a);
+                }
+                else
+                {
+                    M[a]=1;
+                    maxs=max(M[a],maxs);
+                    //printf("%d...\n",maxs);
+                    vec[M[a]].push_back(a);
+                }
+            }
+            else
+            {
+                //printf("!!!\n");
+                //printf("%d..\n",maxs);
+                sort(vec[maxs].begin(),vec[maxs].end());
+                for(int i=0; i<vec[maxs].size(); i++)
+                {
+                    if(i!=vec[maxs].size()-1)
+                        //printf("%d ",vec[maxs][i]);
+                        {
+                            out(vec[maxs][i]);
+                            putchar(' ');
+                        }
+                    else
+                        //printf("%d\n",vec[maxs][i]);
+                        {
+                            out(vec[maxs][i]);
+                            putchar('\n');
+                        }
+                }
+            }
+        }
+    }
+    return 0;
+}

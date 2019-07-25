@@ -1,0 +1,24 @@
+#include<stdio.h>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+double x[5];
+int main()
+{
+    int t;int i;
+    while(~scanf("%d",&t))
+    {
+        for(i=0;i<t;i++)
+        {
+            scanf("%lf%lf%lf",&x[0],&x[1],&x[2]);
+            sort(x,x+3);
+            if(x[0]/4.0==x[1]/5.0&&x[0]/4.0==x[2]/6.0&&x[1]/5.0==x[2]/6.0)
+                printf("major\n");
+            else if(x[0]/10.0==x[1]/12.0&&x[0]/10.0==x[2]/15.0&&x[1]/12.0==x[2]/15.0)
+                printf("minor\n");
+            else
+                printf("noise\n");
+        }
+    }
+    return 0;
+}

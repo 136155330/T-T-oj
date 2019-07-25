@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<string.h>
+char flags[15]="hello";
+char words[105];
+int main()
+{
+    while(gets(words)!=NULL)
+    {int m=strlen(words);
+    int j=0;
+        for(int i=0;i<m;i++)
+        {
+            if(words[i]==flags[j])
+            {
+                j++;
+                if(j==5)break;
+            }
+        }
+        if(j>=5)printf("YES\n");
+        else
+            printf("NO\n");
+    }
+    return 0;
+}

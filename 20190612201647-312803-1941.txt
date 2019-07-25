@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN = 1e5 + 5;
+struct Union{
+    int pre[MAXN], value[MAXN];
+    void Init(){
+        for(int i = 0; i < MAXN; i ++){
+            pre[i] = i;
+            value[i] = 1;
+        }
+    }
+    int Get(int x){
+        return x == pre[x] ? x : pre[x] = Get(pre[x]);
+    }
+    void Join(int x, int y){
+        int a = Get(x), b = Get(y);
+        if(a != b){
+            if(a < b){
+                pre[b] = a;
+                value[a] += value[b];
+            }
+            else{
+                pre[a] = b;
+                value[b] += value[a];
+            }
+        }
+    }
+}U;
+int main(){
+    int t;
+    scanf("%d", &t);
+    while(t --){
+        int n;
+        scanf("%d", &n);
+        U.Init();
+        for(int i = 0; i < n - 1; i ++){
+            int u, v, w;
+            scanf("%d%d%d", &u, &v, &w);
+            if(w == 0) U.Join(u, v);
+        }
+        int re = 0;
+        for(int i = 1; i <= n; i ++){
+            re ^= U.value[U.Get(i)];
+        }
+        printf("%d\n", re);
+    }
+    return 0;
+}

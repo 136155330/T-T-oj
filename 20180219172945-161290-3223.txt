@@ -1,0 +1,9 @@
+#include<stdio.h>
+int main()
+{
+    int s,a,t;
+    while(~scanf("%d%d%d",&s,&a,&t))
+    {
+        printf("%.6f\n",2.0*s/(t*t)-a);
+    }
+}

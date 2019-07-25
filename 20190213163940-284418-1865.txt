@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+const int maxn = 5e6+7;
+
+int n,m,arr[maxn];
+
+int main()
+{
+    while(~scanf("%d %d",&n,&m))
+    {
+        for(int i = 0; i < n; i ++ ) {
+            scanf("%d",&arr[i]);
+        }
+        nth_element(arr,arr+n-m,arr+n);
+        printf("%d\n",arr[n-m]);
+    }
+
+    return 0;
+}

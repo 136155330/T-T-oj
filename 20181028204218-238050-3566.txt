@@ -1,0 +1,121 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+#include <queue>
+typedef long long ll;
+using namespace std;
+const int MAXN = 1e5 + 5;
+int rudu[MAXN];
+double zhongshi[MAXN];
+int n, z;
+double r;
+double re = 0;
+typedef struct PERSON
+{
+    int num;
+    double math;
+}person;
+vector<person>vec[MAXN];
+void Init()
+{
+    for(int i = 0; i < MAXN; i ++)
+    {
+        vec[i].clear();
+    }
+    memset(rudu, 0, sizeof(rudu));
+    memset(zhongshi, 0, sizeof(zhongshi));
+    re = 0;
+}
+void add(int u, int v)
+{
+    person ans;
+    ans.num = v;
+    ans.math = 0;
+    vec[u].push_back(ans);
+    rudu[v] ++;
+}
+void change(int ans, double w)
+{
+    zhongshi[ans] = w;
+}
+int finds()
+{
+    for(int i = 0; i < n; i ++)
+    {
+        if(rudu[i] == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+void bfs()
+{
+    int begins = finds();
+    //printf("begins = %d\n",begins);
+    queue<person>que;
+    while(!que.empty())
+        que.pop();
+    person one;
+    one.num = begins;
+    one.math = z;
+    que.push(one);
+    if(zhongshi[begins] > 0)
+    {
+        re += (double(z) * zhongshi[begins]);
+    }
+    while(!que.empty())
+    {
+        person temp = que.front();
+        //printf("num = %d math = %f flag = %d\n", temp.num, temp.math, zhongshi[temp.num]);
+        que.pop();
+        for(int i = 0; i < vec[temp.num].size(); i ++)
+        {
+            person ends;
+            ends = vec[temp.num][i];
+            ends.math = temp.math * 1.0 * ((100.0 - r)/(100.0));
+            //printf("num = %d\n", ends.num);
+            if(zhongshi[ends.num] > 0)
+            {
+                re += (ends.math * zhongshi[ends.num]);
+                //printf("%.0lf\n", re);
+                ends.math = double(ends.math * zhongshi[ends.num]);
+            }
+            que.push(ends);
+        }
+    }
+}
+int main()
+{
+    while(~scanf("%d %d %lf", &n, &z, &r))
+    {
+        Init();
+        for(int i = 0; i < n; i ++)
+        {
+            int a;
+            scanf("%d", &a);
+            if(a)
+            {
+            for(int j = 0; j < a; j ++)
+            {
+                int b;
+                scanf("%d", &b);
+                //printf("b = %d\n", b);
+                add(i, b);
+            }
+            }
+            else
+            {
+                double c;
+                scanf("%lf", &c);
+                change(i, c);
+            }
+        }
+        bfs();
+        ll result = re;
+        printf("%lld\n", result);
+    }
+    return 0;
+}

@@ -1,0 +1,116 @@
+#include<stdio.h>
+#include<string.h>
+#include<iostream>
+#include<queue>
+#define MAX 10000
+using namespace std;
+//求MAX范围内的素数
+long long su[MAX],cnt;
+bool isprime[MAX];
+void prime()
+{
+    cnt=1;
+    memset(isprime,1,sizeof(isprime));//初始化认为所有数都为素数
+    isprime[0]=isprime[1]=0;//0和1不是素数
+    for(long long i=2; i<=MAX; i++)
+    {
+        if(isprime[i])
+            su[cnt++]=i;//保存素数i
+        for(long long j=1; j<cnt&&su[j]*i<MAX; j++)
+        {
+            isprime[su[j]*i]=0;//筛掉小于等于i的素数和i的积构成的合数
+            //isprime[]==1 is isprime math,else is no
+        }
+    }
+}
+int vids[10005];
+typedef struct MYINT
+{
+    int math;
+    int step;
+}myint;
+bool judge(int n)
+{
+    if(isprime[n]==1&&vids[n]==0)///如果n是素数，且没有用过，就可以push
+    return true;
+    else
+        return false;
+}
+int bfs(int x,int y)
+{
+    myint ans;
+    ans.math=x;
+    ans.step=0;
+    queue<myint>q;
+    q.push(ans);
+    while(!q.empty())
+    {myint begins;
+        begins=q.front();
+        q.pop();
+        if(begins.math==y)
+            return begins.step;
+        myint ends;
+        for(int i=1;i<=9;i+=2)///个位
+        {
+            ends.math=begins.math-(begins.math%10)+i;
+            ends.step=begins.step+1;
+            if(judge(ends.math))
+            {q.push(ends);
+            vids[ends.math]=1;
+            }
+        }
+        for(int i=0;i<=9;i++)///十位
+        {
+            ends.math=begins.math-((begins.math%100)/10)*10+i*10;
+            ends.step=begins.step+1;
+            if(judge(ends.math))
+                {
+                    q.push(ends);
+                    vids[ends.math]=1;
+                }
+        }
+        for(int i=0;i<=9;i++)///百位
+        {
+            ends.math=begins.math-((begins.math%1000)/100)*100+i*100;
+            ends.step=begins.step+1;
+            if(judge(ends.math))
+            {
+                q.push(ends);
+                vids[ends.math]=1;
+            }
+        }
+        for(int i=1;i<=9;i++)///千位
+        {
+            ends.math=begins.math-((begins.math%10000)/1000)*1000+i*1000;
+            ends.step=begins.step+1;
+            if(judge(ends.math))
+                {
+                    q.push(ends);
+                    vids[ends.math]=1;
+                }
+        }
+    }
+    return -1;
+}
+int main()
+{
+    prime();
+    int t;
+    while(~scanf("%d",&t))
+    {
+        while(t--)
+        {
+            int a,b;
+            int flag;
+            scanf("%d%d",&a,&b);
+            memset(vids,0,sizeof(vids));
+            vids[a]=1;
+            flag=bfs(a,b);
+            if(flag!=-1)
+                printf("%d\n",flag);
+            else
+                printf("Impossible\n");
+        }
+    }
+    return 0;
+}

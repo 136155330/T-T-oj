@@ -1,0 +1,13 @@
+#include<cstdio>
+#include<cmath>
+int main()
+{
+    int t,a,b;
+    scanf("%d",&t);
+    for(int i=0; i<t; i++)
+    {
+        scanf("%d %d",&a,&b);
+        printf("%.6f\n",sqrt(double(a*a+b*b)/2.0));
+    }
+    return 0;
+}

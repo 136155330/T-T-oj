@@ -1,0 +1,49 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+using namespace std;
+typedef long long ll;
+int z[1000005];
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n,m,b;
+        ll sum=0;
+        //cin>>n>>m;
+        scanf("%d%d", &n, &m);
+        for(int i=0;i<n;i++)
+        {
+           // cin>>z[i];
+            scanf("%d", &z[i]);
+        }
+        while(m--)
+        {
+            //cin>>b;
+            scanf("%d", &b);
+            int left=-1,right=n,mid;
+            while(left+1<right)
+            {
+                mid=(left+right)/2;
+                if(z[mid]==b)
+                {
+                    sum=sum+b;
+                    break;
+                }
+                if(z[mid]>b)
+                {
+                    right=mid;
+                }
+                if(z[mid]<b)
+                {
+                    left=mid;
+                }
+            }
+        }
+        //cout<<sum<<endl;
+        printf("%lld\n",sum);
+    }
+}

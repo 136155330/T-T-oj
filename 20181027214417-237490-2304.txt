@@ -1,0 +1,14 @@
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+typedef long long ll;
+ll a, b;
+int main()
+{
+    while(~scanf("%lld%lld", &a, &b))
+    {
+        printf("%lld\n", __gcd(a, b));
+    }
+    return 0;
+}

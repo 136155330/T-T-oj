@@ -1,0 +1,23 @@
+#include<stdio.h>
+int a[1000005];
+int main ()
+{
+    int n,i,x,y;
+    while(~scanf("%d",&n))
+    {
+        x=0;y=0;
+        for(i=0;i<n;i++)//算出所有的水题数量
+        {
+            scanf("%d",&a[i]);
+            y=y+a[i];
+        }
+        x=a[0];
+        for(i=0;i<n;i++)//求出最大水题数
+        {
+            if(a[i]>x)x=a[i];
+        }
+        //if(x<a[n-1])x=a[n-1];
+        printf("%d\n",x*n-y);//最大水题*n-所有就是需要补的
+    }
+    return 0;
+}

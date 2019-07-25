@@ -1,0 +1,59 @@
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+typedef struct NODE
+{
+    int n;
+    int k;
+    int flag;
+} node;
+bool cmp(const node &a,const node &b)
+{
+    return a.k<b.k;
+}
+const int MAXN = 100005;
+int team[1000005];
+node math[MAXN];
+int result[MAXN];
+int ans=0;
+int main()
+{
+    int n,k;
+    while(~scanf("%d%d",&n,&k))
+    {
+        math[ans].n=n;
+        math[ans].k=k;
+        math[ans].flag=ans;
+        ans++;
+    }
+    sort(math,math+ans,cmp);
+    int gg=0;
+    for(int i=0; i<ans; i++)
+    {
+        if(math[i].k!=gg)
+        {
+            gg=math[i].k;
+            for(int j=1; j<=1000000; j++)
+            {
+                int maths=j;
+                int nums=0;
+                while(maths)
+                {
+                    int a=maths%gg;
+                    maths=maths/gg;
+                    if(a==1)
+                        nums++;
+                }
+                team[j]=team[j-1]+nums;
+            }
+        }
+        result[math[i].flag]=team[math[i].n];
+    }
+    for(int i=0; i<ans; i++)
+    {
+            printf("%d\n",result[i]);
+    }
+    return 0;
+}

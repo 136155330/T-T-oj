@@ -1,0 +1,134 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+#include <stack>
+using namespace std;
+struct MCMF {
+    
+    static const int MAXN = 5010;
+    static const int MAXM = 50010;
+    static const int INF = 0x7FFFFFFF;
+    static const int INF0X3F = 0x3f3f3f3f;
+    
+    int n, m, first[MAXN], s, t, sign;
+    int dist[MAXN], inq[MAXN], pre[MAXN], incf[MAXN];
+    int max_flow, min_cost;
+    
+    struct Edge {
+        int to, cap, cost, next;
+    } edge[MAXM * 4];
+    
+    void init(int l, int r, int ss, int tt) {
+        for(int i = l; i <= r; i++ ) {
+            first[i] = -1;
+        }
+        s = ss, t = tt, sign = 0;
+        max_flow = min_cost = 0;
+    }
+    
+    void add_edge(int u, int v, int cap, int cost) {
+        edge[sign].to = v, edge[sign].cap = cap, edge[sign].cost = cost;
+        edge[sign].next = first[u], first[u] = sign++;
+        edge[sign].to = u, edge[sign].cap = 0, edge[sign].cost = -cost;
+        edge[sign].next = first[v], first[v] = sign++;
+    }
+    
+    bool spfa(int s, int t) {
+        for(int i = 0; i < MAXN; i++ ) {
+            dist[i] = INF, inq[i] = 0;
+        }
+        queue<int>que;
+        que.push(s), inq[s] = 1, dist[s] = 0;
+        incf[s] = INF0X3F;
+        while(!que.empty()) {
+            int now = que.front();
+            que.pop();
+            inq[now] = 0;
+            for(int i = first[now]; ~i; i = edge[i].next) {
+                int to = edge[i].to, cap = edge[i].cap, cost = edge[i].cost;
+                if(cap > 0 && dist[to] > dist[now] + cost) {
+                    dist[to] = dist[now] + cost;
+                    incf[to] = min(incf[now], cap);
+                    pre[to] = i;
+                    if(!inq[to]) {
+                        que.push(to);
+                        inq[to] = 1;
+                    }
+                }
+            }
+        }
+        return dist[t] != INF;
+    }
+    
+    void update(int s, int t) {
+        int x = t;
+        while(x != s) {
+            int pos = pre[x];
+            edge[pos].cap -= incf[t];
+            edge[pos ^ 1].cap += incf[t];
+            x = edge[pos ^ 1].to;
+        }
+        max_flow += incf[t];
+        min_cost += dist[t] * incf[t];
+    }
+    
+    void minCostMaxFlow(int s, int t) {
+        while(spfa(s, t)) {
+            update(s, t);
+        }
+    }
+} cwl;
+int main()
+{
+    int n, m, k, p;
+    scanf("%d%d%d%d",&n,&m,&k,&p);
+    cwl.init(0, 5005, 0, 5005);
+    int fff[cwl.MAXN];
+    memset(fff, 0, sizeof(fff));
+    for (int i = 0; i < n; i ++) {
+        int ans;
+        scanf("%d",&ans);
+        cwl.add_edge(0, ans, 1, 0);
+        cwl.add_edge(ans, ans + 3000, 1, 0);
+    }
+    for (int i = 0; i < k; i ++) {
+        int a, b, c;
+        scanf("%d%d%d",&a,&b,&c);
+        if(fff[a] > 0 && fff[b] == 0)
+        {
+            cwl.add_edge(a + 3000, b, cwl.INF, c);
+            cwl.add_edge(b, a + 3000, cwl.INF, c);
+        }
+        else if(fff[a] == 0 && fff[b] > 0)
+        {
+            cwl.add_edge(a, b + 3000, cwl.INF, c);
+            cwl.add_edge(b + 3000, a, cwl.INF, c);
+        }
+        else if(fff[a] > 0 && fff[b] > 0)
+        {
+            cwl.add_edge(a + 3000, b + 3000, cwl.INF, c);
+            cwl.add_edge(b + 3000, a + 3000, cwl.INF, c);
+        }
+        else
+        {cwl.add_edge(a, b, cwl.INF, c);
+            
+            cwl.add_edge(b, a, cwl.INF, c);
+        }
+    }
+    for (int i = 1; i <= n; i ++) {
+        cwl.add_edge(1000 + i, 2000 + i, 1, 0);
+        cwl.add_edge(2000 + i, 5000, 1, 0);
+    }
+    for (int i = 0; i < p; i ++) {
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        if(fff[b] > 0)
+            cwl.add_edge(b + 3000, 1000 + a, cwl.INF, c);
+        else
+            cwl.add_edge(b, 1000 + a, cwl.INF, c);
+    }
+    cwl.minCostMaxFlow(0, 5000);
+    printf("%d\n",cwl.min_cost);
+}

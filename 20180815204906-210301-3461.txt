@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+using namespace std;
+int main()
+{
+    int a,b;
+    while(~scanf("%d%d",&a,&b))
+    {
+        for(int i = 0; i <= 1000005; i ++)
+        {
+            if(i <= a)
+                continue;
+            else
+            {
+                int sum = i;
+                int sums = 0;
+                vector<int>vec;
+                vec.clear();
+                while (sum)
+                {
+                    int b = sum % 10;
+                    if(b == 4 || b == 7)
+                    vec.push_back(b);
+                    sum /= 10;
+                }
+                int ans = vec.size() - 1;
+                for (int j = ans; j != -1; j --) {
+                    sums = sums * 10 + vec[j];
+                }
+                if(sums == b)
+                {
+                    printf("%d\n",i);
+                    break;
+                }
+            }
+        }
+    }
+    return 0;
+}

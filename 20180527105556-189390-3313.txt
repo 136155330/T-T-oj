@@ -1,0 +1,112 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#include<stdio.h>
+using namespace std;
+#define pi acos(-1)
+typedef long long ll;
+const ll inf = 0x7fffffffffffffff;
+int n;
+int xx,yy,zz;
+const int MAXN = 10;
+typedef struct MYint
+{
+    int x;
+    int y;
+    int z;
+} myint;
+myint a,b;
+myint math[MAXN];
+int myabs(int sum)
+{
+    if(sum<0)
+        return -sum;
+    else
+        return sum;
+}
+double sum=inf;///result
+int vids[10];///标记数组
+double R[10];///求r的值
+int D[10];///标记上一级是啥
+int flag=0;
+void dfs(int t)///t 标记次数
+{
+    if(t>=n)
+    {
+        //int ss=xx*yy*zz;
+        //printf("%d\n",ss);
+        double s=xx*yy*zz;
+        //printf("%f\n",s);
+        //for(int i=0; i<n; i++)
+            //printf("%f ",R[i]);
+        //puts("");
+        for(int i=0; i<n; i++)
+        {
+            //printf("%f %f\n",s,4.0/3.0*pi*R[D[i]]*R[D[i]]*R[D[i]]);
+            s-=(4.0/3.0*pi*R[D[i]]*R[D[i]]*R[D[i]]);
+        }
+        //printf("%d %f %f\n",++flag,sum,s);
+        sum=min(s,sum);
+        return ;
+    }
+    else
+    {
+        for(int i=0; i<n; i++)
+        {
+            if(vids[i]==0)
+            {
+                vids[i]=1;
+                D[t]=i;
+                double r;
+                r=min(min(min(myabs(math[i].x-a.x),myabs(math[i].x-b.x)),
+                          min(myabs(math[i].y-a.y),myabs(math[i].y-b.y))),
+                      min(myabs(math[i].z-a.z),myabs(math[i].z-b.z)));
+                for(int j=0; j<t; j++)
+                {
+                    r=min(r,sqrt((math[D[j]].x-math[i].x)*(math[D[j]].x-math[i].x)+(math[D[j]].y-math[i].y)*(math[D[j]].y-math[i].y)+(math[D[j]].z-math[i].z)*(math[D[j]].z-math[i].z))
+                          -R[D[j]]);
+                }
+                if(r<0.0)
+                {
+                    r=0.0;
+                }
+                R[i]=r;
+                dfs(t+1);
+                vids[i]=0;
+            }
+        }
+    }
+}
+int main()
+{
+    //freopen("balloon.in","r",stdin);
+    //freopen("balloon.out","w",stdout);
+    scanf("%d",&n);
+    //printf("%f\n",pi);
+    sum=inf;
+    memset(math,0,sizeof(math));
+    memset(vids,0,sizeof(vids));
+    scanf("%d%d%d%d%d%d",&a.x,&a.y,&a.z,&b.x,&b.y,&b.z);
+    xx=myabs(a.x-b.x);
+    yy=myabs(a.y-b.y);
+    zz=myabs(a.z-b.z);
+    for(int i=0; i<n; i++)
+    {
+        scanf("%d%d%d",&math[i].x,&math[i].y,&math[i].z);
+    }
+    dfs(0);
+    if(sum==inf)
+        printf("%.0f",double(xx*yy*zz));
+    else
+    printf("%.0f",sum);
+    return 0;
+}
+/**
+3
+10 10 10 0 0 0
+5 5 1
+5 5 3
+5 5 5
+**/

@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<string.h>
+#define MAXN 100005
+int next[MAXN];
+char word[MAXN];
+void KMPGET(char word[])
+{
+    int len=strlen(word);
+    int k=-1;
+    int j=0;
+    next[0]=-1;
+    while(j<len)
+    {
+        if(k==-1||word[j]==word[k])
+        {
+            j++;
+            k++;
+            next[j]=k;
+        }
+        else
+            k=next[k];
+    }
+}
+int main()
+{
+    while(~scanf("%s",word))
+    {memset(next,0,sizeof(next));
+        KMPGET(word);
+        int len=strlen(word);
+        /**for(int i=0;i<=len;i++)
+            printf("%d ",next[i]);puts("");**/
+            if(len%(len-next[len])==0&&(next[len]!=0&&len!=1))
+                printf("Win\n");
+            else
+                printf("Lost\n");
+
+    }
+    return 0;
+}

@@ -1,0 +1,37 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int MAXN = 10;
+//int data[MAXN];///这是用来存1-n的数
+///题目要求不能出现重复的
+int vids[MAXN];///标记这个数是不是选过了
+int n;
+int num=0;
+void dfs(int ans)///ans代表层数
+{
+    if(ans==n)///递归层数到达n那么就结束
+    {
+        printf("%d\n",num);
+        return ;
+    }
+    for(int i=1; i<=n; i++)
+    {
+        if(vids[i]==0)
+        {
+            vids[i]=1;
+            num=num*10+i;
+            dfs(ans+1);
+            num=(num-i)/10;
+            vids[i]=0;
+        }
+    }
+}
+int main()
+{
+while(~scanf("%d",&n))
+{
+    dfs(0);
+}
+return 0;
+}

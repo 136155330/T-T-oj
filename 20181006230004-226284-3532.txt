@@ -1,0 +1,49 @@
+#include<stdio.h>
+long long int a[11][11];
+long long int b,c,d,e,f,g;
+long long int h=11;
+int main()
+{
+    for (b=1;b<11;b++)
+    {
+        for (c=1;c<11;c++)
+        {
+            scanf("%lld",&d);
+            a[b][c]=d;
+        }
+    }
+    scanf("%lld",&e);
+    scanf("%lld",&f);
+    for (g=10;g>0;g--)
+    {
+        if (a[g][f]==0)
+        {
+            h=g;
+        }else
+        {
+           break;
+        }
+    }
+    if (h==11)
+    {
+        printf("NULL");
+    }else
+    {
+        a[h][f]=e;
+    for (b=1;b<=10;b++)
+    {
+        for (c=1;c<=10;c++)
+        {
+            printf("%lld",a[b][c]);
+            if (c==10)
+            {
+                printf("\n");
+            }else
+            {
+                printf(" ");
+            }
+        }
+    }
+    }
+    return 0;
+}

@@ -1,0 +1,37 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <map>
+using namespace std;
+typedef long long ll;
+map<int, int>M;
+int math[10] ={1,1,2,6,24,120,720,5040,40320,362880};
+void dfs(int num,int sum)
+{
+    if(num == 10)
+    {
+        M[sum] ++ ;
+        return ;
+    }
+    dfs(num + 1, sum + math[num]);
+    M[sum] ++;
+    dfs(num + 1, sum);
+    M[sum] ++;
+}
+int main()
+{
+    dfs(0, 0);
+    int ans;
+    while(~scanf("%d",&ans))
+    {
+        if(ans < 0)
+            break;
+        if(M[ans] && ans != 0)
+        {
+            printf("YES\n");
+        }
+        else
+            printf("NO\n");
+    }
+    return 0;
+}

@@ -1,0 +1,33 @@
+#include<stdio.h>
+#include<string.h>
+char x[1005];
+int main()
+{
+    int t;int a;int i;int j;
+    while(~scanf("%d",&t))
+    {getchar();
+        while(t--)
+        {
+            gets(x);
+            a=strlen(x);
+            for(i=0;i<=a;i++)
+            {
+                if(x[i]==' '||i==a)
+                {
+                    j=i-1;
+                    while(1)
+                    {
+                        if(x[j]==' '||j==-1)break;
+                        if(x[j]!=' '||j!=-1)
+                            printf("%c",x[j]);
+                        j--;
+                    }
+                }
+                if(x[i]==' ')printf(" ");
+               if(i==a)printf("\n");
+
+            }
+        }
+    }
+    return 0;
+}

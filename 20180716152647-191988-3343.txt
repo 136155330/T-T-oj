@@ -1,0 +1,114 @@
+#include<cstdio>
+#include<vector>
+#include<cstring>
+#include<iostream>
+using namespace std;
+const int MAXN =10005;
+const int MAXNLEN =405;
+typedef struct NODE
+{
+    vector<int>data[MAXN];
+    int next[MAXN];
+    int num;
+    int top;
+    NODE()
+    {
+        clear();
+    }
+    void clear()
+    {
+        top=1;
+        memset(next,0,sizeof(next));
+        for(int i=0; i<MAXN; i++)
+            data[i].clear();
+        num=1;
+    }
+    int get(int index)
+    {
+        int id=1;
+        while(index)
+        {
+            if(index>data[id].size())
+            {
+                index-=data[id].size();
+                id=next[id];
+            }
+            else
+            {
+                return data[id][index];
+            }
+        }
+    }
+    int insert(int index,int value)
+    {
+        int id=1;
+        while(index>data[id].size())
+        {
+            index-=data[id].size();
+            id=next[id];
+        }
+        data[id].insert(data[id].begin()+index,value);
+        if(data[id].size()>MAXNLEN)
+        {
+            //printf("...\n");
+            split(id);
+        }
+    }
+    void split(int id)
+    {
+        top++;
+        int siz=data[id].size()/2;
+        data[top].assign(data[id].begin()+siz,data[id].end());
+        data[id].resize(siz);
+        next[top]=next[id];
+        next[id]=top;
+    }
+    void print()
+    {
+        int p=1;
+        while(p)
+        {
+            //printf("->");
+            for(int x=0; x<data[p].size(); x++)
+            {
+                printf("%d ",data[p][x]);
+            }
+            p=next[p];
+        }
+        puts("");
+    }
+} node;
+template <class T>
+inline bool scan_d(T &ret)
+{
+    char c;
+    int sgn;
+    if(c=getchar(),c==EOF)return 0; //EOF
+    while(c!='-'&&(c<'0'||c>'9')) c=getchar();
+    sgn=(c=='-')?-1:1;
+    ret=(c=='-')?0:(c-'0');
+    while(c=getchar(),c>='0'&&c<='9') ret=ret*10+(c-'0');
+    ret*=sgn;
+    return 1;
+}
+inline void out(int x)
+{
+    if(x>9) out(x/10);
+    putchar(x%10+'0');
+}
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        node arr;
+        int a,b;
+        for(int i=0; i<n; i++)
+        {
+            scan_d(a);
+            scan_d(b);
+            arr.insert(a,b);
+        }
+        arr.print();
+    }
+}

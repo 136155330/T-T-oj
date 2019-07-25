@@ -1,0 +1,13 @@
+#include<stdio.h>
+#include<string.h>
+char s[25];
+int main()
+{int y;int x;
+    while(gets(s)!=NULL)
+    {
+       y=strlen(s);
+        x=(y+1)*26-y;
+        printf("%d\n",x);
+    }
+    return 0;
+}
