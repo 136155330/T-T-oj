@@ -1,0 +1,50 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+typedef long long ll;
+ll quick_mod(ll n , ll m,ll mod)		//Çó¿ìËÙÃÝ
+{
+	ll ans = 1;
+	n %= mod;
+	while (m)
+	{
+		if (m & 1)
+			ans = ans * n % mod;
+		n = n * n % mod;
+		m >>= 1;
+	}
+	return ans;
+}
+ll C(ll n,ll m,ll mod)
+{
+    if(m>n)
+        return 0;
+    ll ans =1;
+    for(int i=1;i<=m;i++)
+    {
+        ll a=(n+i-m)%mod;
+        ll b=i%mod;
+         ans = ans * (a * quick_mod(b, mod-2,mod) % mod) % mod;
+    }
+    return ans;
+}
+ll Lucas(ll n, ll m,ll mod)
+{
+    if(m == 0) return 1;
+    return C(n % mod, m % mod,mod) * Lucas(n / mod, m / mod,mod) % mod;
+}
+int main()
+{
+    int t;
+    while(~scanf("%d",&t))
+    {
+        for(int i=0;i<t;i++)
+        {
+            ll e,f,g;
+            scanf("%I64d%I64d%I64d",&e,&f,&g);
+            printf("%I64d\n",Lucas(max(e,f),min(e,f),g));
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,59 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int maxn = 1e5 + 5;
+bool cmp(const int & a,const int & b)
+{
+    return a > b;
+}
+int math[maxn];
+int maths[maxn];
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        memset(math, 0, sizeof(math));
+        memset(maths, 0, sizeof(maths));
+        for (int i = 0; i < n; i ++) {
+            scanf("%d",&math[i]);
+            maths[i] = math[i];
+        }
+        sort(maths, maths + n, cmp);
+        int l,r;
+        l = r = 0;
+        int j = 0;
+        int result = 0;
+        int maxs = math[0];
+        while(r < n)
+        {
+            if(math[r] == maths[j])
+            {
+                int sum = r - l + 1;
+                result = max(result, sum);
+                l = r + 1;
+                maxs = math[l];
+                r ++ ;
+                j ++ ;
+            }
+            else if(math[r] <= math[l])
+            {
+                l = r;
+            }
+            else if(math[r] > maxs)
+            {
+                int sum = r - l + 1;
+                result = max(result, sum);
+            }
+            maxs = max(maxs, math[r]);
+            r ++ ;
+        }
+        if(result == 1)
+            printf("0\n");
+        else
+        printf("%d\n",result);
+    }
+    return 0;
+}

@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<string.h>
+int team[5005];
+int ans[5005];
+int main()
+{
+    int n,t,i;
+    while(~scanf("%d",&t))
+    {
+        while(t--)
+        {
+            while(~scanf("%d",&n))
+            {
+                memset(team,0,sizeof(team));
+                int flag=n;
+                int mean=0;
+                while(flag>3)
+                {
+                    for(i=1; i<=n; i++)
+                    {
+                        if(team[i]==0)
+                            mean++;
+                        if(mean==2)
+                        {
+                            team[i]=1;
+                            flag--;
+                            mean=0;
+                        }
+                    }
+                    mean=0;
+                    if(flag<=3)break;
+                    for(i=1; i<=n; i++)
+                    {
+                        if(team[i]==0)
+                            mean++;
+                        if(mean==3)
+                        {
+                            team[i]=1;
+                            flag--;
+                            mean=0;
+                        }
+                    }
+                    mean=0;
+                }
+                int j=0;
+                for(i=1; i<=n; i++)
+                {
+                    if(team[i]==0)
+                    {
+                        ans[j]=i;
+                        j++;
+                    }
+                }
+                for(i=0;i<j;i++)
+                {
+                    if(i!=j-1)printf("%d ",ans[i]);
+                    else
+                        printf("%d\n",ans[i]);
+                }
+            }
+        }
+    }
+    return 0;
+}

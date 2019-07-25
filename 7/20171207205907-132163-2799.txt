@@ -1,0 +1,10 @@
+#include<stdio.h>
+main()
+{
+    long long a,b,mul;
+    while(~scanf("%llo%llo",&a,&b))
+    {
+        mul=a*b;
+        mul<0?printf("-%llo\n",-mul):printf("%llo\n",mul);
+    }
+}

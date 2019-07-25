@@ -1,0 +1,81 @@
+#include<bits/stdc++.h>
+#define MAXN 5000
+using namespace std;
+int num;
+int pre[MAXN];
+typedef struct ISland
+{
+    int begins;
+    int ends;
+    int cost;
+} island;
+island myis[MAXN];
+void Init()
+{
+    for(int i=0; i<MAXN; i++)
+    {
+        pre[i]=i;
+    }
+}
+int acfind(int x)
+{
+    return pre[x]==x?x:pre[x]=acfind(pre[x]);
+}
+bool same(int x,int y)
+{
+    if(acfind(x)==acfind(y))
+        return true;
+    else
+        return false;
+}
+int unionjoin(int x,int y)
+{
+    int a;
+    int b;
+    a=acfind(x);
+    b=acfind(y);
+    if(a!=b)
+        pre[a]=b;
+}
+bool cmp(const island &a,const island &b)
+{
+      return a.cost<b.cost;
+}
+long long kruskal(island e[])
+{
+    long long ans=0;
+    sort(e,e+num,cmp);
+    for(int i=0; i<num; i++)
+    {
+        if(!same(e[i].begins,e[i].ends))
+        {
+            unionjoin(e[i].begins,e[i].ends);
+            ans+=e[i].cost;
+            //printf("...\n");
+        }
+        else
+            continue;
+    }
+    return ans;
+}
+int main()
+{
+    int n,flag;
+    while(~scanf("%d",&n)&&n)
+    {Init();
+        num=(n*(n-1))/2;
+        for(int i=0; i<num; i++)
+        {
+            scanf("%d %d %d",&myis[i].begins,&myis[i].ends,&myis[i].cost);
+            //printf("%d %d %d\n",myis[i].begins,myis[i].ends,myis[i].cost);
+            scanf("%d",&flag);
+            if(flag==1)
+            {
+            pre[myis[i].begins]=myis[i].ends;
+            }
+        }
+        long long ans=kruskal(myis);
+        printf("%lld\n",ans);
+    }
+    return 0;
+}

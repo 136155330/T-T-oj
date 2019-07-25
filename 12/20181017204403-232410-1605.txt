@@ -1,0 +1,41 @@
+//如果c是一个素数，那么a^b%c==a^( b%(c-1) )%c,这就是费马小定理
+#include<stdio.h>
+typedef long long ll;
+ll f(ll a,ll b,ll MOD)
+/*快速幂取模，可以在O（log(b)）的复杂度下计算a^b%MOD*/
+{
+    ll ans=1;
+    while(b){
+        if(b&1) ans=ans*a%MOD;
+        a=a*a%MOD;
+        b>>=1;
+    }
+    return ans;
+}
+ll nextrandom(ll y,ll MOD)
+//随机数生成器，不用改
+//之所以要随机数生成器，是因为后台没办法上传太大的文件
+//产生的随机数是为了测试代码效率，所有产生的随机数在[1,10^18]内
+{
+    y=y*y*MOD;
+    if(y&1LL<<63) y=~y+1;
+    return y%1000000000000000000LL+1;
+}
+int main()
+{
+    //本地测试时注意long long类型在本地编译器的输入输出格式
+    //提交时请使用%lld输入和输出long long类型
+    ll x,q,y,MOD=1000000007LL,z,ans;
+    while(scanf("%lld",&x)!=EOF)//x<=10^9
+    {
+        scanf("%lld%lld",&q,&y);//q<=5000000,y<=10^18
+        ans=0;
+        while(q--)
+        {
+            ans = ( ans + f(x,y % (MOD - 1),MOD) ) % MOD;
+            y=nextrandom(y,MOD);//1<=y<=10^18
+        }
+        printf("%lld\n",ans);
+    }
+    return 0;
+}

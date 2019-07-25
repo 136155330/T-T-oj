@@ -1,0 +1,23 @@
+#include<stdio.h>
+int main()
+{int n;int a,b;char c;double d;int i;
+while(scanf("%d",&n)!=EOF)
+{getchar();
+    for(i=0;i<n;i++)
+    {scanf("%c",&c);
+    scanf("%d%d",&a,&b);
+    getchar();
+        if(c=='+')printf("%d\n",a+b);
+        if(c=='-')printf("%d\n",a-b);
+        if(c=='*')printf("%d\n",a*b);
+        if(c=='/')
+        {
+            d=a/float(b);
+            if(d==a/b)printf("%d\n",a/b);
+            else
+                printf("%.2f\n",d);
+        }
+    }
+}
+return 0;
+}

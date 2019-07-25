@@ -1,0 +1,52 @@
+#include<stdio.h>
+#include<string.h>
+char x[1000000];
+char y[1000000];
+int powl(int q,int p)
+{int i;int x;
+    i=0;x=1;
+    for(i=0;i<p;i++)
+    {
+    x=x*q;
+    }
+    return x;
+}
+int main()
+{
+    int t;int j;int f;int a;int c;int b;int i;int h;int z;int d;int sum;
+    scanf("%d",&t);
+    while(t--)
+    {memset(x,0,strlen(x));
+     memset(y,0,strlen(y));
+        scanf("%d %d",&a,&b);
+        j=0;f=0;c=0;d=0;
+         while(a)
+    {
+        x[j]=a%10+'0';
+        j++;
+        a/=10;
+        if(a==0)x[j]='\0';
+    }
+     while(b)
+    {
+        y[f]=b%10+'0';
+        f++;
+       b/=10;
+       if(b==0)y[f]=='\0';
+    }
+        h=strlen(x);z=strlen(y);
+
+        for(i=0;i<h;i++)
+        {
+            c=c+(x[i]-'0')*powl(5,i);
+        }
+        for(i=0;i<z;i++)
+        {
+            d=d+(y[i]-'0')*powl(8,i);
+        }
+        sum=d+c;
+        printf("%d\n",sum);
+
+    }
+    return 0;
+}

@@ -1,0 +1,59 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+#include<map>
+#include<algorithm>
+using namespace std;
+const int MAXN = 100005;
+vector<int>vec[MAXN];
+map<int,int>M;
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        for(int i=0;i<MAXN;i++)
+            vec[i].clear();
+        M.clear();
+        int maxs=-1;
+        for(int i=0; i<n; i++)
+        {
+            int ans;
+            scanf("%d",&ans);
+            if(ans==1)
+            {
+                //printf("...\n");
+                int a;
+                scanf("%d",&a);
+                if(M.count(a))
+                {
+                    M[a]++;
+                    maxs=max(M[a],maxs);
+                    vec[M[a]].push_back(a);
+                }
+                else
+                {
+                    M[a]=1;
+                    maxs=max(M[a],maxs);
+                    //printf("%d...\n",maxs);
+                    vec[M[a]].push_back(a);
+                }
+            }
+            else
+            {
+                //printf("!!!\n");
+                //printf("%d..\n",maxs);
+                sort(vec[maxs].begin(),vec[maxs].end());
+                for(int i=0; i<vec[maxs].size(); i++)
+                {
+                    if(i!=vec[maxs].size()-1)
+                        printf("%d ",vec[maxs][i]);
+                    else
+                        printf("%d\n",vec[maxs][i]);
+                }
+            }
+        }
+    }
+    return 0;
+}

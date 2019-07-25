@@ -1,0 +1,12 @@
+#include<stdio.h>
+main()
+{
+    double n,i,a;
+    while(scanf("%lf",&n),n)
+    {
+        a=n;
+        for(i=2; i<=n; i++)
+            a+=(1/i)*(n+1-i)*2;
+        printf("%.2f\n",a);
+    }
+}

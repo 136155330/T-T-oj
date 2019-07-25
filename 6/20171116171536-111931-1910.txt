@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<math.h>
+/*因为一个数如果能被sqrt（n）自己整除则为第一种情况，如果说他不能被自己整除，就找比他小的数，的平方，
+去搞他，然后如果余数为0，那就证明能拆分成两个，能化简，就可以出格式了，如果找不到那就是直接带入。*/
+int main()
+{
+    int n;int z;int i;
+    z=1;
+    while(~scanf("%d",&n))
+    {
+        for(i=sqrt(n);i>=1;i--)
+            if(n%(i*i)==0)
+        {
+            n/=i*i;
+            break;
+        }
+        if(n==1)
+            printf("Case #%d: %d\n",z++,i);
+        else if(i==1) printf("Case #%d: sqrt(%d)\n",z++,n);
+        else printf("Case #%d: %d*sqrt(%d)\n",z++,i,n);
+    }
+    return 0;
+}

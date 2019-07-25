@@ -1,0 +1,199 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<iostream>
+using namespace std;
+int n,m;
+int moves[4][2]= {{-1,0},{1,0},{0,-1},{0,1}}; ///ио об вС ср
+const int MAXN = 1005;
+char maps[MAXN][MAXN];
+int person_time[MAXN][MAXN];
+int fire_time[MAXN][MAXN];
+int vids[MAXN][MAXN];
+typedef struct NODE
+{
+    int x;
+    int y;
+    int step;
+} node;
+vector<node>vec;
+bool judge(int i,int j)
+{
+    if(maps[i][j]=='#'||i<=0||j<=0||i>n||j>m||vids[i][j]==1)
+        return false;
+    else
+        return true;
+}
+void bfs_fire()
+{
+    queue<node>ques;
+    while(!ques.empty())
+    {
+        ques.pop();
+    }
+    memset(vids,0,sizeof(vids));
+    for(int i=0; i<vec.size(); i++)
+    {
+        vids[vec[i].x][vec[i].y]=1;
+        ques.push(vec[i]);
+    }
+    while(!ques.empty())
+    {
+        node begins;
+        begins=ques.front();
+        ques.pop();
+        fire_time[begins.x][begins.y]=begins.step;
+        for(int i=0; i<4; i++)
+        {
+            node ends;
+            ends.x=begins.x+moves[i][0];
+            ends.y=begins.y+moves[i][1];
+            ends.step=begins.step+1;
+            if(judge(ends.x,ends.y))
+            {
+                ques.push(ends);
+                vids[ends.x][ends.y]=1;
+            }
+        }
+    }
+}
+void bfs_person(node a,int math[][MAXN])
+{
+    memset(vids,0,sizeof(vids));
+    vids[a.x][a.y]=1;
+    queue<node>que;
+    while(!que.empty())
+        que.pop();
+    que.push(a);
+    while(!que.empty())
+    {
+        node begins=que.front();
+        que.pop();
+        math[begins.x][begins.y]=begins.step;
+        for(int i=0; i<4; i++)
+        {
+            node ends;
+            ends.x=begins.x+moves[i][0];
+            ends.y=begins.y+moves[i][1];
+            ends.step=begins.step+1;
+            if(judge(ends.x,ends.y))
+            {
+                que.push(ends);
+                vids[ends.x][ends.y]=1;
+            }
+        }
+    }
+}
+int results()
+{
+    int result=0x3f3f3f3f;
+    for(int j=1; j<=m; j++)
+    {
+        if(fire_time[1][j]>person_time[1][j]&&maps[1][j]!='#')
+        {
+            result=min(result,person_time[1][j]);
+               // printf("1result=%d\n",result);
+        }
+    }
+    for(int i=1; i<=n; i++)
+    {
+        if(fire_time[i][1]>person_time[i][1]&&maps[i][1]!='#')
+        {
+            result=min(result,person_time[i][1]);
+                //printf("2result=%d\n",result);
+        }
+    }
+    for(int j=1; j<=m; j++)
+    {
+        if(fire_time[n][j]>person_time[n][j]&&maps[n][j]!='#')
+        {
+            result=min(result,person_time[n][j]);
+                //printf("3result=%d\n",result);
+        }
+    }
+    for(int i=1; i<=n; i++)
+    {
+        if(fire_time[i][m]>person_time[i][m]&&maps[i][m]!='#')
+        {//printf("%d %d\n",result,person_time[i][1]);
+            result=min(result,person_time[i][m]);
+                //printf("4 %d %d result=%d\n",i,m,result);
+        }
+    }
+    return result;
+}
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d%d",&n,&m);
+        vec.clear();
+        memset(vids,0,sizeof(vids));
+        memset(maps,0,sizeof(maps));
+        for(int i=0; i<MAXN; i++)
+            for(int j=0; j<MAXN; j++)
+                person_time[i][j]=0x3f3f3f3f;
+        for(int i=0; i<MAXN; i++)
+            for(int j=0; j<MAXN; j++)
+                fire_time[i][j]=0x3f3f3f3f;
+        //getchar();
+        for(int i=1; i<=n; i++)
+        {
+            scanf("%s",&maps[i][1]);
+        }
+        node a,b;
+        for(int i=1; i<=n; i++)
+        {
+            for(int j=1; j<=m; j++)
+            {
+                if(maps[i][j]=='J')
+                {
+                    a.x=i;
+                    a.y=j;
+                    a.step=0;
+                }
+                if(maps[i][j]=='F')
+                {
+                    b.x=i;
+                    b.y=j;
+                    b.step=0;
+                    vec.push_back(b);
+                }
+            }
+        }
+        bfs_person(a,person_time);
+        bfs_fire();
+//        for(int i=1; i<=n; i++)
+//        {
+//            for(int j=1; j<=m; j++)
+//                printf("%d ",person_time[i][j]);
+//            putchar('\n');
+//        }
+//        putchar('\n');
+//        for(int i=1; i<=n; i++)
+//        {
+//            for(int j=1; j<=m; j++)
+//                printf("%d ",fire_time[i][j]);
+//            putchar('\n');
+//        }
+//        putchar('\n');
+
+        int re=results();
+        if(re==0x3f3f3f3f)
+            printf("IMPOSSIBLE\n");
+        else
+            printf("%d\n",re+1);
+    }
+    return 0;
+}
+/**
+2
+4 4
+####
+.#.#
+...J
+FF.F
+**/

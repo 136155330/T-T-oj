@@ -1,0 +1,25 @@
+#include<stdio.h>
+int a[1000010];
+int main()
+{
+    int n;
+    while(~scanf("%d",&n))
+    {
+        int r=0,l=0,x;
+        char temp[20];
+        while(n--)
+        {
+            scanf("%s",temp);
+            if(temp[1]=='u')
+            {
+                scanf("%d",&a[r++]);
+            }
+            else
+            {
+                if(l==r)
+                    printf("Empty\n");
+                else printf("%d\n",a[l++]);
+            }
+        }
+    }
+}

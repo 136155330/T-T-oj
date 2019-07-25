@@ -1,0 +1,43 @@
+#include<stdio.h>
+int quickpow(int a,int b)
+{
+    int ans=1;
+    int temp=a;
+    while(b!=0)
+    {
+        if((b&1)!=0)
+            ans*=temp;
+        temp*=temp;
+        b>>=1;
+    }
+    return ans;
+}
+char x[100000];
+char y[11]={'a','b','c','d','e','f','g','h','i','j','k'};
+int main()
+{
+    int n,i,j,a,z,c;
+    while(~scanf("%d",&n))
+    {
+      a=quickpow(2,n);
+      //printf("%d\n",a);
+      for(i=1;i<a;i++)
+      {j=0;
+      z=i;
+      c=0;
+          while(z>0)
+          {
+            if((z&1)==1)
+            {//printf("%c",y[j]);
+            x[c]=y[j];c++;
+            }
+            j++;
+            z>>=1;
+          }
+          for(c=c-1;c!=-1;c--)
+            printf("%c",x[c]);
+          printf("\n");
+      }
+      printf("\n");
+    }
+}

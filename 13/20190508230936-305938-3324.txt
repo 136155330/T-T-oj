@@ -1,0 +1,69 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int MAXN = 100000 + 5;
+typedef long long ll;
+int t;
+ll n, mod;
+struct Segtree{
+    struct Tree{
+        int l, r;
+        ll sum;
+    }tree[MAXN << 2];
+    void Init(){
+        memset(tree, 0, sizeof(tree));
+    }
+    void push_up(int root){
+        tree[root].sum = ((tree[root << 1].sum % mod) * (tree[root << 1 | 1].sum % mod)) % mod;
+    }
+    void build(int root, int l, int r){
+        tree[root].l = l;
+        tree[root].r = r;
+        if(l == r){
+            tree[root].sum = 1;
+            return ;
+        }
+        int mid = (l + r) >> 1;
+        build(root << 1, l, mid);
+        build(root << 1 | 1, mid + 1, r);
+        push_up(root);
+    }
+    void update(int root, int num, int value){
+        if(tree[root].l == num && tree[root].r == num){
+            tree[root].sum = value;
+            return ;
+        }
+        int mid = (tree[root].l + tree[root].r) >> 1;
+        if(num <= mid){
+            update(root << 1, num, value);
+        }
+        else{
+            update(root << 1 | 1, num, value);
+        }
+        push_up(root);
+    }
+}s;
+int main(){
+    scanf("%d", &t);
+    while(t --){
+        scanf("%d%lld", &n, &mod);
+        s.Init();
+        s.build(1, 1, 100001);
+        char temp[2];
+        ll num;
+        for(int i = 1; i <= n; i ++){
+            scanf("%s %lld", temp, &num);
+            if(temp[0] == 'M'){
+                s.update(1, i, num);
+                printf("%lld\n", s.tree[1].sum);
+            }
+            else{
+                s.update(1, num, 1);
+                printf("%lld\n", s.tree[1].sum);
+            }
+        }
+    }
+    return 0;
+}

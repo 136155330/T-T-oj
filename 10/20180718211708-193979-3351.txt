@@ -1,0 +1,85 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+const int MAXN = 1e5+5;
+char s1[MAXN];
+char s2[MAXN];
+char s3[MAXN];
+char s4[MAXN];
+int next1[MAXN];
+int next2[MAXN];
+void KMPGET(char word[],int next[])
+{
+    int len=strlen(word);
+    int k=-1;
+    int j=0;
+    next[0]=-1;
+    while(j<len)
+    {
+        if(k==-1||word[j]==word[k])
+        {
+            j++;
+            k++;
+            next[j]=k;
+        }
+        else
+            k=next[k];
+    }
+}
+int gcd(int a,int b)
+{
+    if(a%b==0)
+        return b;
+    if(a%b!=0)
+        return gcd(b,a%b);
+}
+int KMP_MINS(int Next[],int n)
+{
+
+    int xlen = n - Next[n];
+    if(n%xlen==0)
+    return xlen;
+    return n;
+}
+int main()
+{
+    while(~scanf("%s%s",&s1,&s2))
+    {
+        memset(next1,0,sizeof(next1));
+        memset(next2,0,sizeof(next2));
+        KMPGET(s1,next1);
+        KMPGET(s2,next2);
+
+        int len1=strlen(s1);
+        int len2=strlen(s2);
+        int a,b;
+        a=0;
+        b=0;
+        a=KMP_MINS(next1,len1);
+        b=KMP_MINS(next2,len2);
+        for(int i=0; i<a; i++)
+        {
+            s3[i]=s1[i];
+        }
+        for(int i=0; i<b; i++)
+        {
+            s4[i]=s2[i];
+        }
+        if(strcmp(s3,s4)==0)
+        {
+            int i=1;
+            int num=0;
+            while(i*a<=len1&&i*b<=len2)
+            {
+                if(len1%(i*a)==0&&len2%(i*b)==0)
+                    num++;
+                i++;
+            }
+            printf("%d\n",num);
+
+        }
+        else
+            printf("0\n");
+    }
+    return 0;
+}

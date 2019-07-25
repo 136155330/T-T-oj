@@ -1,0 +1,64 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int MAXN = 105;
+const int inf = 10000;
+int math[MAXN];
+int dp[MAXN];
+int dps[MAXN];
+int n;
+int dp1(int x)
+{
+    memset(dp,0,sizeof(dp));
+    for(int i=0; i<=x; i++)
+    {
+        dp[i]=1;
+        for(int j=0; j<i; j++)
+        {
+            if(math[i]>math[j])
+            {
+                dp[i]=max(dp[j]+1,dp[i]);
+            }
+        }
+    }
+}
+int dp2(int x)
+{
+    memset(dps,0,sizeof(dps));
+    for(int i=n-1; i>-1; i--)
+    {//printf("....\n");
+        dps[i]=1;
+        for(int j=n-1; j>i; j--)
+        {
+            if(math[i]>math[j])
+                dps[i]=max(dps[j]+1,dps[i]);
+        }
+    }
+}
+int main()
+{
+    while(~scanf("%d",&n))
+    {
+        for(int i=0; i<n; i++)
+            scanf("%d",&math[i]);
+
+        dp1(n);
+        dp2(n);
+        /**for(int i=0;i<n;i++)
+            printf("%d ",dp[i]);
+        puts("");
+        for(int i=0;i<n;i++)
+            printf("%d ",dps[i]);
+        puts("");**/
+        int ans=inf;
+        for(int i=0; i<n; i++)
+        {
+        //printf("%d %d\n",dp[i],dps[i]);
+        ans=min(ans,(i+1-dp[i])+(n-i-dps[i]));
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}

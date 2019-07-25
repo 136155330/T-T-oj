@@ -1,0 +1,34 @@
+#include<stdio.h>
+int x[105];
+int main()
+{
+    int n;int m;int i;int j;int sum;
+    x[0]=2;
+    for(i=1;i<100;i++)
+    {
+       x[i]=2*(i+1);
+    }
+    while(scanf("%d%d",&n,&m)!=EOF)
+    {j=0;sum=0;
+        if(n%m==0)
+    {
+      for(i=0;i<n;i++)
+      {
+        sum=sum+x[i];
+        j++;
+        if(j==m&&i!=n-1){printf("%d ",sum/m);j=0;sum=0;}
+        if(i==n-1){printf("%d\n",sum/m);j=0;sum=0;}
+      }
+    }
+    else
+        for(i=0;i<n;i++)
+    {
+        sum=sum+x[i];
+        j++;
+        if(j==m){printf("%d ",sum/m);j=0;sum=0;}
+        if(i==n-1){printf("%d\n",sum/j);}
+    }
+    }
+    return 0;
+
+}

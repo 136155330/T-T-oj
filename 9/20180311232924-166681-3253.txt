@@ -1,0 +1,150 @@
+/**#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<cstdlib>
+using namespace std;
+int maxn;
+typedef struct Tire
+{
+    int num;
+    struct Tire *next[30];///指向26个子节点
+} tire;
+tire *root;
+tire* creattire()
+{
+    tire *p;
+    p=(tire *)malloc(sizeof(tire));
+    p->num=0;
+    for(int i=0; i<30; i++)
+        p->next[i]=NULL;
+    return p;
+}
+void addtire(char str[],tire *root)
+{
+    int t=0;
+    int len=strlen(str);
+    tire *p=root,*q;
+    for(int i=0; i<len; i++)
+    {
+        int ans=str[i]-'a';
+        if(p->next[ans]==NULL)
+        {
+            q=creattire();
+            p->next[ans]=q;
+            //p=p->next[ans];
+        }
+        p=p->next[ans];
+        t=max(t,p->num);
+        //printf("%d...\n",p->num);
+    }
+    p->num=t+1;
+    maxn=max(p->num,t+1);
+}
+
+int main()
+{root=creattire();
+    char word[205];
+    int t;
+    scanf("%d",&t);
+    {
+        maxn=0;
+        getchar();
+        while(t--)
+        {
+            gets(word);
+            //puts(word);
+            addtire(word,root);
+        }
+        printf("%d\n",maxn);
+    }
+    return 0;
+}**/
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<stdlib.h>
+#include<algorithm>
+using namespace std;
+typedef struct tire
+{
+    int num;
+    struct tire *next[30];
+} Tire;
+Tire *root;
+int maxn=0;
+tire* creat()
+{
+    tire *p;
+    p=(tire *)malloc(sizeof(tire));
+    p->num=0;
+    for(int i=0; i<30; i++)
+        p->next[i]=NULL;
+    return p;
+}
+/**Tire* creat()
+{
+    Tire *p;
+    p=new Tire;
+    p->num=0;
+    int i;
+    for(int i=0; i<30; i++)
+        p->next[i]=NULL;
+    return p;
+}
+void addtire(char str[])
+{
+    Tire *p;
+    p=root;
+    int t=0;
+    int len=strlen(str);
+    for(int i=0; i<len; i++)
+    {
+    int ans=str[i]-'a';
+    if(p->next[ans]==NULL)
+    {
+        p->next[ans]=creat();///这步在进行创建操作
+    }
+    p=p->next[ans];///走向下一位
+    t=max(t,p->num);///这一步把前面有几个赋给了t
+    }
+    p->num=t+1;///标记这个点有1个，得到的就是前面的个数加1
+    ///通过对单词的个数赋值给p->num,通过p->num来标记这个单词的位置。
+    ///跟我一开始的dfs思路差不多，但是一边建树，一边统计。
+    MAXN=max(MAXN,t+1);///每走完一次，就更新一次
+}**/
+void addtire(char str[],tire *root)
+{
+    int t=0;
+    int len=strlen(str);
+    tire *p=root,*q;
+    for(int i=0; i<len; i++)
+    {
+        int ans=str[i]-'a';
+        if(p->next[ans]==NULL)
+        {
+            q=creat();
+            p->next[ans]=q;
+            //p=p->next[ans];
+        }
+        p=p->next[ans];
+        t=max(t,p->num);
+        //printf("%d...\n",p->num);
+    }
+    p->num=t+1;
+    maxn=max(maxn,t+1);
+}
+int main()
+{
+   int i,n;
+    maxn=0;
+    root=creat();
+    char str[205];
+    scanf("%d",&n);
+    while(n--)
+    {
+        scanf("%s",str);
+        addtire(str,root);
+    }
+    printf("%d\n",maxn);
+}

@@ -1,0 +1,14 @@
+#include<stdio.h>
+#define pi 3.1415927
+#include<math.h>
+int main()
+{
+    double r;
+    double v;
+    while(~scanf("%lf",&r))
+    {
+    v = (4.0*(pi*r*r*r))/3.0;
+    printf("%.3lf\n",v);
+    }
+    return 0;
+}

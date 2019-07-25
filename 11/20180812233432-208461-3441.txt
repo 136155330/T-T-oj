@@ -1,0 +1,75 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+typedef long long ll;
+int main()
+{
+    ll t;
+    scanf("%lld",&t);
+    while(t--)
+    {
+        ll a,b;
+        scanf("%lld%lld",&a,&b);
+        if(a==b)
+        {
+            printf("0\n");
+            continue;
+        }
+        else if(a<4*b&&2*a>(3*b))
+        {
+            ll sum = (a-4*b)*2+a-b;
+            if(sum>=0)
+            {
+                printf("%lld\n",sum);
+            }
+            else
+            {
+                printf("No Save\n");
+            }
+        }
+        else if(2*a<(3*b)&&3*a>(2*b))
+        {
+            //printf("No Save\n");
+            ll sum = (2*a-3*b)*2+a+a;
+            if(sum>=0)
+            {
+                printf("%lld\n",sum);
+            }
+            else
+            {
+                printf("No Save\n");
+            }
+        }
+        else if(3*a<(2*b)&&4*a>(b))
+        {
+            ll sum = (3*a-2*b)*2+a+a;
+            if(sum>=0)
+            {
+                printf("%lld\n",sum);
+            }
+            else
+            {
+                printf("No Save\n");
+            }
+        }
+        else if(4*a<(b))
+        {
+            ll sum = (5 * a) * 2 - b - b;
+            if(sum>=0)
+            {
+                printf("%lld\n",sum);
+            }
+            else
+            {
+                printf("No Save\n");
+            }
+        }
+        else
+        {
+                printf("No Save\n");
+        }
+    }
+    return 0;
+    
+}

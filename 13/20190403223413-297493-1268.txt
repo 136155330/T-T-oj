@@ -1,0 +1,56 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+#define mem(x) memset(x, 0, sizeof(x))
+const int MAXN = 5000 * 2 + 100;
+int arr[MAXN];
+int crr[MAXN];
+int n;
+void Init()
+{
+    mem(arr);
+    mem(crr);
+}
+int ask(int x)
+{
+    int ans = 0;
+    for(; x; x -= (x & -x))
+        ans += crr[x];
+    return ans;
+}
+void add(int x, int y)
+{
+    for(; x <= n; x += (x & -x))
+        crr[x] += y;
+}
+int main()
+{
+    while(~scanf("%d", &n))
+    {
+    Init();
+    int maxs = -1;
+    for(int i = 0; i < n; i ++)
+    {
+        scanf("%d", &arr[i]);
+        arr[i] ++;
+        maxs = max(arr[i], maxs);
+    }
+    int sum = 0;
+    for(int i = 0; i < n; i ++)
+    {
+        add(arr[i], 1);
+        sum += (ask(maxs) - ask(arr[i]));
+    }
+    int re = sum;
+    for(int i = n - 1; i != -1; i --)
+    {
+        sum -= (ask(maxs) - ask(arr[i]));
+        sum += (ask(arr[i] - 1));
+        re = min(re, sum);
+    }
+    printf("%d\n", re);
+    }
+    return 0;
+}

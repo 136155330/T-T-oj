@@ -1,0 +1,34 @@
+#include<stdio.h>
+#include<string.h>
+int x[10005];
+int pill(int num)
+{
+    int temp;int sum=0;
+     temp=num;
+    while(num)
+    {
+        sum = sum*10 + num%10;
+        num /= 10;
+    }
+    if(temp==sum)return 1;
+}
+int main()
+{
+    int j;int t;int i;int n1;int h;int a;
+    while(scanf("%d",&t)!=EOF)
+    {
+        for(i=0;i<t;i++)
+        {a=0;
+            scanf("%d",&n1);
+            for(h=1;h<=n1;h++)
+            {
+
+                if(h%7==0&&pill(h)==1)a++;
+
+            }
+            printf("%d\n",a);
+
+        }
+    }
+    return 0;
+}

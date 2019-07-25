@@ -1,0 +1,28 @@
+#include<stdio.h>
+#include<math.h>
+/**
+逆时针：
+x1 = x0 * cosB - y0 * sinB
+y1 = x0 * sinB + y0 * cosB
+顺时针：
+x1 = x0 * cosB + y0 * sinB
+y1 = -x0 * sinB + y0 * cosB
+角度转弧度：用角度乘以π/180
+弧度转角度：用弧度乘以180/π，或者用rtod()函数
+double sin(double x)
+double cos(double x)
+参数是弧度制（rad）
+**/
+int main()
+{
+    double x,y,a,b;
+    double x1,y1;
+    const double pi=acos(-1.0);
+    while(~scanf("%lf%lf%lf",&x,&y,&a))
+    {b=a*(pi/180);
+        x1=x*cos(b)-y*sin(b);
+        y1=x*sin(b)+y*cos(b);
+        printf("%lf %lf\n",x1,y1);
+    }
+    return 0;
+}

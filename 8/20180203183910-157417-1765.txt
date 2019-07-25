@@ -1,0 +1,50 @@
+#include<stdio.h>
+#include<string.h>
+int zfx[15][15];
+int main()
+{
+    int n;
+    int flag;
+    while(scanf("%d",&n))
+    {if(n==0)break;
+    memset(zfx,0,sizeof(zfx));
+    flag=1;
+        if(n==1)
+        {printf("%3d\n",n);
+    }
+    else
+    {
+        for(int j=0;j<n;j++)
+        {
+            zfx[0][j]=flag;
+            flag++;
+        }
+        for(int j=1;j<n;j++)
+        {
+            zfx[j][n-1]=flag;
+            flag++;
+        }
+        for(int j=n-2;j!=-1;j--)
+        {
+            zfx[n-1][j]=flag;
+            flag++;
+        }
+        for(int j=n-2;j!=0;j--)
+        {
+            zfx[j][0]=flag;
+            flag++;
+        }
+    }
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {if(zfx[i][j]!=0)
+            printf("%3d",zfx[i][j]);
+        else
+            printf("   ");
+        }
+        printf("\n");
+    }
+    }
+    return 0;
+}

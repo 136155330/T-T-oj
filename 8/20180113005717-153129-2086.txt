@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<string.h>
+int n,m,flag;
+char map[105][105];
+int vid[105][105];
+void dfs(int x,int y)
+{
+    if(map[x][y]=='.'||x<0||y<0||x>=n||y>=m||vid[x][y]==1)return ;
+    vid[x][y]=1;
+    dfs(x-1,y-1);
+    dfs(x-1,y);
+    dfs(x-1,y+1);
+    dfs(x,y-1);
+    dfs(x,y+1);
+    dfs(x+1,y-1);
+    dfs(x+1,y);
+    dfs(x+1,y+1);
+}
+int main()
+{
+    int i,j;
+    memset(map,0,sizeof(map));
+    memset(vid,0,sizeof(vid));
+    while(~scanf("%d%d",&n,&m))
+    {flag=0;
+        for(i=0; i<n; i++)
+            scanf("%s",&map[i]);
+        for(i=0;i<n;i++)
+        {
+            for(j=0;j<m;j++)
+            {if(vid[i][j]==0&&map[i][j]=='W')
+            {
+                flag++;
+                dfs(i,j);
+                }
+            }
+        }
+        printf("%d\n",flag);
+    }
+    return 0;
+}

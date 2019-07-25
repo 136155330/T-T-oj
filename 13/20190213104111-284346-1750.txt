@@ -1,0 +1,62 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+int n, m;
+typedef struct MYSTR
+{
+    char str[25];
+    int num;
+    int len;
+}mystr;
+bool cmp(const mystr & a, const mystr & b)
+{
+    if(a.len == b.len)
+    {
+        return a.num < b.num;
+    }
+    return a.len > b.len;
+}
+mystr arr[105];
+char words[105][1005];
+int main()
+{
+    while(~scanf("%d%d", &n, &m))
+    {
+        memset(arr, 0, sizeof(arr));
+        memset(words, 0, sizeof(words));
+        for(int i = 0; i < n; i ++)
+        {
+            scanf("%s", arr[i].str);
+            arr[i].num = i;
+            arr[i].len = strlen(arr[i].str);
+        }
+        sort(arr, arr + n, cmp);
+        for(int i = 0; i < m; i ++)
+        {
+            scanf("%s", words[i]);
+        }
+        for(int i = 0; i < m; i ++)
+        {
+            bool flag = true;
+            for(int j = 0; j < n; j ++)
+            {
+                //printf("%s %s\n", words[i], arr[j].str);
+                if(strstr(words[i], arr[j].str) != NULL)
+                {
+                    printf("%s %d\n", arr[j].str, arr[j].len);
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+            {
+                printf("Failed!\n");
+            }
+            if(i != m - 1)
+                printf("\n");
+        }
+    }
+    return 0;
+}

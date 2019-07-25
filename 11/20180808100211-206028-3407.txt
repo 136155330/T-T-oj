@@ -1,0 +1,137 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+const int MAXN =  500500;
+int math[MAXN];///储存数据
+int flag[MAXN];///标记出现次数
+int belong[MAXN];///分块
+int result[MAXN];///结果
+bool vids[MAXN];///标记是否在里面
+vector<int>vec;
+typedef struct NODE
+{
+    int l;
+    int r;
+    int id;
+} node;
+node mo_s[MAXN];
+inline void Read(int &x)
+{
+    char c=getchar();
+    x=0;
+    while (c<'0'||c>'9')
+    {
+        c=getchar();
+    }
+    while (c>='0'&&c<='9')
+    {
+        x=x*10+c-'0';
+        c=getchar();
+    }
+}
+inline void Out(int a)    //输出一个整型
+{
+    if(a<0)
+    {
+        putchar('-');
+        a=-a;
+    }
+    if(a>9)
+        Out(a/10);
+    putchar(a%10+'0');
+}
+inline void Init()
+{
+    memset(math,0,sizeof(math));
+    memset(flag,0,sizeof(flag));
+    memset(belong,0,sizeof(belong));
+    memset(mo_s,0,sizeof(mo_s));
+    memset(result,0,sizeof(result));
+    vec.clear();
+}
+inline bool cmp(const node &x,const node &y)
+{
+    if (belong[x.l]<belong[y.l])
+        return 1;
+    if (belong[x.l]>belong[y.l])
+        return 0;
+    return ((belong[x.l])&1)?x.r<y.r:x.r>y.r;
+}
+
+inline void op(int x)
+{
+    if(flag[x]==1&&vids[x]==0)
+    {
+        vec.push_back(x);
+        vids[x]=1;
+    }
+}
+inline void add(int x)
+{
+    flag[x]++;
+    op(x);
+}
+inline void cut(int x)
+{
+    flag[x]--;
+    op(x);
+}
+int main()
+{
+    int n,q;
+    Read(n);
+    int sizes=sqrt(n);
+    for(int i=1; i<=n; i++)
+    {
+        Read(math[i]);
+        belong[i]=i/sizes;
+    }
+    Read(q);
+    for(int i=0; i<q; i++)
+    {
+        Read(mo_s[i].l);
+        Read(mo_s[i].r);
+        mo_s[i].id=i;
+    }
+    sort(mo_s,mo_s+q,cmp);
+    int cul,cur;
+    cul=1;
+    cur=0;
+    vec.push_back(0);
+    flag[0]=1;
+    for(int i=0; i<q; i++)
+    {
+        while(mo_s[i].l>cul)
+        {
+            cut(math[cul++]);
+        }
+        while(mo_s[i].l<cul)
+        {
+            add(math[--cul]);
+        }
+        while(mo_s[i].r>cur)
+        {
+            add(math[++cur]);
+        }
+        while(mo_s[i].r<cur)
+        {
+            cut(math[cur--]);
+        }
+        while(flag[vec.back()]!=1)
+        {
+            vids[vec.back()]=0;
+            vec.pop_back();
+        }
+        result[mo_s[i].id]=vec.back();
+    }
+    for(int i=0; i<q; i++)
+    {
+        Out(result[i]);
+        puts("");
+    }
+    return 0;
+}

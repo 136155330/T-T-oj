@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<string.h>
+char x[105][105];
+int main()
+{
+    int a;int i;int j;int z;
+    while(gets(x[0])!=NULL)
+    {
+    a=strlen(x[0]);
+    for(i=1;i<a;i++)
+    {
+        for(j=0;j<a-i;j++)
+        {
+             if(x[i-1][j]==x[i-1][j+1])
+                x[i][j]='+';
+             else
+                x[i][j]='-';
+        }
+    }
+    for(i=0;i<a;i++)
+    {for(z=0;z<i;z++)
+        printf(" ");
+        for(j=0;j<a-i;j++)
+        {
+            if(j!=a-i-1)printf("%c ",x[i][j]);
+            if(j==a-i-1)printf("%c",x[i][j]);
+        }
+        printf("\n");
+    }
+    }
+    return 0;
+}

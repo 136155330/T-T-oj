@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN = 1e6 + 5;
+char str[MAXN];
+/**
+4 = 2 ^ 2
+111 = 4 ^ n = 2 ^ 2 ^ n == k == 2 ^ n
+0 + 2 * 4 + 2 * 16
+4 (2 + 2 * 4)
+**/
+int n;
+int main()
+{
+    while(~scanf("%d", &n))
+    {
+        int k = 1;
+        scanf("%s", &str);
+        int len = strlen(str);
+        if(str[len - 1] == '1')
+            printf("0\n");
+        else
+        {
+            int j = 0;
+        for(int i = len - 1; i != -1; i --)
+        {
+            if(str[i] - '0' >= 1)
+            {
+                if(str[i] - '0' == 1 || str[i] - '0' == 3)
+                {
+                  k = 2 * j;
+                }
+                if(str[i] - '0' == 2)
+                {
+                    k = 2 * j + 1;
+                }
+                break;
+            }
+            j ++;
+        }
+        printf("%d\n", k);
+        }
+    }
+    return 0;
+}

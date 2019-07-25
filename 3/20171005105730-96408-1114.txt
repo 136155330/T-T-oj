@@ -1,0 +1,28 @@
+#include<stdio.h>
+int n;int k;
+int x[9];
+int y(int t)
+{
+    int i;
+    if(t>k)
+    {
+        for(i=1;i<=k;i++)printf("%d",x[i]);
+        printf("\n");
+
+    }
+    else
+    {
+        for(i=1;i<=n;i++)
+        {
+            x[t]=i;
+            y(t+1);
+        }
+    }
+
+}
+int main()
+{
+    scanf("%d %d",&n,&k);
+    y(1);
+    return 0;
+}

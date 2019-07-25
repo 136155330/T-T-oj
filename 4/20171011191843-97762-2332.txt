@@ -1,0 +1,16 @@
+#include<stdio.h>
+int main()
+{
+    int a,b,c,n,t;int x;
+    while(scanf("%d",&t)!=EOF)
+    {
+        while(t--)
+        {
+            scanf("%d",&n);
+            scanf("%d%d%d",&a,&b,&c);
+            x=n/a+n/b+n/c-2*(n/a/b+n/b/c+n/a/c)+(4*(n/a/b/c));
+            printf("%d\n",x);
+        }
+    }
+    return 0;
+}

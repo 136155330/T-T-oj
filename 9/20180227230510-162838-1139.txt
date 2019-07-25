@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#define S 1000
+int main ()
+{
+    int T,count;
+    char str[S];
+    scanf ("%d",&T);
+    getchar();
+    while (T--)
+    {
+        count=0;
+
+        gets(str);
+        int i,j;
+        j=strlen(str);
+        for (i=0;i<j;i++)
+        {
+            if (str[i]>='0'&&str[i]<='9')
+                count++;
+        }
+        printf ("%d\n",count);
+    }
+    return 0;
+}

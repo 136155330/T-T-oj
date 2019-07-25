@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<string.h>
+#define MAXN 1000005
+int pre[MAXN];
+int flags[MAXN];
+int unionsearch(int root)
+{
+    int son,tmp;
+    son=root;
+    while(root!=pre[root])///寻找父节点，一层一层向上
+    {
+     root=pre[root];
+    }
+    while(root!=son)///路径压缩，就是先将原上级保持在tmp内，在把pre[son]指向父节点，然后再将tmp赋值给son
+    {tmp=pre[son];
+    pre[son]=root;///这个过程会不断的去压缩路径，来优化，防止算法退化为O(N)的查找
+    son=tmp;
+    }
+    return root;
+}
+int unionnum(int x)
+{
+    printf("%d\n",flags[unionsearch(x)]);
+}
+int unionmax(int x)
+{
+    unionsearch(x);
+    printf("%d\n",pre[x]);
+}
+int unionjoin(int x,int y)
+{
+int a;
+int b;
+a=unionsearch(x);
+b=unionsearch(y);
+if(a!=b)
+    {
+        if(a>b)
+            {pre[b]=a;
+            flags[a]+=flags[b];
+            }
+        else if(a<b)
+            {pre[a]=b;
+            flags[b]+=flags[a];
+            }
+    }
+}
+char word[105];
+int main()
+{
+    int n,m,setnum;
+    int math1,math2;
+    while(~scanf("%d%d",&n,&m))
+    {getchar();
+        memset(pre,0,sizeof(pre));
+        memset(flags,0,sizeof(flags));
+        for(int i=1;i<=n;i++)
+            {pre[i]=i;
+            flags[i]=1;
+            }
+        setnum=n;
+for(int j=0;j<m;j++)
+{
+    scanf("%s",&word);
+    if(word[0]=='s'&&word[1]=='a')
+    {scanf("%d%d",&math1,&math2);
+    getchar();
+        if(unionsearch(math1)==unionsearch(math2))
+            printf("1\n");
+        else
+            printf("0\n");
+    }
+    if(word[0]=='u'&&word[1]=='n')
+    {
+        scanf("%d%d",&math1,&math2);
+        getchar();
+        if(unionsearch(math1)!=unionsearch(math2))
+        {
+        unionjoin(math1,math2);
+        setnum--;
+    }
+    }
+    if(word[0]=='n'&&word[1]=='u')
+    {
+        scanf("%d",&math1);
+        getchar();
+        unionnum(math1);
+    }
+    if(word[0]=='m'&&word[1]=='a')
+    {
+        scanf("%d",&math1);
+        getchar();
+        unionmax(math1);
+    }
+    if(word[0]=='s'&&word[1]=='e')
+        printf("%d\n",setnum);
+}
+    }
+    return 0;
+}

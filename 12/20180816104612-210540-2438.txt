@@ -1,0 +1,65 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+using namespace std;
+/**
+ 设f(i, j)等于a0 至 ai，b0 至 bi 的最长上升公共子序列
+ 那么我们可以知道
+ f(i, j)如果在ai == aj 的情况下，
+ 那么f(i, j) = f(i, k)转移过来
+ 可得转移方程为 f(i, j) = max(f(i, k) + 1, f(i, j)) 0<= k < j && bk < ai
+ 否则的话
+ 从a i - 1 转移到 a i
+ 代表从a i - 1 匹配的最大的转移过来
+ f(i, j) = f(i - 1, j)
+ **/
+#define mem(x) memset(x,0,sizeof(x))
+const int MAXN = 505;
+int a[MAXN];
+int b[MAXN];
+int dp[MAXN][MAXN];
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    for (int k = 1; k <= t; k++) {
+        int lena, lenb;
+        mem(a);
+        mem(b);
+        mem(dp);
+        scanf("%d", &lena);
+        for (int i = 1; i <= lena; i ++) {
+            scanf("%d", &a[i]);
+        }
+        scanf("%d", &lenb);
+        for (int i = 1; i <= lenb; i ++) {
+            scanf("%d", &b[i]);
+        }
+        for (int i = 1; i <= lena; i ++) {
+            for (int j = 1; j <= lenb; j ++) {
+                if(a[i] == b[j])
+                {
+                    for (int z = 0; z < j; z ++) {
+                        if(b[z] < b[j])
+                        dp[i][j] = max(dp[i][j], dp[i][z] + 1);
+                    }
+                }
+                else
+                {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        int result = -1;
+        for (int i = 1; i <= lena; i ++) {
+            for (int j = 1; j <= lenb; j ++) {
+                result = max(dp[i][j], result);
+            }
+        }
+        printf("%d\n",result);
+        if (k != t) {
+            puts("");
+        }
+    }
+    return 0;
+}

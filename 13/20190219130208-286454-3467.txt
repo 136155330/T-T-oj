@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<string.h>
+#include<iostream>
+#include<algorithm>
+#include<stdlib.h>
+#include<vector>
+#define maxn 100050
+using namespace std;
+vector<int>vc[maxn];
+void init()
+{
+    int i,j;
+    for(i=2;i<maxn;i++)
+    {
+        for(j=i;j<maxn;j+=i)
+            vc[j].push_back(i);
+    }
+}
+int a[maxn],dp[maxn];
+int main()
+{
+    init();
+    int n;
+    while(scanf("%d",&n)!=EOF)
+    {
+        int i;
+        vector<int>::iterator it;
+        memset(dp,0,sizeof(dp));
+        for(i=1;i<=n;i++)
+            scanf("%d",&a[i]);
+ 
+        for(i=1;i<=n;i++)
+        {
+            int temp=0;
+            for(it=vc[a[i]].begin();it!=vc[a[i]].end();it++)
+            {
+                temp=max(temp,dp[*it]); //选出所有因子中下标最大的
+            }
+            for(it=vc[a[i]].begin();it!=vc[a[i]].end();it++)
+            {
+                dp[*it]=temp+1;//用最大的下标更新所有a[i]的因子
+            }
+        }
+        int ans=1;
+        for(i=0;i<maxn;i++)//遍历找到最大值
+            ans=max(ans,dp[i]);
+        printf("%d\n",ans);
+    }
+}

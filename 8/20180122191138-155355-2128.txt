@@ -1,0 +1,66 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<stack>
+using namespace std;
+stack<int>stk;
+typedef struct Myint
+{
+    int math;
+    int ans;
+} myint;
+myint hzb[100005];
+int main()
+{
+    int n,i;
+    while(~scanf("%d",&n))
+    {
+        memset(hzb,0,sizeof(hzb));
+        for(i=0; i<n; i++)
+        {
+            scanf("%d",&hzb[i].math);
+        }
+        for(i=0; i<n; i++)
+        {
+            if(stk.empty()==1)
+            {
+                //printf("%d.\n",hzb[i].math);
+                hzb[i].ans=-1;
+                stk.push(i);
+            }
+            else
+            {
+                while(hzb[stk.top()].math>=hzb[i].math&&stk.size()!=0)
+                {//printf("%d %d...\n",hzb[stk.top()].math,hzb[i].math);
+                    if(stk.size()!=0)
+                        stk.pop();
+                    if(stk.size()==0)break;
+                    //printf(".\n");
+                }
+                if(stk.empty()==1)
+                {
+                    hzb[i].ans=-1;
+                    stk.push(i);
+                    //printf("..\n");
+                }
+                else if(stk.empty()==0)
+                {
+                    hzb[i].ans=stk.top();
+                    stk.push(i);
+                    //printf("...\n");
+                }
+            }
+        }
+        for(i=0; i<n; i++)
+            printf("%d ",hzb[i].ans);
+        printf("\n");
+        while(1)
+        {
+            if(stk.size()!=0)stk.pop();
+            if(stk.size()==0)break;
+        }
+    }
+    return 0;
+}
+/*5 3 1 2 5 4*/

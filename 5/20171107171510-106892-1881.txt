@@ -1,0 +1,42 @@
+#include<stdio.h>
+#include<string.h>
+int x[1000005];
+int main()
+{
+    int t;
+    int a;
+    int b;
+    int i;
+    int c;
+    while(~scanf("%d",&t))
+    {
+        memset(x,0,sizeof(x));
+
+        while(t--)
+        { b=0;
+            scanf("%d",&c);
+            while(c--)
+            {
+                {
+                    scanf("%d",&a);
+                    x[a]++;
+                }
+                }
+                for(i=1; i<100000; i++)
+                {
+                    if(x[i]>b)b=x[i];
+                }
+                for(i=1; i<100000; i++)
+                {
+                    if(x[i]==b)
+                    {
+                        printf("%d %d\n",i,x[i]);
+                        memset(x,0,sizeof(x));
+                        break;
+                    }
+                }
+
+        }
+    }
+    return 0;
+}

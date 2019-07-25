@@ -1,0 +1,48 @@
+#include<cstring>
+#include<iostream>
+#include<map>
+using namespace std;
+map<int,int>M;
+
+int main()
+{
+    int sum;///现在有多少个
+    int result;///答案
+    int n;
+    int re;
+    std::ios::sync_with_stdio(false);
+    while(cin>>n)
+    {
+        re=0;
+        sum=0;
+        result=0;
+        M.clear();
+        for(int i=0;i<n;i++)
+        {
+            char chr;
+            int math;
+            cin>>chr>>math;
+            if(chr=='-')
+            {
+                if(M[math]==0)
+                {
+                    re++;
+                }
+                else
+                {
+                    M[math]--;
+                    sum--;
+                }
+            }
+            else
+            {
+                M[math]++;
+                sum++;
+                //cout<<sum<<endl;
+                re=max(re,sum);
+            }
+        }
+        cout<<re<<endl;
+    }
+    return 0;
+}

@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<string.h>
+#define maxn 1000005
+int next[maxn];
+char str1[maxn];
+char str2[maxn];
+void KMPGET(char word[])
+{
+    int len=strlen(word);
+    int k=-1;
+    int j=0;
+    next[0]=-1;
+    while(j<len-1)
+    {
+        if(k==-1||word[j]==word[k])
+        {
+            j++;
+            k++;
+            next[j]=k;
+        }
+        else
+            k=next[k];
+    }
+}
+int kmp(char word1[],char word2[])
+{
+    int i=0;
+    int j=0;
+    int len1=strlen(word1);
+    int len2=strlen(word2);
+    while(i<len1&&j<len2)
+    {
+        if(j==-1||word1[i]==word2[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            j=next[j];
+        }
+    }
+    if(j==len2)
+    {
+        return i-j;
+    }
+    else
+        return -1;
+}
+int main()
+{
+    while(~scanf("%s %s",str1,str2))
+    {
+        memset(next,0,sizeof(next));
+        KMPGET(str2);
+        int ans=kmp(str1,str2);
+        printf("%d\n",ans);
+    }
+    return 0;
+}

@@ -1,0 +1,26 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+typedef long long ll;
+int main()
+{
+    ll t;
+    scanf("%lld",&t);
+    while(t--)
+    {
+    ll x,y;
+    ll sum;
+        scanf("%lld%lld",&x,&y);
+        if(y>4*x)sum=10*x-2*y;
+        else if(2*y>3*x)sum=8*x-4*y;
+        else if(3*y>2*x)sum=6*(x-y);
+        else if(4*y>x)sum=3*(x-3*y);
+        else sum=-1;
+        if(sum<0)
+            printf("No Save\n");
+        else
+            printf("%lld\n",sum);
+    }
+        return 0;
+}

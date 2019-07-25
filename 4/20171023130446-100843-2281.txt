@@ -1,0 +1,23 @@
+#include<stdio.h>
+#include<math.h>
+#include<iostream>
+using namespace std;
+int isPrime_2( long long  num )
+{
+     int tmp =sqrt( num);
+     for(int i= 2;i <=tmp; i++)
+        if(num %i== 0)
+          return 0 ;
+     return 1 ;
+}
+int main()
+{
+    long long n;int a;
+    while(cin>>n)
+    {
+        a=isPrime_2(n);
+        if(a==1)printf("Yes\n");
+        if(a==0)printf("No\n");
+    }
+    return 0;
+}

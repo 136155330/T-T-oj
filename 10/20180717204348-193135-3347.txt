@@ -1,0 +1,32 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+typedef long long ll;
+const ll MOD = 1e9+7;
+ll power(ll a,ll b)
+{
+    ll g;
+    g=1;
+    a=a%MOD;
+    while(b>0)
+    {
+        if(b%2==1)g=(g*a)%MOD;
+        b=b/2;
+        a=(a*a)%MOD;
+    }
+    return g;
+}
+int main()
+{
+    long long n;
+   while(~scanf("%I64d",&n))
+   {if(n==0)
+   {printf("1\n");
+   continue;
+   }
+       ll sum=(power(2,n-1)%MOD*(power(2,n)+1%MOD)%MOD)%MOD;
+       printf("%I64d\n",sum);
+   }
+   return 0;
+}

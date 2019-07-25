@@ -1,0 +1,52 @@
+/**
+ ∏¥‘”∂»£∫O(n)
+ **/
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <vector>
+using namespace std;
+const int MAXN = 105;
+char words[MAXN];
+vector<char>vec;
+vector<int>vecs;
+int main()
+{
+    int len;
+    while(~scanf("%d", &len))
+    {
+        scanf("%s", words);
+        vec.clear();
+        vecs.clear();
+        int sum = 0;
+        for(int i = 0; i < len; i ++)
+        {
+            if(words[i] == 'T' || words[i] == '^')
+                vec.push_back(words[i]);
+        }
+        bool flag = false;
+        for(int i = 0; i < vec.size(); i ++)
+        {
+            if(vec[i] == 'T' && flag == false)
+            {
+                flag = true;
+            }
+            else if(flag == true && vec[i] == '^')
+            {
+                sum ++;
+            }
+            else if(flag == true && vec[i] == 'T')
+            {
+                vecs.push_back(sum);
+                sum = 0;
+            }
+        }
+        int re = 0;
+        for(int i = 0; i < vecs.size(); i ++)
+        {
+            re += (i + 1) * vecs[i] * (vecs.size() + 1 - (i + 1));
+        }
+        printf("%d\n", re);
+    }
+    return 0;
+}
